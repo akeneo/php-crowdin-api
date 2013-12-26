@@ -2,6 +2,8 @@
 
 namespace Crowdin;
 
+use Guzzle\Http\Client as HttpClient;
+
 /**
  * Simple Crowdin PHP client
  *
@@ -13,6 +15,11 @@ class Client
      * @var string base url
      */
     const BASE_URL = 'http://api.crowdin.net/api';
+
+    /**
+     * @var HttpClient
+     */
+    protected $httpClient;
 
     /**
      * @var string the project identifier
@@ -63,13 +70,31 @@ class Client
         return $api;
     }
 
+    /**
+     * @return string
+     */
     public function getProjectIdentifier()
     {
         return $this->projectIdentifier;
     }
 
+    /**
+     * @return string
+     */
     public function getProjectApiKey()
     {
         return $this->projectApiKey;
+    }
+
+    /**
+     * @return HttpClient
+     */
+    public function getHttpClient()
+    {
+        if ($this->httpClient === null) {
+            $this->httpClient = new HttpClient(self::BASE_URL);
+        }
+
+        return $this->httpClient;
     }
 }
