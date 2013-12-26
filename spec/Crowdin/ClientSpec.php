@@ -21,4 +21,9 @@ class ClientSpec extends ObjectBehavior
     {
         $this->getProjectApiKey()->shouldReturn('my_key');
     }
+
+    function it_has_a_http_client()
+    {
+        $this->getHttpClient()->shouldBeAnInstanceOf('Guzzle\Http\Client');
+    }
 }

@@ -24,4 +24,12 @@ interface ApiInterface
      * @param array $parameters
      */
     public function setParameters(array $parameters);
+
+    /**
+     * Get expected parameters
+     *
+     * @return array
+     */
+    public function getExpectedParameters();
+
 }

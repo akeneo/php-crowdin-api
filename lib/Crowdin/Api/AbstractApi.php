@@ -45,4 +45,12 @@ abstract class AbstractApi implements ApiInterface
     {
         $this->parameters = $parameters;
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getExpectedParameters()
+    {
+        return array();
+    }
 }

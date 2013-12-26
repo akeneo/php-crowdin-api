@@ -2,7 +2,6 @@
 
 namespace Crowdin\Api;
 
-use Crowdin\Client;
 use Guzzle\Http\Client as GuzzleClient;
 
 /**
@@ -17,9 +16,9 @@ class SupportedLanguages extends AbstractApi
      */
     public function execute()
     {
-        $options = array();
-        $client = new GuzzleClient(Client::BASE_URL, $options);
-        $response = $client->get('supported-languages')->send();
+        $http     = $this->client->getHttpClient();
+        $request  = $http->get('supported-languages');
+        $response = $request->send();
 
         return $response->getBody(true);
     }

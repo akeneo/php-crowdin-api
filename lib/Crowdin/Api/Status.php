@@ -2,11 +2,8 @@
 
 namespace Crowdin\Api;
 
-use Crowdin\Client;
-use Guzzle\Http\Client as GuzzleClient;
-
 /**
- * API for getting project details
+ * API for getting project translation status
  *
  * @author Nicolas Dupont <nicolas@akeneo.com>
  */
@@ -17,10 +14,13 @@ class Status extends AbstractApi
      */
     public function execute()
     {
-        $options = array();
-        $client = new GuzzleClient(Client::BASE_URL, $options);
-        $path = sprintf("project/%s/status?key=%s", $this->client->getProjectIdentifier(), $this->client->getProjectApiKey());
-        $response = $client->get($path)->send();
+        $path = sprintf(
+            "project/%s/status?key=%s",
+            $this->client->getProjectIdentifier(),
+            $this->client->getProjectApiKey()
+        );
+        $request = $this->client->getHttpClient()->get($path);
+        $response = $request->send();
 
         return $response->getBody(true);
     }
