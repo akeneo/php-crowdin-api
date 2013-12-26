@@ -3,9 +3,10 @@
 namespace Crowdin\Api;
 
 /**
- * API to download the translations (not the last one but the last builded)
+ * Download ZIP file with translations (all or chosen language)
  *
  * @author Nicolas Dupont <nicolas@akeneo.com>
+ * @see http://crowdin.net/page/api/download
  */
 class Download extends AbstractApi
 {

@@ -3,9 +3,10 @@
 namespace Crowdin\Api;
 
 /**
- * API to download the translations (not the last one but the last builded)
+ * Upload latest version of your localization file to Crowdin.
  *
  * @author Nicolas Dupont <nicolas@akeneo.com>
+ * @see http://crowdin.net/page/api/update-file
  */
 class UpdateFile extends AbstractApi
 {

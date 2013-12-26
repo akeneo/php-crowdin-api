@@ -5,9 +5,10 @@ namespace Crowdin\Api;
 use Guzzle\Http\Client as GuzzleClient;
 
 /**
- * API for getting supported languages
+ * Get supported languages list
  *
  * @author Nicolas Dupont <nicolas@akeneo.com>
+ * @see http://crowdin.net/page/api/supported-languages
  */
 class SupportedLanguages extends AbstractApi
 {
