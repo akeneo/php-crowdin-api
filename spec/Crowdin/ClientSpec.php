@@ -26,4 +26,14 @@ class ClientSpec extends ObjectBehavior
     {
         $this->getHttpClient()->shouldBeAnInstanceOf('Guzzle\Http\Client');
     }
+
+    function it_allow_defined_api_method()
+    {
+        $this->api('download')->shouldReturnAnInstanceOf('Crowdin\Api\Download');
+    }
+
+    function it_should_not_allow_undefined_api_method()
+    {
+        $this->shouldThrow('\InvalidArgumentException')->duringApi('unknow');
+    }
 }
