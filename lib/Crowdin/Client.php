@@ -66,6 +66,9 @@ class Client
             case 'download':
                 $api = new Api\Download($this);
                 break;
+            case 'update-file':
+                $api = new Api\UpdateFile($this);
+                break;
             default:
                 throw new \InvalidArgumentException(sprintf('Undefined api method "%s"', $method));
         }
