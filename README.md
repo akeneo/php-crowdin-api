@@ -9,9 +9,9 @@ As we use it to translate Akeneo PIM, our workflow is the following :
 * push new english translations from Github repository to Crowdin
 * retrieve others languages translations from Crowdin to push them to Github
 
-NB 1, there is an existing Ruby Client here : https://github.com/crowdin/crowdin-api
-
-NB 2, this bundle takes inspiration from https://github.com/KnpLabs/php-github-api
+FYI,
+* there is an existing Ruby Client here : https://github.com/crowdin/crowdin-api
+* this bundle takes inspiration from https://github.com/KnpLabs/php-github-api
 
 Features
 --------
