@@ -1,0 +1,29 @@
+{
+    "name": "akeneo/php-crowdin-api",
+    "type": "library",
+    "description": "Crowdin API client",
+    "homepage": "https://github.com/akeneo/php-crowdin-api",
+    "keywords": ["crowdin", "translation", "api"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Akeneo",
+            "homepage": "http://akeneo.com"
+        }
+    ],
+    "require": {
+        "php":           ">=5.3.2",
+        "guzzle/guzzle": ">=3.7",
+        "ext-curl":      "*"
+    },
+    "require-dev": {
+        "phpspec/phpspec": "2.0.*@dev"
+    },
+    "config": {
+        "bin-dir": "bin"
+    },
+    "autoload": {
+        "psr-0": { "Crowdin\\": "lib/" }
+    }
+}
+

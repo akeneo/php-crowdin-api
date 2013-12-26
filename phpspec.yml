@@ -1,0 +1,4 @@
+suites:
+  UniqueIndicator:
+    namespace: Crowdin
+    src_path: lib
