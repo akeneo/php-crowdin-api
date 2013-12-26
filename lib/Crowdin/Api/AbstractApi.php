@@ -36,21 +36,5 @@ abstract class AbstractApi implements ApiInterface
     /**
      * {@inheritdoc}
      */
-    abstract public  function execute();
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setParameters(array $parameters)
-    {
-        $this->parameters = $parameters;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getExpectedParameters()
-    {
-        return array();
-    }
+    abstract public function execute();
 }

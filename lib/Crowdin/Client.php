@@ -44,14 +44,13 @@ class Client
     }
 
     /**
-     * @param string $method     the api method
-     * @param array  $parameters the method parameters
+     * @param string $method the api method
      *
      * @throws InvalidArgumentException
      *
      * @return mixed
      */
-    public function api($method, $parameters = array())
+    public function api($method)
     {
         switch ($method) {
             case 'info':
@@ -68,6 +67,9 @@ class Client
                 break;
             case 'update-file':
                 $api = new Api\UpdateFile($this);
+                break;
+            case 'export':
+                $api = new Api\Export($this);
                 break;
             default:
                 throw new \InvalidArgumentException(sprintf('Undefined api method "%s"', $method));

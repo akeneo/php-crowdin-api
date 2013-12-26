@@ -17,19 +17,4 @@ interface ApiInterface
      * @return mixed
      */
     public function execute();
-
-    /**
-     * Set parameters
-     *
-     * @param array $parameters
-     */
-    public function setParameters(array $parameters);
-
-    /**
-     * Get expected parameters
-     *
-     * @return array
-     */
-    public function getExpectedParameters();
-
 }
