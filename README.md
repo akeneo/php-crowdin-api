@@ -1,7 +1,7 @@
 php-crowdin-api
 ===============
 
-A simple PHP Crowdin API client
+A simple PHP Crowdin API client.
 
 Crowdin is a translation and localization management platform that handles both documents and software projects.
 
@@ -9,22 +9,20 @@ As we use it to translate Akeneo PIM, our workflow is the following :
 * push new english translations from Github repository to Crowdin
 * retrieve others languages translations from Crowdin to push them to Github
 
-FYI,
-* there is an existing Ruby Client here : https://github.com/crowdin/crowdin-api
-* this bundle takes inspiration from https://github.com/KnpLabs/php-github-api
+FYI, there is an existing Ruby Client here : https://github.com/crowdin/crowdin-api
 
 Features
 --------
 
-PSR-0 conventions and coding standard
+PSR-2 conventions and coding standard
 
 Wrap following API methods http://crowdin.net/page/api :
-* Update File, Upload fresh version of your localization file. Often used to reach continuous localization.
+* Update File, Upload fresh version of your localization file.
 * Export Translations, Build fresh package with the latest translations.
-* Download Translations, Download last exported translation package (one target language or all languages as one zip file).
+* Download Translations, Download last exported translation package (one language or all languages as one zip file).
 * Supported Languages, Get supported languages list with Crowdin codes mapped to locale name and standardized codes.
 * Translation Status, Track overall translation and proofreading progress of each target language.
-* Project Info, Shows project details and meta information (last translations date, currently uploaded files, target languages etc..).
+* Project Info, Shows project details and meta information.
 
 Not implemented
 ---------------
@@ -50,11 +48,11 @@ Following API methods :
 Requirements
 ------------
 
-* PHP >= 5.3
+* PHP >= 5.3.3
 * Guzzle https://github.com/guzzle/guzzle
 * PHP Spec https://github.com/phpspec/phpspec
 
 Contribution
 ------------
-Feel free to fork and propose PR to complete missing API methods.
+Feel free to fork and propose PR to complete missing API methods, any contributions are welcomed !
 
