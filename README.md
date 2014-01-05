@@ -82,25 +82,8 @@ The MIT License (MIT)
 Contribution
 ------------
 
-Feel free to fork and propose PR to complete missing API methods, any contributions are welcomed !
+Feel free to fork and propose PR to complete missing API methods : https://github.com/akeneo/php-crowdin-api/issues?labels=feature&state=open
 
-Not implemented
----------------
+Any contributions are welcomed !
 
-All options and parameters for previous methods are not implemented.
 
-Following API methods :
-* Add File, Add new file to Crowdin project that should be translated.
-* Delete File, Remove file from Crowdin project.
-* Create Directory, Create a new directory in Crowdin project.
-* Remove Directory, Remove directory with nested files from Crowdin project.
-* Change Directory, Rename or change directory attributes.
-* Upload Translations, Upload translations made in a third party software or previously made translations.
-* Create Project, Create a new Crowdin Project.
-* Edit Project, Edit Crowdin project details.
-* Delete Project, Delete Crowdin project with all files, translations and other meta-data.
-* Download TM, Download Translation Memory created by Crowdin for your project.
-* Upload TM, Upload Translation Memory (will be merged with TM in Crowdin).
-* Download Glossary, Download Glossaries created by users for your project.
-* Upload Glossary, Upload your glossary to Crowdin project (imported terms will be merged with already existing)
-* Account Projects, List account projects with details (including API keys)
