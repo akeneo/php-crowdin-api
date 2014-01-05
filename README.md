@@ -9,6 +9,8 @@ To translate Akeneo PIM, our workflow is the following :
 * push our new english translations from our Github repository to Crowdin
 * build and download others languages translations from Crowdin to push them to our Github repository
 
+The architecture is inspired from https://github.com/KnpLabs/php-github-api/ a really complementary library to achieve our translation workflow.
+
 There is an official Ruby Client here : https://github.com/crowdin/crowdin-api
 
 Features
@@ -30,6 +32,45 @@ Requirements
 * PHP >= 5.3.3
 * Guzzle https://github.com/guzzle/guzzle
 * PHP Spec https://github.com/phpspec/phpspec
+
+How to use ?
+------------
+
+Add the following lines in your project composer.json :
+```yaml
+{
+    "require": {
+        "akeneo/crowdin-api": "*"
+    },
+    "minimum-stability": "dev"
+}
+```
+
+Then,
+```php
+require 'vendor/autoload.php';
+
+use Crowdin\Client;
+
+$project = 'akeneo';
+$key     = 'my-api-key';
+$client  = new Client($project, $key);
+
+// download last build package from Crowdin
+$api = $client->api('download');
+$api->setCopyDestination('/tmp/download-crowdin');
+$api->setPackage('fr.zip');
+$result = $api->execute();
+
+// update a Crowdin file from local filesystem
+$api = $client->api('update-file');
+$source = '/tmp/update-crowdin';
+$file   = 'src/Pim/Bundle/CatalogBundle/Resources/translations/messages.en.yml';
+$api->addFile($file, $source.'/'.$file);
+$result = $api->execute();
+echo $result
+
+```
 
 Licence
 -------
