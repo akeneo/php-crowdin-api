@@ -46,8 +46,9 @@ Add the following lines in your project composer.json :
 }
 ```
 
-Then,
+Then, to instanciate the client and use available API methods :
 ```php
+<?php
 require 'vendor/autoload.php';
 
 use Crowdin\Client;
