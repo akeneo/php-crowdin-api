@@ -5,11 +5,11 @@ A simple PHP Crowdin API client http://crowdin.net/page/api.
 
 Crowdin is a translation and localization management platform : http://crowdin.net/
 
-There is an official Ruby Client here : https://github.com/crowdin/crowdin-api
-
 To translate Akeneo PIM, our workflow is the following :
 * push our new english translations from our Github repository to Crowdin
 * build and download others languages translations from Crowdin to push them to our Github repository
+
+There is an official Ruby Client here : https://github.com/crowdin/crowdin-api
 
 Features
 --------
