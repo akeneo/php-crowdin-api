@@ -1,9 +1,9 @@
 {
     "name": "akeneo/php-crowdin-api",
     "type": "library",
-    "description": "Crowdin API client",
+    "description": "Crowdin PHP API client",
     "homepage": "https://github.com/akeneo/php-crowdin-api",
-    "keywords": ["crowdin", "translation", "api"],
+    "keywords": ["crowdin", "translation", "localization", "api"],
     "license": "MIT",
     "authors": [
         {
