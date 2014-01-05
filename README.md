@@ -1,7 +1,7 @@
 php-crowdin-api
 ===============
 
-A simple PHP Crowdin API client.
+A simple PHP Crowdin API client http://crowdin.net/page/api.
 
 Crowdin is a translation and localization management platform : http://crowdin.net/
 
@@ -16,7 +16,7 @@ Features
 
 PSR-2 conventions and coding standard
 
-Wrap following API methods http://crowdin.net/page/api :
+Wrap following API methods :
 * Update File, Upload fresh version of your localization file.
 * Export Translations, Build fresh package with the latest translations.
 * Download Translations, Download last exported translation package (one language or all languages as one zip file).
