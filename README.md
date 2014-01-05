@@ -3,13 +3,13 @@ php-crowdin-api
 
 A simple PHP Crowdin API client.
 
-Crowdin is a translation and localization management platform that handles both documents and software projects.
+Crowdin is a translation and localization management platform : http://crowdin.net/
 
-As we use it to translate Akeneo PIM, our workflow is the following :
-* push new english translations from Github repository to Crowdin
-* retrieve others languages translations from Crowdin to push them to Github
+There is an official Ruby Client here : https://github.com/crowdin/crowdin-api
 
-FYI, there is an existing Ruby Client here : https://github.com/crowdin/crowdin-api
+To translate Akeneo PIM, our workflow is the following :
+* push our new english translations from our Github repository to Crowdin
+* build and download others languages translations from Crowdin to push them to our Github repository
 
 Features
 --------
@@ -24,10 +24,27 @@ Wrap following API methods http://crowdin.net/page/api :
 * Translation Status, Track overall translation and proofreading progress of each target language.
 * Project Info, Shows project details and meta information.
 
+Requirements
+------------
+
+* PHP >= 5.3.3
+* Guzzle https://github.com/guzzle/guzzle
+* PHP Spec https://github.com/phpspec/phpspec
+
+Licence
+-------
+
+The MIT License (MIT)
+
+Contribution
+------------
+
+Feel free to fork and propose PR to complete missing API methods, any contributions are welcomed !
+
 Not implemented
 ---------------
 
-All options and parameters for previous methods are not implemented
+All options and parameters for previous methods are not implemented.
 
 Following API methods :
 * Add File, Add new file to Crowdin project that should be translated.
@@ -44,15 +61,3 @@ Following API methods :
 * Download Glossary, Download Glossaries created by users for your project.
 * Upload Glossary, Upload your glossary to Crowdin project (imported terms will be merged with already existing)
 * Account Projects, List account projects with details (including API keys)
-
-Requirements
-------------
-
-* PHP >= 5.3.3
-* Guzzle https://github.com/guzzle/guzzle
-* PHP Spec https://github.com/phpspec/phpspec
-
-Contribution
-------------
-Feel free to fork and propose PR to complete missing API methods, any contributions are welcomed !
-
