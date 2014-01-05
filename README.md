@@ -31,7 +31,8 @@ Requirements
 
 * PHP >= 5.3.3
 * Guzzle https://github.com/guzzle/guzzle
-* PHP Spec https://github.com/phpspec/phpspec
+
+Optional, for dev purpose, PHP Spec https://github.com/phpspec/phpspec
 
 How to use ?
 ------------
