@@ -1,5 +1,5 @@
 {
-    "name": "akeneo/php-crowdin-api",
+    "name": "akeneo/crowdin-api",
     "type": "library",
     "description": "Crowdin PHP API client",
     "homepage": "https://github.com/akeneo/php-crowdin-api",
@@ -23,6 +23,11 @@
     },
     "autoload": {
         "psr-0": { "Crowdin\\": "lib/" }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0.x-dev"
+        }
     }
 }
 
