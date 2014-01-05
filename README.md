@@ -11,7 +11,7 @@ To translate Akeneo PIM, our workflow is the following :
 
 The architecture is inspired from https://github.com/KnpLabs/php-github-api/ a really complementary library to achieve our translation workflow.
 
-There is an official Ruby Client here : https://github.com/crowdin/crowdin-api
+FYI, an official and more complete Ruby Client exists here : https://github.com/crowdin/crowdin-api
 
 Features
 --------
