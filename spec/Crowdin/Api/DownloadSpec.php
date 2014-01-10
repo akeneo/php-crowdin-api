@@ -11,15 +11,11 @@ use Guzzle\Http\Message\Request;
 
 class DownloadSpec extends ObjectBehavior
 {
-    function let(Client $client, HttpClient $http, Request $request, Response $response)
+    function let(Client $client, HttpClient $http)
     {
         $client->getHttpClient()->willReturn($http);
         $client->getProjectIdentifier()->willReturn('akeneo');
         $client->getProjectApiKey()->willReturn('1234');
-        $http->get('project/akeneo/download/all.zip?key=1234')->willReturn($request);
-        $request->setResponseBody('/tmp/all.zip')->willReturn($request);
-        $request->send()->willReturn($response);
-        $response->getBody(true)->willReturn('bin');
         $this->beConstructedWith($client);
     }
 
@@ -46,10 +42,25 @@ class DownloadSpec extends ObjectBehavior
         $this->getCopyDestination()->shouldReturn('/tmp/');
     }
 
-    function it_download_all_translations()
+    function it_download_all_translations(HttpClient $http, Request $request, Response $response)
     {
         $this->setCopyDestination('/tmp');
         $this->setPackage('all.zip');
+        $http->get('project/akeneo/download/all.zip?key=1234')->willReturn($request);
+        $request->setResponseBody('/tmp/all.zip')->willReturn($request);
+        $request->send()->willReturn($response);
+        $response->getBody(true)->willReturn('bin');
+        $this->execute()->shouldBe('bin');
+    }
+
+    function it_download_french_translations(HttpClient $http, Request $request, Response $response)
+    {
+        $this->setCopyDestination('/tmp');
+        $this->setPackage('fr.zip');
+        $http->get('project/akeneo/download/fr.zip?key=1234')->willReturn($request);
+        $request->setResponseBody('/tmp/fr.zip')->willReturn($request);
+        $request->send()->willReturn($response);
+        $response->getBody(true)->willReturn('bin');
         $this->execute()->shouldBe('bin');
     }
 }
