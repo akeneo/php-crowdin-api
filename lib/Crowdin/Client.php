@@ -71,6 +71,12 @@ class Client
             case 'export':
                 $api = new Api\Export($this);
                 break;
+            case 'add-directory':
+                $api = new Api\AddDirectory($this);
+                break;
+            case 'delete-directory':
+                $api = new Api\DeleteDirectory($this);
+                break;
             default:
                 throw new \InvalidArgumentException(sprintf('Undefined api method "%s"', $method));
         }
