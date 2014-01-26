@@ -25,7 +25,7 @@ class SupportedLanguagesSpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf('Crowdin\Api\AbstractApi');
     }
 
-    function it_get_supported_languages()
+    function it_gets_supported_languages()
     {
         $this->execute()->shouldBe('<xml></xml>');
     }
