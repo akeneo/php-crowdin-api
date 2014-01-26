@@ -24,7 +24,7 @@ class ExportSpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf('Crowdin\Api\AbstractApi');
     }
 
-    function it_build_last_translations(HttpClient $http, Request $request, Response $response)
+    function it_builds_last_translations(HttpClient $http, Request $request, Response $response)
     {
         $content = '<?xml version="1.0" encoding="ISO-8859-1"?><success status="built"></success>';
         $response->getBody(true)->willReturn($content);
@@ -33,7 +33,7 @@ class ExportSpec extends ObjectBehavior
         $this->execute()->shouldBe($content);
     }
 
-    function it_skip_build_if_less_than_half_an_hour(HttpClient $http, Request $request, Response $response)
+    function it_skips_build_if_less_than_half_an_hour(HttpClient $http, Request $request, Response $response)
     {
         $content = '<?xml version="1.0" encoding="ISO-8859-1"?><success status="skipped"></success>';
         $response->getBody(true)->willReturn($content);

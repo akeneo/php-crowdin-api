@@ -27,7 +27,7 @@ class StatusSpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf('Crowdin\Api\AbstractApi');
     }
 
-    function it_get_project_translations_status()
+    function it_gets_project_translations_status()
     {
         $this->execute()->shouldBe('<xml></xml>');
     }

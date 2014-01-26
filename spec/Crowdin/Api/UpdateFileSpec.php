@@ -44,7 +44,7 @@ class UpdateFileSpec extends ObjectBehavior
         $this->shouldThrow('\InvalidArgumentException')->duringExecute();
     }
 
-    function it_update_some_translation_files(HttpClient $http, Request $request, Response $response)
+    function it_updates_some_translation_files(HttpClient $http, Request $request, Response $response)
     {
         $this->addFile('crowdin/path/file.yml',  'spec/fixtures/messages.en.yml');
         $content = '<xml></xml>';

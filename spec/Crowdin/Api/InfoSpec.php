@@ -27,7 +27,7 @@ class InfoSpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf('Crowdin\Api\AbstractApi');
     }
 
-    function it_get_project_info()
+    function it_gets_project_info()
     {
         $this->execute()->shouldBe('<xml></xml>');
     }

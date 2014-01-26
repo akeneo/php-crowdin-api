@@ -24,13 +24,13 @@ class DownloadSpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf('Crowdin\Api\AbstractApi');
     }
 
-    function it_has_an_package_with_all_languages()
+    function it_has_a_package_with_all_languages()
     {
         $this->setPackage('all.zip');
         $this->getPackage()->shouldReturn('all.zip');
     }
 
-    function it_has_an_package_with_one_languages()
+    function it_has_a_package_with_one_language()
     {
         $this->setPackage('fr.zip');
         $this->getPackage()->shouldReturn('fr.zip');
@@ -42,7 +42,7 @@ class DownloadSpec extends ObjectBehavior
         $this->getCopyDestination()->shouldReturn('/tmp/');
     }
 
-    function it_download_all_translations(HttpClient $http, Request $request, Response $response)
+    function it_downloads_all_translations(HttpClient $http, Request $request, Response $response)
     {
         $this->setCopyDestination('/tmp');
         $this->setPackage('all.zip');
@@ -53,7 +53,7 @@ class DownloadSpec extends ObjectBehavior
         $this->execute()->shouldBe('bin');
     }
 
-    function it_download_french_translations(HttpClient $http, Request $request, Response $response)
+    function it_downloads_french_translations(HttpClient $http, Request $request, Response $response)
     {
         $this->setCopyDestination('/tmp');
         $this->setPackage('fr.zip');
