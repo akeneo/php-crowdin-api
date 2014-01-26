@@ -26,4 +26,3 @@ class Export extends AbstractApi
         return $response->getBody(true);
     }
 }
-

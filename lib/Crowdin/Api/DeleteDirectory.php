@@ -50,4 +50,4 @@ class DeleteDirectory extends AbstractApi
     {
         return $this->directory;
     }
-} 
+}
