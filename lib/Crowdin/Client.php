@@ -77,6 +77,9 @@ class Client
             case 'delete-directory':
                 $api = new Api\DeleteDirectory($this);
                 break;
+            case 'upload-translation':
+                $api = new Api\UploadTranslation($this);
+                break;
             default:
                 throw new \InvalidArgumentException(sprintf('Undefined api method "%s"', $method));
         }
