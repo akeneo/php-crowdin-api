@@ -2,8 +2,6 @@
 
 namespace Crowdin\Api;
 
-use Crowdin\Client;
-
 /**
  * API Interface
  *

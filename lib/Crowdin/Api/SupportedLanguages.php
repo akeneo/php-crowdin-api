@@ -2,8 +2,6 @@
 
 namespace Crowdin\Api;
 
-use Guzzle\Http\Client as GuzzleClient;
-
 /**
  * Get supported languages list
  *

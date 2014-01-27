@@ -30,7 +30,7 @@ class UpdateFile extends AbstractApi
         );
         $data = array();
         foreach ($this->files as $crowdinPath => $localFile) {
-            $data['files['.$crowdinPath.']']= '@'.$localFile;
+            $data['files['.$crowdinPath.']'] = '@'.$localFile;
         }
 
         $request = $this->client->getHttpClient()->post($path, array(), $data);
@@ -50,7 +50,7 @@ class UpdateFile extends AbstractApi
         if (!file_exists($localPath)) {
             throw new \InvalidArgumentException(sprintf('File %s not exists', $localPath));
         }
-        $this->files[$crowdinPath]= $localPath;
+        $this->files[$crowdinPath] = $localPath;
 
         return $this;
     }
