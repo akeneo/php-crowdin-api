@@ -65,11 +65,14 @@ class Client
             case 'download':
                 $api = new Api\Download($this);
                 break;
-            case 'delete-file':
-                $api = new Api\DeleteFile($this);
+            case 'add-file':
+                $api = new Api\AddFile($this);
                 break;
             case 'update-file':
                 $api = new Api\UpdateFile($this);
+                break;
+            case 'delete-file':
+                $api = new Api\DeleteFile($this);
                 break;
             case 'export':
                 $api = new Api\Export($this);

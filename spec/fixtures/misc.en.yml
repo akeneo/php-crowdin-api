@@ -1,0 +1,16 @@
+# Entities
+attribute:       attribute
+attribute group: attribute group
+category:        category
+tree:            tree
+channel:         channel
+currency:        currency
+export profile:  export profile
+family:          family
+import profile:  import profile
+locale:          locale
+product:         product
+group:           group
+variant group:   variant group
+association:     association
+group type:      group type
