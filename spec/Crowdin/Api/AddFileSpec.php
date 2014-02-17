@@ -23,6 +23,17 @@ class AddFileSpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf('Crowdin\Api\AbstractApi');
     }
 
+    function it_should_not_allow_not_existing_file()
+    {
+        $this->shouldThrow('\InvalidArgumentException')->duringAddTranslation('crowdin/path/file.yml', '/tmp/my-file.yml');
+    }
+
+    function it_has_files()
+    {
+        $this->addTranslation(__DIR__ . '/../../fixtures/messages.en.yml', 'crowdin/path/file.csv');
+        $this->getTranslations()->shouldHaveCount(1);
+    }
+
     function it_should_not_add_with_no_file(HttpClient $http, Request $request, Response $response)
     {
         $content = '<xml></xml>';
