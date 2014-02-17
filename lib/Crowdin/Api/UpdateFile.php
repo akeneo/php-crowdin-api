@@ -2,6 +2,8 @@
 
 namespace Crowdin\Api;
 
+use Crowdin\Translation;
+
 /**
  * Upload latest version of your localization file to Crowdin.
  *
@@ -11,16 +13,18 @@ namespace Crowdin\Api;
 class UpdateFile extends AbstractApi
 {
     /**
-     * @var array
+     * @var Translation[]
      */
-    protected $files;
+    protected $translations;
 
     /**
      * @return mixed
+     *
+     * @throws \InvalidArgumentException
      */
     public function execute()
     {
-        if (count($this->files) === 0) {
+        if (count($this->translations) === 0) {
             throw new \InvalidArgumentException('There is no files to update');
         }
         $path = sprintf(
@@ -29,8 +33,14 @@ class UpdateFile extends AbstractApi
             $this->client->getProjectApiKey()
         );
         $data = array();
-        foreach ($this->files as $crowdinPath => $localFile) {
-            $data['files['.$crowdinPath.']'] = '@'.$localFile;
+        foreach ($this->getTranslations() as $translation) {
+            $data['files['.$translation->getCrowdinPath().']'] = '@'.$translation->getLocalPath();
+            if ($translation->getTitle()) {
+                $data['titles['.$translation->getCrowdinPath().']'] = $translation->getTitle();
+            }
+            if ($translation->getExportPattern()) {
+                $data['export_patterns['.$translation->getCrowdinPath().']'] = $translation->getExportPattern();
+            }
         }
 
         $request = $this->client->getHttpClient()->post($path, array(), $data);
@@ -40,26 +50,29 @@ class UpdateFile extends AbstractApi
     }
 
     /**
-     * @param string $crowdinPath the Crowdin file path
-     * @param string $localPath   the local file path
+     * @param string $localPath
+     * @param string $crowdinPath
+     * @param string $exportPattern
+     * @param string $title
      *
-     * @return UpdateFile
+     * @return $this
      */
-    public function addFile($crowdinPath, $localPath)
+    public function addTranslation($localPath, $crowdinPath, $exportPattern = null, $title = null)
     {
-        if (!file_exists($localPath)) {
-            throw new \InvalidArgumentException(sprintf('File %s not exists', $localPath));
-        }
-        $this->files[$crowdinPath] = $localPath;
+        $translation = new Translation($localPath, $crowdinPath);
+        $translation->setExportPattern($exportPattern);
+        $translation->setTitle($title);
+
+        $this->translations[] = $translation;
 
         return $this;
     }
 
     /**
-     * @return array
+     * @return Translation[]
      */
-    public function getFiles()
+    public function getTranslations()
     {
-        return $this->files;
+        return $this->translations;
     }
 }

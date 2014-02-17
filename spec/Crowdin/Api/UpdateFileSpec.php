@@ -26,13 +26,13 @@ class UpdateFileSpec extends ObjectBehavior
 
     function it_should_not_allow_not_existing_file()
     {
-        $this->shouldThrow('\InvalidArgumentException')->duringAddFile('crowdin/path/file.yml', '/tmp/my-file.yml');
+        $this->shouldThrow('\InvalidArgumentException')->duringAddTranslation('crowdin/path/file.yml', '/tmp/my-file.yml');
     }
 
     function it_has_files()
     {
-        $this->addFile('crowdin/path/file.csv',  'spec/fixtures/messages.en.yml');
-        $this->getFiles()->shouldHaveCount(1);
+        $this->addTranslation(__DIR__ . '/../../fixtures/messages.en.yml', 'crowdin/path/file.csv');
+        $this->getTranslations()->shouldHaveCount(1);
     }
 
     function it_should_not_allow_update_with_no_file(HttpClient $http, Request $request, Response $response)
@@ -46,14 +46,14 @@ class UpdateFileSpec extends ObjectBehavior
 
     function it_updates_some_translation_files(HttpClient $http, Request $request, Response $response)
     {
-        $this->addFile('crowdin/path/file.yml',  'spec/fixtures/messages.en.yml');
+        $this->addTranslation(__DIR__ . '/../../fixtures/messages.en.yml', 'crowdin/path/file.yml');
         $content = '<xml></xml>';
         $response->getBody(true)->willReturn($content);
         $request->send()->willReturn($response);
         $http->post(
             'project/akeneo/update-file?key=1234',
             array(),
-            array("files[crowdin/path/file.yml]" => "@spec/fixtures/messages.en.yml")
+            array("files[crowdin/path/file.yml]" => '@'.__DIR__ . '/../../fixtures/messages.en.yml')
         )->willReturn($request);
         $this->execute()->shouldBe($content);
     }
