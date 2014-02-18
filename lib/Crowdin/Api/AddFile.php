@@ -5,17 +5,22 @@ namespace Crowdin\Api;
 use Crowdin\Translation;
 
 /**
- * Upload latest version of your localization file to Crowdin.
+ * Adds a new file to a Crowdin project.
  *
- * @author Nicolas Dupont <nicolas@akeneo.com>
- * @see http://crowdin.net/page/api/update-file
+ * @author Julien Janvier <j.janvier@gmail.com>
+ * @see https://crowdin.net/page/api/add-file
  */
-class UpdateFile extends AbstractApi
+class AddFile extends AbstractApi
 {
     /**
      * @var Translation[]
      */
     protected $translations;
+
+    /**
+     * @var string
+     */
+    protected $type;
 
     /**
      * @return mixed
@@ -24,15 +29,21 @@ class UpdateFile extends AbstractApi
      */
     public function execute()
     {
-        if (count($this->translations) === 0) {
-            throw new \InvalidArgumentException('There is no files to update');
+        if (0 === count($this->translations)) {
+            throw new \InvalidArgumentException('There is no files to add');
         }
+
         $path = sprintf(
-            "project/%s/update-file?key=%s",
+            "project/%s/add-file?key=%s",
             $this->client->getProjectIdentifier(),
             $this->client->getProjectApiKey()
         );
+
         $data = array();
+        if ($this->getType()) {
+            $data['type'] = $this->type;
+        }
+
         foreach ($this->getTranslations() as $translation) {
             $data['files['.$translation->getCrowdinPath().']'] = '@'.$translation->getLocalPath();
             if ($translation->getTitle()) {
@@ -74,5 +85,21 @@ class UpdateFile extends AbstractApi
     public function getTranslations()
     {
         return $this->translations;
+    }
+
+    /**
+     * @return string
+     */
+    public function getType()
+    {
+        return $this->type;
+    }
+
+    /**
+     * @param string $type
+     */
+    public function setType($type)
+    {
+        $this->type = $type;
     }
 }
