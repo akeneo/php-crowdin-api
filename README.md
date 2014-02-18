@@ -13,13 +13,17 @@ The architecture is inspired from https://github.com/KnpLabs/php-github-api/ a r
 
 FYI, an official and more complete Ruby Client exists here : https://github.com/crowdin/crowdin-api
 
+https://scrutinizer-ci.com/g/akeneo/php-crowdin-api/badges/quality-score.png?s=6f2062a3c333671eb8112a79d3c5f6118f0ad496
+
 Features
 --------
 
 PSR-2 conventions and coding standard
 
 Wrap following API methods :
-* Update File, Upload fresh version of your localization file.
+* Add a file, delete a file
+* Add a directory, delete a directory
+* Update File, Upload translations, Upload fresh version of your localization file
 * Export Translations, Build fresh package with the latest translations.
 * Download Translations, Download last exported translation package (one language or all languages as one zip file).
 * Supported Languages, Get supported languages list with Crowdin codes mapped to locale name and standardized codes.
