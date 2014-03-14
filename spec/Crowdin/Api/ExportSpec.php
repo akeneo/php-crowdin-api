@@ -29,7 +29,7 @@ class ExportSpec extends ObjectBehavior
         $content = '<?xml version="1.0" encoding="ISO-8859-1"?><success status="built"></success>';
         $response->getBody(true)->willReturn($content);
         $request->send()->willReturn($response);
-        $http->get('project/akeneo/export/all.zip?key=1234')->willReturn($request);
+        $http->get('project/akeneo/export?key=1234')->willReturn($request);
         $this->execute()->shouldBe($content);
     }
 
@@ -38,7 +38,7 @@ class ExportSpec extends ObjectBehavior
         $content = '<?xml version="1.0" encoding="ISO-8859-1"?><success status="skipped"></success>';
         $response->getBody(true)->willReturn($content);
         $request->send()->willReturn($response);
-        $http->get('project/akeneo/export/all.zip?key=1234')->willReturn($request);
+        $http->get('project/akeneo/export?key=1234')->willReturn($request);
         $this->execute()->shouldBe($content);
     }
 }

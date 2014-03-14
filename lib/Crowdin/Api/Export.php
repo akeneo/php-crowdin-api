@@ -16,7 +16,7 @@ class Export extends AbstractApi
     public function execute()
     {
         $path = sprintf(
-            "project/%s/export/all.zip?key=%s",
+            "project/%s/export?key=%s",
             $this->client->getProjectIdentifier(),
             $this->client->getProjectApiKey()
         );
