@@ -18,11 +18,12 @@ class UpdateFile extends AbstractApi
     protected $translations;
 
     /**
+     * @param array $data Additional parameters
      * @return mixed
      *
      * @throws \InvalidArgumentException
      */
-    public function execute()
+    public function execute(array $data = array())
     {
         if (count($this->translations) === 0) {
             throw new \InvalidArgumentException('There is no files to update');
@@ -32,7 +33,7 @@ class UpdateFile extends AbstractApi
             $this->client->getProjectIdentifier(),
             $this->client->getProjectApiKey()
         );
-        $data = array();
+
         foreach ($this->getTranslations() as $translation) {
             $data['files['.$translation->getCrowdinPath().']'] = '@'.$translation->getLocalPath();
             if ($translation->getTitle()) {
