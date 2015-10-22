@@ -10,6 +10,13 @@ namespace Crowdin\Api;
 interface ApiInterface
 {
     /**
+     * Set the parameters for the api call
+     *
+     * @param array $parameters
+     */
+    public function setParameters(array $parameters);
+
+    /**
      * Call the api method with provided parameters
      *
      * @return mixed
