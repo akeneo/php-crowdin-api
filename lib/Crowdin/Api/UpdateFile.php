@@ -32,7 +32,9 @@ class UpdateFile extends AbstractApi
             $this->client->getProjectIdentifier(),
             $this->client->getProjectApiKey()
         );
-        $data = array();
+
+        $data = $this->parameters;
+
         foreach ($this->getTranslations() as $translation) {
             $data['files['.$translation->getCrowdinPath().']'] = '@'.$translation->getLocalPath();
             if ($translation->getTitle()) {

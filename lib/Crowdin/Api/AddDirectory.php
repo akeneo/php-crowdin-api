@@ -27,7 +27,7 @@ class AddDirectory extends AbstractApi
             $this->client->getProjectApiKey()
         );
 
-        $parameters = array('name' => $this->getDirectory());
+        $parameters = array_merge($this->parameters, array('name' => $this->getDirectory()));
 
         $request  = $this->client->getHttpClient()->post($path, array(), $parameters);
         $response = $request->send();

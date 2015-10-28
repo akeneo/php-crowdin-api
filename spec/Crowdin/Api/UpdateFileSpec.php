@@ -57,4 +57,18 @@ class UpdateFileSpec extends ObjectBehavior
         )->willReturn($request);
         $this->execute()->shouldBe($content);
     }
+
+    function it_sends_additionnal_parameters(HttpClient $http, Request $request, Response $response)
+    {
+        $request->send()->willReturn($response);
+
+        $http->post(Argument::any(), Argument::any(), array(
+            "files[crowdin/path/file.yml]" => '@'.__DIR__ . '/../../fixtures/messages.en.yml',
+            'foo' => 'bar',
+        ))->shouldBeCalled()->willReturn($request);
+
+        $this->addTranslation(__DIR__ . '/../../fixtures/messages.en.yml', 'crowdin/path/file.yml');
+        $this->setParameters(array('foo' => 'bar'));
+        $this->execute();
+    }
 }

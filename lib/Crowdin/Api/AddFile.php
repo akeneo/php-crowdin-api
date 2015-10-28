@@ -39,7 +39,7 @@ class AddFile extends AbstractApi
             $this->client->getProjectApiKey()
         );
 
-        $data = array();
+        $data = $this->parameters;
         if ($this->getType()) {
             $data['type'] = $this->type;
         }

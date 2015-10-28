@@ -21,7 +21,7 @@ abstract class AbstractApi implements ApiInterface
      *
      * @var array
      */
-    protected $parameters;
+    protected $parameters = array();
 
     /**
      * Instanciat an API
@@ -31,6 +31,14 @@ abstract class AbstractApi implements ApiInterface
     public function __construct(Client $client)
     {
         $this->client = $client;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setParameters(array $parameters)
+    {
+        $this->parameters = $parameters;
     }
 
     /**
