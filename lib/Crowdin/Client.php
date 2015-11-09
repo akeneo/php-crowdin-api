@@ -8,6 +8,7 @@ use Guzzle\Http\Client as HttpClient;
  * Simple Crowdin PHP client
  *
  * @author Nicolas Dupont <nicolas@akeneo.com>
+ * @author Aaron Scherer <aequasi@gmail.com>
  */
 class Client
 {
@@ -19,34 +20,27 @@ class Client
     /**
      * @var HttpClient
      */
-    protected $httpClient;
+    private $httpClient;
 
     /**
-     * @var string the project identifier
+     * @type Config The configuration of the Crowdin Client
      */
-    protected $projectIdentifier;
+    private $config;
 
     /**
-     * @var string the project api key
-     */
-    protected $projectApiKey;
-
-    /**
-     * Instanciate a new Crowdin Client
+     * Instantiates a new Crowdin Client
      *
-     * @param string $identifier the project identifier
-     * @param string $apiKey     the project api key
+     * @param array $data Should at least contain 'identifier', and 'apiKey'. Can also contain 'format'
      */
-    public function __construct($identifier, $apiKey)
+    public function __construct(array $data)
     {
-        $this->projectIdentifier = $identifier;
-        $this->projectApiKey     = $apiKey;
+        $this->config = new Config($data);
     }
 
     /**
      * @param string $method the api method
      *
-     * @throws InvalidArgumentException
+     * @throws \InvalidArgumentException
      *
      * @return mixed
      */
@@ -94,22 +88,48 @@ class Client
     }
 
     /**
+     * Returns the Config object for the Crowdin Client
+     *
+     * @return Config
+     */
+    public function getConfig()
+    {
+        return $this->config;
+    }
+
+    /**
+     * Returns the clients project identifier
+     *
      * @return string
      */
     public function getProjectIdentifier()
     {
-        return $this->projectIdentifier;
+        return $this->config->get('identifier');
     }
 
     /**
+     * Returns the client's api key
+     *
      * @return string
      */
     public function getProjectApiKey()
     {
-        return $this->projectApiKey;
+        return $this->config->get('apiKey');
     }
 
     /**
+     * Returns the client's desired response format
+     *
+     * @return string
+     */
+    public function getFormat()
+    {
+        return $this->config->get('format');
+    }
+
+    /**
+     * Returns the Guzzle HttpClient
+     *
      * @return HttpClient
      */
     public function getHttpClient()

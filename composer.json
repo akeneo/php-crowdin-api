@@ -9,6 +9,11 @@
         {
             "name": "Akeneo",
             "homepage": "http://akeneo.com"
+        },
+        {
+            "name": "Aaron Scherer",
+            "email": "aequasi@gmail.com",
+            "homepage": "http://aaronscherer.me"
         }
     ],
     "require": {
