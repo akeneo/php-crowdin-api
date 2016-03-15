@@ -17,6 +17,9 @@ class UpdateFile extends AbstractApi
      */
     protected $translations;
 
+    /** @var string|null */
+    protected $branch;
+
     /**
      * @return mixed
      *
@@ -34,6 +37,9 @@ class UpdateFile extends AbstractApi
         );
 
         $data = $this->parameters;
+        if (null !== $this->getBranch()) {
+            $data['branch'] = $this->getBranch();
+        }
 
         foreach ($this->getTranslations() as $translation) {
             $data['files['.$translation->getCrowdinPath().']'] = '@'.$translation->getLocalPath();
@@ -76,5 +82,21 @@ class UpdateFile extends AbstractApi
     public function getTranslations()
     {
         return $this->translations;
+    }
+
+    /**
+     * @return null|string
+     */
+    public function getBranch()
+    {
+        return $this->branch;
+    }
+
+    /**
+     * @param $branch
+     */
+    public function setBranch($branch)
+    {
+        $this->branch = $branch;
     }
 }
