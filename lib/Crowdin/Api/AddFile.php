@@ -22,6 +22,8 @@ class AddFile extends AbstractApi
      */
     protected $type;
 
+    protected $branch;
+
     /**
      * @return mixed
      *
@@ -40,8 +42,11 @@ class AddFile extends AbstractApi
         );
 
         $data = $this->parameters;
-        if ($this->getType()) {
+        if (null !== $this->getType()) {
             $data['type'] = $this->type;
+        }
+        if (null !== $this->getBranch()) {
+            $data['branch'] = $this->getBranch();
         }
 
         foreach ($this->getTranslations() as $translation) {
@@ -101,5 +106,21 @@ class AddFile extends AbstractApi
     public function setType($type)
     {
         $this->type = $type;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getBranch()
+    {
+        return $this->branch;
+    }
+
+    /**
+     * @param string $branch
+     */
+    public function setBranch($branch)
+    {
+        $this->branch = $branch;
     }
 }
