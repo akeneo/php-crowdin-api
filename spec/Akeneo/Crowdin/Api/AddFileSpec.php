@@ -52,10 +52,10 @@ class AddFileSpec extends ObjectBehavior
         $request->send()->willReturn($response);
         $http->post(
             'project/sylius/add-file?key=1234',
-            array(),
-            array('files[path/to/crowdin.yml]' => '@' . __DIR__ . '/../../../fixtures/messages.en.yml')
+            [],
+            ['files[path/to/crowdin.yml]' => '@' . __DIR__ . '/../../../fixtures/messages.en.yml']
         )->willReturn($request);
 
         $this->execute()->shouldBe($content);
     }
-} 
+}

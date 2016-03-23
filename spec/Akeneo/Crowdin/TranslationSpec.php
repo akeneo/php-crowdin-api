@@ -2,6 +2,7 @@
 
 namespace spec\Akeneo\Crowdin;
 
+use \InvalidArgumentException;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
@@ -59,7 +60,7 @@ class TranslationSpec extends ObjectBehavior
     function it_should_trow_an_exception_when_a_local_file_does_not_exist()
     {
         $this
-            ->shouldThrow(new \InvalidArgumentException('File local_path does not exist'))
+            ->shouldThrow(new InvalidArgumentException('File local_path does not exist'))
             ->duringSetLocalPath('local_path')
         ;
     }

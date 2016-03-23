@@ -11,7 +11,7 @@ namespace Akeneo\Crowdin\Api;
 class Info extends AbstractApi
 {
     /**
-     * @return mixed
+     * {@inheritdoc}
      */
     public function execute()
     {

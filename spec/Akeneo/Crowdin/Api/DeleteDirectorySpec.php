@@ -39,7 +39,7 @@ class DeleteDirectorySpec extends ObjectBehavior
         $content = '<?xml version="1.0" encoding="ISO-8859-1"?><success></success>';
         $response->getBody(true)->willReturn($content);
         $request->send()->willReturn($response);
-        $http->post('project/sylius/delete-directory?key=1234', array(), array('name' => 'directory-to-delete'))->willReturn($request);
+        $http->post('project/sylius/delete-directory?key=1234', [], ['name' => 'directory-to-delete'])->willReturn($request);
 
         $this->execute()->shouldBe($content);
     }

@@ -2,6 +2,8 @@
 
 namespace Akeneo\Crowdin\Api;
 
+use \InvalidArgumentException;
+
 /**
  *  Upload existing translations to your Crowdin project.
  *
@@ -10,42 +12,32 @@ namespace Akeneo\Crowdin\Api;
  */
 class UploadTranslation extends AbstractApi
 {
-    /**
-     * @var array
-     */
+    /** @var array */
     protected $translations;
 
-    /**
-     * @var string
-     */
+    /** @var string */
     protected $locale;
 
-    /**
-     * @var bool
-     */
+    /** @var bool */
     protected $areDuplicatesImported = false;
 
-    /**
-     * @var bool
-     */
+    /** @var bool */
     protected $areEqualSuggestionsImported = false;
 
-    /**
-     * @var bool
-     */
+    /** @var bool */
     protected $areImportsAutoApproved = false;
 
     /**
-     * @return mixed
+     * {@inheritdoc}
      */
     public function execute()
     {
-        if (count($this->getTranslations()) === 0) {
-            throw new \InvalidArgumentException('There are no translations to upload !');
+        if (0 === count($this->translations)) {
+            throw new InvalidArgumentException('There are no translations to upload.');
         }
 
-        if (null === $this->getLocale()) {
-            throw new \InvalidArgumentException('Locale is not set !');
+        if (null === $this->locale) {
+            throw new InvalidArgumentException('Locale is not set.');
         }
 
         $path = sprintf(
@@ -54,19 +46,19 @@ class UploadTranslation extends AbstractApi
             $this->client->getProjectApiKey()
         );
 
-        $data = array_merge($this->parameters, array(
-            'import_duplicates' => (int)$this->areDuplicatesImported(),
-            'import_eq_suggestions' => (int)$this->areEqualSuggestionsImported(),
-            'auto_approve_imported' => (int)$this->areImportsAutoApproved(),
-            'language' => $this->getLocale(),
-        ));
+        $data = array_merge($this->parameters, [
+            'import_duplicates'     => (int)$this->areDuplicatesImported,
+            'import_eq_suggestions' => (int)$this->areEqualSuggestionsImported,
+            'auto_approve_imported' => (int)$this->areImportsAutoApproved,
+            'language'              => $this->locale,
+        ]);
 
         foreach ($this->translations as $crowdinPath => $localFile) {
             $data['files['.$crowdinPath.']'] = '@'.$localFile;
         }
 
 
-        $request = $this->client->getHttpClient()->post($path, array(), $data);
+        $request = $this->client->getHttpClient()->post($path, [], $data);
         $response = $request->send();
 
         return $response->getBody(true);
@@ -76,13 +68,14 @@ class UploadTranslation extends AbstractApi
      * @param string $crowdinPath the Crowdin file path
      * @param string $localPath   the local file path
      *
-     * @throws \InvalidArgumentException
+     * @throws InvalidArgumentException
+     *
      * @return UploadTranslation
      */
     public function addTranslation($crowdinPath, $localPath)
     {
         if (!file_exists($localPath)) {
-            throw new \InvalidArgumentException(sprintf('File %s does not exist !', $localPath));
+            throw new InvalidArgumentException(sprintf('File %s does not exist.', $localPath));
         }
         $this->translations[$crowdinPath] = $localPath;
 
@@ -98,23 +91,25 @@ class UploadTranslation extends AbstractApi
     }
 
     /**
-     * @param $shouldAutoApproveImported
+     * @param bool $importsAutoApproved
+     *
+     * @throws InvalidArgumentException
+     *
      * @return UploadTranslation
-     * @throws \InvalidArgumentException
      */
-    public function setImportsAutoApproved($shouldAutoApproveImported)
+    public function setImportsAutoApproved($importsAutoApproved)
     {
-        if (!is_bool($shouldAutoApproveImported)) {
-            throw new \InvalidArgumentException('A boolean is required !');
+        if (!is_bool($importsAutoApproved)) {
+            throw new InvalidArgumentException('A boolean is required.');
         }
 
-        $this->areImportsAutoApproved = $shouldAutoApproveImported;
+        $this->areImportsAutoApproved = $importsAutoApproved;
 
         return $this;
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function areImportsAutoApproved()
     {
@@ -122,23 +117,25 @@ class UploadTranslation extends AbstractApi
     }
 
     /**
-     * @param boolean $shouldImportDuplicates
+     * @param bool $duplicatesImported
+     *
+     * @throws InvalidArgumentException
+     *
      * @return UploadTranslation
-     * @throws \InvalidArgumentException
      */
-    public function setDuplicatesImported($shouldImportDuplicates)
+    public function setDuplicatesImported($duplicatesImported)
     {
-        if (!is_bool($shouldImportDuplicates)) {
-            throw new \InvalidArgumentException('A boolean is required !');
+        if (!is_bool($duplicatesImported)) {
+            throw new InvalidArgumentException('A boolean is required.');
         }
 
-        $this->areDuplicatesImported = $shouldImportDuplicates;
+        $this->areDuplicatesImported = $duplicatesImported;
 
         return $this;
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function areDuplicatesImported()
     {
@@ -146,23 +143,25 @@ class UploadTranslation extends AbstractApi
     }
 
     /**
-     * @param boolean $shouldImportEqualSuggestions
+     * @param bool $equalSuggestionsImported
+     *
+     * @throws InvalidArgumentException
+     *
      * @return UploadTranslation
-     * @throws \InvalidArgumentException
      */
-    public function setEqualSuggestionsImported($shouldImportEqualSuggestions)
+    public function setEqualSuggestionsImported($equalSuggestionsImported)
     {
-        if (!is_bool($shouldImportEqualSuggestions)) {
-            throw new \InvalidArgumentException('A boolean is required !');
+        if (!is_bool($equalSuggestionsImported)) {
+            throw new InvalidArgumentException('A boolean is required.');
         }
 
-        $this->areEqualSuggestionsImported = $shouldImportEqualSuggestions;
+        $this->areEqualSuggestionsImported = $equalSuggestionsImported;
 
         return $this;
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function areEqualSuggestionsImported()
     {
@@ -171,10 +170,14 @@ class UploadTranslation extends AbstractApi
 
     /**
      * @param string $locale
+     *
+     * @return UploadTranslation
      */
     public function setLocale($locale)
     {
         $this->locale = $locale;
+
+        return $this;
     }
 
     /**
@@ -184,5 +187,4 @@ class UploadTranslation extends AbstractApi
     {
         return $this->locale;
     }
-
 }

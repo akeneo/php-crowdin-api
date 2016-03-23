@@ -39,7 +39,7 @@ class DeleteFileSpec extends ObjectBehavior
         $content = '<?xml version="1.0" encoding="ISO-8859-1"?><success></success>';
         $response->getBody(true)->willReturn($content);
         $request->send()->willReturn($response);
-        $http->post('project/sylius/delete-file?key=1234', array(), array('file' => 'path/to/my/file'))->willReturn($request);
+        $http->post('project/sylius/delete-file?key=1234', [], ['file' => 'path/to/my/file'])->willReturn($request);
 
         $this->execute()->shouldBe($content);
     }

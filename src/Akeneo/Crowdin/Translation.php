@@ -2,6 +2,8 @@
 
 namespace Akeneo\Crowdin;
 
+use \InvalidArgumentException;
+
 /**
  * Simple Crowdin translation.
  *
@@ -9,24 +11,16 @@ namespace Akeneo\Crowdin;
  */
 class Translation
 {
-    /**
-     * @var string
-     */
+    /** @var string */
     protected $localPath;
 
-    /**
-     * @var string
-     */
+    /** @var string */
     protected $crowdinPath;
 
-    /**
-     * @var string
-     */
+    /** @var string */
     protected $title;
 
-    /**
-     * @var string
-     */
+    /** @var string */
     protected $exportPattern;
 
     public function __construct($localPath, $crowdinPath)
@@ -70,12 +64,12 @@ class Translation
     /**
      * @param string $localPath
      *
-     * @throws \InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     public function setLocalPath($localPath)
     {
         if (!file_exists($localPath)) {
-            throw new \InvalidArgumentException(sprintf('File %s does not exist', $localPath));
+            throw new InvalidArgumentException(sprintf('File %s does not exist', $localPath));
         }
 
         $this->localPath = $localPath;

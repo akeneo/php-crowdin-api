@@ -39,7 +39,7 @@ class AddDirectorySpec extends ObjectBehavior
         $content = '<?xml version="1.0" encoding="ISO-8859-1"?><success></success>';
         $response->getBody(true)->willReturn($content);
         $request->send()->willReturn($response);
-        $http->post('project/sylius/add-directory?key=1234', array(), array('name' => 'directory-to-create'))->willReturn($request);
+        $http->post('project/sylius/add-directory?key=1234', [], ['name' => 'directory-to-create'])->willReturn($request);
 
         $this->execute()->shouldBe($content);
     }

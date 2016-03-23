@@ -14,7 +14,7 @@ class Export extends AbstractApi
     protected $branch;
 
     /**
-     * @return mixed
+     * {@inheritdoc}
      */
     public function execute()
     {
@@ -42,9 +42,13 @@ class Export extends AbstractApi
 
     /**
      * @param string $branch
+     *
+     * @return Export
      */
     public function setBranch($branch)
     {
         $this->branch = $branch;
+
+        return $this;
     }
 }

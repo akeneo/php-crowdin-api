@@ -2,6 +2,8 @@
 
 namespace Akeneo\Crowdin\Api;
 
+use \InvalidArgumentException;
+
 /**
  * API Interface
  *
@@ -18,6 +20,8 @@ interface ApiInterface
 
     /**
      * Call the api method with provided parameters
+     *
+     * @throws InvalidArgumentException
      *
      * @return mixed
      */

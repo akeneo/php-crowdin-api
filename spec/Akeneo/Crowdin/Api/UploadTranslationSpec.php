@@ -81,14 +81,14 @@ class UploadTranslationSpec extends ObjectBehavior
         $request->send()->willReturn($response);
         $http->post(
             'project/sylius/upload-translation?key=1234',
-            array(),
-            array(
+            [],
+            [
                 'files[crowdin/path/file.yml]' => '@spec/fixtures/messages.en.yml',
                 'import_duplicates' => 0,
                 'import_eq_suggestions' => 0,
                 'auto_approve_imported' => 0,
                 'language' => 'fr',
-            )
+            ]
         )->willReturn($request);
         $this->execute()->shouldBe($content);
     }

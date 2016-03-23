@@ -2,12 +2,12 @@
 
 namespace spec\Akeneo\Crowdin\Api;
 
-use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 use Akeneo\Crowdin\Client;
 use Guzzle\Http\Client as HttpClient;
 use Guzzle\Http\Message\Response;
 use Guzzle\Http\Message\Request;
+use PhpSpec\ObjectBehavior;
+use Prophecy\Argument;
 
 class UpdateFileSpec extends ObjectBehavior
 {
@@ -52,8 +52,8 @@ class UpdateFileSpec extends ObjectBehavior
         $request->send()->willReturn($response);
         $http->post(
             'project/akeneo/update-file?key=1234',
-            array(),
-            array("files[crowdin/path/file.yml]" => '@'.__DIR__ . '/../../../fixtures/messages.en.yml')
+            [],
+            ["files[crowdin/path/file.yml]" => '@'.__DIR__ . '/../../../fixtures/messages.en.yml']
         )->willReturn($request);
         $this->execute()->shouldBe($content);
     }
@@ -62,13 +62,13 @@ class UpdateFileSpec extends ObjectBehavior
     {
         $request->send()->willReturn($response);
 
-        $http->post(Argument::any(), Argument::any(), array(
+        $http->post(Argument::any(), Argument::any(), [
             "files[crowdin/path/file.yml]" => '@'.__DIR__ . '/../../../fixtures/messages.en.yml',
             'foo' => 'bar',
-        ))->shouldBeCalled()->willReturn($request);
+        ])->shouldBeCalled()->willReturn($request);
 
         $this->addTranslation(__DIR__ . '/../../../fixtures/messages.en.yml', 'crowdin/path/file.yml');
-        $this->setParameters(array('foo' => 'bar'));
+        $this->setParameters(['foo' => 'bar']);
         $this->execute();
     }
 }

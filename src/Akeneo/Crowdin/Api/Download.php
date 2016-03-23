@@ -10,24 +10,24 @@ namespace Akeneo\Crowdin\Api;
  */
 class Download extends AbstractApi
 {
-    /** @var string $package */
+    /** @var string */
     protected $package = 'all.zip';
 
-    /** @var string $copyDestination */
+    /** @var string */
     protected $copyDestination = '/tmp';
 
     /** @var string */
     protected $branch;
 
     /**
-     * @return mixed
+     * {@inheritdoc}
      */
     public function execute()
     {
         $path = sprintf(
             "project/%s/download/%s?key=%s",
             $this->client->getProjectIdentifier(),
-            $this->getPackage(),
+            $this->package,
             $this->client->getProjectApiKey()
         );
         if (null !== $this->branch) {
@@ -35,7 +35,7 @@ class Download extends AbstractApi
         }
         $request = $this->client->getHttpClient()->get($path);
         $response = $request
-            ->setResponseBody($this->copyDestination.DIRECTORY_SEPARATOR.$this->getPackage())
+            ->setResponseBody($this->copyDestination.DIRECTORY_SEPARATOR.$this->package)
             ->send();
 
         return $response->getBody(true);
@@ -91,9 +91,13 @@ class Download extends AbstractApi
 
     /**
      * @param string $branch
+     *
+     * @return Download
      */
     public function setBranch($branch)
     {
         $this->branch = $branch;
+
+        return $this;
     }
 }
