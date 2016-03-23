@@ -10,15 +10,14 @@ namespace Crowdin\Api;
  */
 class Download extends AbstractApi
 {
-    /**
-     * @var string $package
-     */
+    /** @var string $package */
     protected $package = 'all.zip';
 
-    /**
-     * @var string $copyDestination
-     */
+    /** @var string $copyDestination */
     protected $copyDestination = '/tmp';
+
+    /** @var string */
+    protected $branch;
 
     /**
      * @return mixed
@@ -31,6 +30,9 @@ class Download extends AbstractApi
             $this->getPackage(),
             $this->client->getProjectApiKey()
         );
+        if (null !== $this->branch) {
+            $path = sprintf('%s&branch=%s', $path, $this->branch);
+        }
         $request = $this->client->getHttpClient()->get($path);
         $response = $request
             ->setResponseBody($this->copyDestination.DIRECTORY_SEPARATOR.$this->getPackage())
@@ -77,5 +79,21 @@ class Download extends AbstractApi
     public function getCopyDestination()
     {
         return $this->copyDestination;
+    }
+
+    /**
+     * @return string
+     */
+    public function getBranch()
+    {
+        return $this->branch;
+    }
+
+    /**
+     * @param string $branch
+     */
+    public function setBranch($branch)
+    {
+        $this->branch = $branch;
     }
 }
