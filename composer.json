@@ -7,22 +7,27 @@
     "license": "MIT",
     "authors": [
         {
-            "name": "Akeneo",
-            "homepage": "http://akeneo.com"
+            "name": "Nicolas Dupont <nicolas@akeneo.com>",
+            "homepage": "http://www.akeneo.com"
+        },
+        {
+            "name": "Julien Janvier <j.janvier@gmail.com>"
         }
     ],
     "require": {
-        "php":           ">=5.3.3",
+        "php":           ">=5.5",
         "guzzle/guzzle": ">=3.7"
     },
     "require-dev": {
-        "phpspec/phpspec": "2.0.*@dev"
+        "phpspec/phpspec": "2.5.*"
     },
     "config": {
         "bin-dir": "bin"
     },
     "autoload": {
-        "psr-0": { "Crowdin\\": "lib/" }
+        "psr-4": {
+            "Akeneo\\Crowdin\\": "src/Akeneo/Crowdin/"
+        }
     },
     "extra": {
         "branch-alias": {
