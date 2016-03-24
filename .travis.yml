@@ -1,7 +1,7 @@
 language: php
 
 # use the new container infrastructure
-#sudo: false
+sudo: false
 
 php:
   - "5.3"
