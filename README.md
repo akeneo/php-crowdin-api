@@ -35,7 +35,7 @@ Wrap following API methods :
 Requirements
 ------------
 
-* PHP >= 5.3.3
+* PHP >= 5.5
 * Guzzle https://github.com/guzzle/guzzle
 
 Optional, for dev purpose, PHP Spec https://github.com/phpspec/phpspec
@@ -58,7 +58,7 @@ Then, to instanciate the client and use available API methods :
 <?php
 require 'vendor/autoload.php';
 
-use Crowdin\Client;
+use Akeneo\Crowdin\Client;
 
 $project = 'akeneo';
 $key     = 'my-api-key';
