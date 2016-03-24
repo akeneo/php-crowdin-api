@@ -13,6 +13,8 @@ The architecture is inspired from https://github.com/KnpLabs/php-github-api/ a r
 
 FYI, an official and more complete Ruby Client exists here : https://github.com/crowdin/crowdin-api
 
+[![Build Status](https://travis-ci.org/akeneo/php-crowdin-api.png)](https://travis-ci.org/akeneo/php-crowdin-api)
+
 [![Scrutinizer Quality Score](https://scrutinizer-ci.com/g/akeneo/php-crowdin-api/badges/quality-score.png?s=6f2062a3c333671eb8112a79d3c5f6118f0ad496)](https://scrutinizer-ci.com/g/akeneo/php-crowdin-api/)
 
 Features
