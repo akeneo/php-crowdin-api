@@ -2,8 +2,8 @@
 
 namespace Akeneo\Crowdin\Api;
 
-use Akeneo\Crowdin\Translation;
 use \InvalidArgumentException;
+use Akeneo\Crowdin\Translation;
 
 /**
  * Upload latest version of your localization file to Crowdin.

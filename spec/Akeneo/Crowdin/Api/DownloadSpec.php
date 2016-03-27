@@ -2,16 +2,16 @@
 
 namespace spec\Akeneo\Crowdin\Api;
 
-use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 use Akeneo\Crowdin\Client;
 use Guzzle\Http\Client as HttpClient;
-use Guzzle\Http\Message\Response;
 use Guzzle\Http\Message\Request;
+use Guzzle\Http\Message\Response;
+use PhpSpec\ObjectBehavior;
+use Prophecy\Argument;
 
 class DownloadSpec extends ObjectBehavior
 {
-    function let(Client $client, HttpClient $http)
+    public function let(Client $client, HttpClient $http)
     {
         $client->getHttpClient()->willReturn($http);
         $client->getProjectIdentifier()->willReturn('akeneo');
@@ -19,30 +19,30 @@ class DownloadSpec extends ObjectBehavior
         $this->beConstructedWith($client);
     }
 
-    function it_should_be_an_api()
+    public function it_should_be_an_api()
     {
         $this->shouldBeAnInstanceOf('Akeneo\Crowdin\Api\AbstractApi');
     }
 
-    function it_has_a_package_with_all_languages()
+    public function it_has_a_package_with_all_languages()
     {
         $this->setPackage('all.zip');
         $this->getPackage()->shouldReturn('all.zip');
     }
 
-    function it_has_a_package_with_one_language()
+    public function it_has_a_package_with_one_language()
     {
         $this->setPackage('fr.zip');
         $this->getPackage()->shouldReturn('fr.zip');
     }
 
-    function it_has_a_copy_destination()
+    public function it_has_a_copy_destination()
     {
         $this->setCopyDestination('/tmp/');
         $this->getCopyDestination()->shouldReturn('/tmp/');
     }
 
-    function it_downloads_all_translations(HttpClient $http, Request $request, Response $response)
+    public function it_downloads_all_translations(HttpClient $http, Request $request, Response $response)
     {
         $this->setCopyDestination('/tmp');
         $this->setPackage('all.zip');
@@ -53,7 +53,7 @@ class DownloadSpec extends ObjectBehavior
         $this->execute()->shouldBe('bin');
     }
 
-    function it_downloads_french_translations(HttpClient $http, Request $request, Response $response)
+    public function it_downloads_french_translations(HttpClient $http, Request $request, Response $response)
     {
         $this->setCopyDestination('/tmp');
         $this->setPackage('fr.zip');
