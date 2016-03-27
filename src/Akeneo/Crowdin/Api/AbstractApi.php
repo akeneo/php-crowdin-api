@@ -11,9 +11,7 @@ use Akeneo\Crowdin\Client;
  */
 abstract class AbstractApi implements ApiInterface
 {
-    /**
-     * @var Client
-     */
+    /** @var Client */
     protected $client;
 
     /**
@@ -21,10 +19,10 @@ abstract class AbstractApi implements ApiInterface
      *
      * @var array
      */
-    protected $parameters = array();
+    protected $parameters = [];
 
     /**
-     * Instanciat an API
+     * Instantiate an API
      *
      * @param Client $client
      */

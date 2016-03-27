@@ -2,6 +2,8 @@
 
 namespace Akeneo\Crowdin\Api;
 
+use \InvalidArgumentException;
+
 /**
  * Add a directory to the Crowdin project.
  *
@@ -10,19 +12,22 @@ namespace Akeneo\Crowdin\Api;
  */
 class AddDirectory extends AbstractApi
 {
-    private $directory;
+    /** @var string */
+    protected $directory;
 
-    private $isBranch = false;
+    /** @var bool */
+    protected $isBranch = false;
 
-    private $branch;
+    /** @var string */
+    protected $branch;
 
     /**
      * {@inheritdoc}
      */
     public function execute()
     {
-        if (null == $this->getDirectory()) {
-            throw new \InvalidArgumentException('There is no directory to create.');
+        if (null == $this->directory) {
+            throw new InvalidArgumentException('There is no directory to create.');
         }
 
         $path = sprintf(
@@ -31,15 +36,15 @@ class AddDirectory extends AbstractApi
             $this->client->getProjectApiKey()
         );
 
-        $parameters = array_merge($this->parameters, array('name' => $this->getDirectory()));
-        if ($this->getIsBranch()) {
+        $parameters = array_merge($this->parameters, ['name' => $this->directory]);
+        if ($this->isBranch) {
             $parameters['is_branch'] = '1';
         }
-        if (null !== $this->getBranch()) {
-            $parameters['branch'] = $this->getBranch();
+        if (null !== $this->branch) {
+            $parameters['branch'] = $this->branch;
         }
 
-        $request  = $this->client->getHttpClient()->post($path, array(), $parameters);
+        $request  = $this->client->getHttpClient()->post($path, [], $parameters);
 
         $response = $request->send();
 

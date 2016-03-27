@@ -2,6 +2,7 @@
 
 namespace Akeneo\Crowdin;
 
+use \InvalidArgumentException;
 use Guzzle\Http\Client as HttpClient;
 
 /**
@@ -11,28 +12,20 @@ use Guzzle\Http\Client as HttpClient;
  */
 class Client
 {
-    /**
-     * @var string base url
-     */
+    /** @var string base url */
     const BASE_URL = 'http://api.crowdin.net/api';
 
-    /**
-     * @var HttpClient
-     */
+    /** @var HttpClient */
     protected $httpClient;
 
-    /**
-     * @var string the project identifier
-     */
+    /** @var string the project identifier */
     protected $projectIdentifier;
 
-    /**
-     * @var string the project api key
-     */
+    /** @var string the project api key */
     protected $projectApiKey;
 
     /**
-     * Instanciate a new Crowdin Client
+     * Instantiate a new Crowdin Client
      *
      * @param string $identifier the project identifier
      * @param string $apiKey     the project api key
@@ -87,7 +80,7 @@ class Client
                 $api = new Api\UploadTranslation($this);
                 break;
             default:
-                throw new \InvalidArgumentException(sprintf('Undefined api method "%s"', $method));
+                throw new InvalidArgumentException(sprintf('Undefined api method "%s"', $method));
         }
 
         return $api;

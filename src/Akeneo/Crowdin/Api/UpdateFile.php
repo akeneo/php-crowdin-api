@@ -2,6 +2,7 @@
 
 namespace Akeneo\Crowdin\Api;
 
+use \InvalidArgumentException;
 use Akeneo\Crowdin\Translation;
 
 /**
@@ -12,23 +13,19 @@ use Akeneo\Crowdin\Translation;
  */
 class UpdateFile extends AbstractApi
 {
-    /**
-     * @var Translation[]
-     */
+    /** @var Translation[] */
     protected $translations;
 
     /** @var string|null */
     protected $branch;
 
     /**
-     * @return mixed
-     *
-     * @throws \InvalidArgumentException
+     * {@inheritdoc}
      */
     public function execute()
     {
         if (count($this->translations) === 0) {
-            throw new \InvalidArgumentException('There is no files to update');
+            throw new InvalidArgumentException('There is no files to update');
         }
         $path = sprintf(
             "project/%s/update-file?key=%s",
@@ -37,11 +34,11 @@ class UpdateFile extends AbstractApi
         );
 
         $data = $this->parameters;
-        if (null !== $this->getBranch()) {
-            $data['branch'] = $this->getBranch();
+        if (null !== $this->branch) {
+            $data['branch'] = $this->branch;
         }
 
-        foreach ($this->getTranslations() as $translation) {
+        foreach ($this->translations as $translation) {
             $data['files['.$translation->getCrowdinPath().']'] = '@'.$translation->getLocalPath();
             if ($translation->getTitle()) {
                 $data['titles['.$translation->getCrowdinPath().']'] = $translation->getTitle();
@@ -51,7 +48,7 @@ class UpdateFile extends AbstractApi
             }
         }
 
-        $request = $this->client->getHttpClient()->post($path, array(), $data);
+        $request = $this->client->getHttpClient()->post($path, [], $data);
         $response = $request->send();
 
         return $response->getBody(true);

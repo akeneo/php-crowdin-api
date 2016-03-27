@@ -4,13 +4,13 @@ namespace spec\Akeneo\Crowdin\Api;
 
 use Akeneo\Crowdin\Client;
 use Guzzle\Http\Client as HttpClient;
-use Guzzle\Http\Message\Response;
 use Guzzle\Http\Message\Request;
+use Guzzle\Http\Message\Response;
 use PhpSpec\ObjectBehavior;
 
 class AddFileSpec extends ObjectBehavior
 {
-    function let(Client $client, HttpClient $http)
+    public function let(Client $client, HttpClient $http)
     {
         $client->getHttpClient()->willReturn($http);
         $client->getProjectIdentifier()->willReturn('sylius');
@@ -18,23 +18,23 @@ class AddFileSpec extends ObjectBehavior
         $this->beConstructedWith($client);
     }
 
-    function it_should_be_an_api()
+    public function it_should_be_an_api()
     {
         $this->shouldBeAnInstanceOf('Akeneo\Crowdin\Api\AbstractApi');
     }
 
-    function it_should_not_allow_not_existing_file()
+    public function it_should_not_allow_not_existing_file()
     {
         $this->shouldThrow('\InvalidArgumentException')->duringAddTranslation('crowdin/path/file.yml', '/tmp/my-file.yml');
     }
 
-    function it_has_files()
+    public function it_has_files()
     {
         $this->addTranslation(__DIR__ . '/../../../fixtures/messages.en.yml', 'crowdin/path/file.csv');
         $this->getTranslations()->shouldHaveCount(1);
     }
 
-    function it_should_not_add_with_no_file(HttpClient $http, Request $request, Response $response)
+    public function it_should_not_add_with_no_file(HttpClient $http, Request $request, Response $response)
     {
         $content = '<xml></xml>';
         $response->getBody(true)->willReturn($content);
@@ -44,7 +44,7 @@ class AddFileSpec extends ObjectBehavior
         $this->shouldThrow('\InvalidArgumentException')->duringExecute();
     }
 
-    function it_adds_a_file(HttpClient $http, Request $request, Response $response)
+    public function it_adds_a_file(HttpClient $http, Request $request, Response $response)
     {
         $this->addTranslation(__DIR__ . '/../../../fixtures/messages.en.yml', 'path/to/crowdin.yml');
         $content = '<?xml version="1.0" encoding="ISO-8859-1"?><success></success>';
@@ -52,10 +52,10 @@ class AddFileSpec extends ObjectBehavior
         $request->send()->willReturn($response);
         $http->post(
             'project/sylius/add-file?key=1234',
-            array(),
-            array('files[path/to/crowdin.yml]' => '@' . __DIR__ . '/../../../fixtures/messages.en.yml')
+            [],
+            ['files[path/to/crowdin.yml]' => '@' . __DIR__ . '/../../../fixtures/messages.en.yml']
         )->willReturn($request);
 
         $this->execute()->shouldBe($content);
     }
-} 
+}

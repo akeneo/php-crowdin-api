@@ -2,6 +2,8 @@
 
 namespace Akeneo\Crowdin\Api;
 
+use \InvalidArgumentException;
+
 /**
  * Delete a directory from the Crowdin project. All nested files and directories will be deleted too.
  *
@@ -10,15 +12,16 @@ namespace Akeneo\Crowdin\Api;
  */
 class DeleteDirectory extends AbstractApi
 {
-    private $directory;
+    /** @var string */
+    protected $directory;
 
     /**
      * {@inheritdoc}
      */
     public function execute()
     {
-        if (null == $this->getDirectory()) {
-            throw new \InvalidArgumentException('There is no directory to delete.');
+        if (null == $this->directory) {
+            throw new InvalidArgumentException('There is no directory to delete.');
         }
 
         $path = sprintf(
@@ -27,24 +30,28 @@ class DeleteDirectory extends AbstractApi
             $this->client->getProjectApiKey()
         );
 
-        $parameters = array_merge($this->parameters, array('name' => $this->getDirectory()));
+        $parameters = array_merge($this->parameters, ['name' => $this->directory]);
 
-        $request  = $this->client->getHttpClient()->post($path, array(), $parameters);
+        $request  = $this->client->getHttpClient()->post($path, [], $parameters);
         $response = $request->send();
 
         return $response->getBody(true);
     }
 
     /**
-     * @param mixed $directory
+     * @param string $directory
+     *
+     * @return DeleteDirectory
      */
     public function setDirectory($directory)
     {
         $this->directory = $directory;
+
+        return $this;
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getDirectory()
     {

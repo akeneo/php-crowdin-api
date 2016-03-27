@@ -4,13 +4,13 @@ namespace spec\Akeneo\Crowdin\Api;
 
 use Akeneo\Crowdin\Client;
 use Guzzle\Http\Client as HttpClient;
-use Guzzle\Http\Message\Response;
 use Guzzle\Http\Message\Request;
+use Guzzle\Http\Message\Response;
 use PhpSpec\ObjectBehavior;
 
 class DeleteDirectorySpec extends ObjectBehavior
 {
-    function let(Client $client, HttpClient $http)
+    public function let(Client $client, HttpClient $http)
     {
         $client->getHttpClient()->willReturn($http);
         $client->getProjectIdentifier()->willReturn('sylius');
@@ -18,12 +18,12 @@ class DeleteDirectorySpec extends ObjectBehavior
         $this->beConstructedWith($client);
     }
 
-    function it_should_be_an_api()
+    public function it_should_be_an_api()
     {
         $this->shouldBeAnInstanceOf('Akeneo\Crowdin\Api\AbstractApi');
     }
 
-    function it_should_not_delete_with_no_directory(HttpClient $http, Request $request, Response $response)
+    public function it_should_not_delete_with_no_directory(HttpClient $http, Request $request, Response $response)
     {
         $content = '<xml></xml>';
         $response->getBody(true)->willReturn($content);
@@ -33,14 +33,14 @@ class DeleteDirectorySpec extends ObjectBehavior
         $this->shouldThrow('\InvalidArgumentException')->duringExecute();
     }
 
-    function it_deletes_a_directory(HttpClient $http, Request $request, Response $response)
+    public function it_deletes_a_directory(HttpClient $http, Request $request, Response $response)
     {
         $this->setDirectory('directory-to-delete');
         $content = '<?xml version="1.0" encoding="ISO-8859-1"?><success></success>';
         $response->getBody(true)->willReturn($content);
         $request->send()->willReturn($response);
-        $http->post('project/sylius/delete-directory?key=1234', array(), array('name' => 'directory-to-delete'))->willReturn($request);
+        $http->post('project/sylius/delete-directory?key=1234', [], ['name' => 'directory-to-delete'])->willReturn($request);
 
         $this->execute()->shouldBe($content);
     }
-} 
+}
