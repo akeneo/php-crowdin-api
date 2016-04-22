@@ -3,7 +3,7 @@
 namespace Akeneo\Crowdin;
 
 use \InvalidArgumentException;
-use Guzzle\Http\Client as HttpClient;
+use GuzzleHttp\Client as HttpClient;
 
 /**
  * Simple Crowdin PHP client
@@ -108,7 +108,7 @@ class Client
     public function getHttpClient()
     {
         if ($this->httpClient === null) {
-            $this->httpClient = new HttpClient(self::BASE_URL);
+            $this->httpClient = new HttpClient(array('base_uri' => self::BASE_URL));
         }
 
         return $this->httpClient;

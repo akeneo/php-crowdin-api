@@ -3,9 +3,9 @@
 namespace spec\Akeneo\Crowdin\Api;
 
 use Akeneo\Crowdin\Client;
-use Guzzle\Http\Client as HttpClient;
-use Guzzle\Http\Message\Request;
-use Guzzle\Http\Message\Response;
+use GuzzleHttp\Client as HttpClient;
+use GuzzleHttp\Psr7\Request;
+use GuzzleHttp\Psr7\Response;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
@@ -14,9 +14,8 @@ class SupportedLanguagesSpec extends ObjectBehavior
     public function let(Client $client, HttpClient $http, Request $request, Response $response)
     {
         $client->getHttpClient()->willReturn($http);
-        $http->get('supported-languages')->willReturn($request);
-        $request->send()->willReturn($response);
-        $response->getBody(true)->willReturn('<xml></xml>');
+        $http->get('supported-languages')->willReturn($response);
+        $response->getBody()->willReturn('<xml></xml>');
         $this->beConstructedWith($client);
     }
 

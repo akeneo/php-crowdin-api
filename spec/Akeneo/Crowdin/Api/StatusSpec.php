@@ -3,9 +3,9 @@
 namespace spec\Akeneo\Crowdin\Api;
 
 use Akeneo\Crowdin\Client;
-use Guzzle\Http\Client as HttpClient;
-use Guzzle\Http\Message\Request;
-use Guzzle\Http\Message\Response;
+use GuzzleHttp\Client as HttpClient;
+use GuzzleHttp\Psr7\Request;
+use GuzzleHttp\Psr7\Response;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
@@ -16,9 +16,8 @@ class StatusSpec extends ObjectBehavior
         $client->getHttpClient()->willReturn($http);
         $client->getProjectIdentifier()->willReturn('akeneo');
         $client->getProjectApiKey()->willReturn('1234');
-        $http->get('project/akeneo/status?key=1234')->willReturn($request);
-        $request->send()->willReturn($response);
-        $response->getBody(true)->willReturn('<xml></xml>');
+        $http->get('project/akeneo/status?key=1234')->willReturn($response);
+        $response->getBody()->willReturn('<xml></xml>');
         $this->beConstructedWith($client);
     }
 

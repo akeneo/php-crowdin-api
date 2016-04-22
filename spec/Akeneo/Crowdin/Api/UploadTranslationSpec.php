@@ -3,9 +3,9 @@
 namespace spec\Akeneo\Crowdin\Api;
 
 use Akeneo\Crowdin\Client;
-use Guzzle\Http\Client as HttpClient;
-use Guzzle\Http\Message\Request;
-use Guzzle\Http\Message\Response;
+use GuzzleHttp\Client as HttpClient;
+use GuzzleHttp\Psr7\Request;
+use GuzzleHttp\Psr7\Response;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
@@ -54,9 +54,8 @@ class UploadTranslationSpec extends ObjectBehavior
     {
         $this->setLocale('fr');
         $content = '<xml></xml>';
-        $response->getBody(true)->willReturn($content);
-        $request->send()->willReturn($response);
-        $http->post('project/sylius/upload-translation?key=1234')->willReturn($request);
+        $response->getBody()->willReturn($content);
+        $http->post('project/sylius/upload-translation?key=1234')->willReturn($response);
 
         $this->shouldThrow('\InvalidArgumentException')->duringExecute();
     }
@@ -65,9 +64,8 @@ class UploadTranslationSpec extends ObjectBehavior
     {
         $this->addTranslation('crowdin/path/file.yml',  'spec/fixtures/messages.en.yml');
         $content = '<xml></xml>';
-        $response->getBody(true)->willReturn($content);
-        $request->send()->willReturn($response);
-        $http->post('project/sylius/upload-translation?key=1234')->willReturn($request);
+        $response->getBody()->willReturn($content);
+        $http->post('project/sylius/upload-translation?key=1234')->willReturn($response);
 
         $this->shouldThrow('\InvalidArgumentException')->duringExecute();
     }
@@ -77,11 +75,9 @@ class UploadTranslationSpec extends ObjectBehavior
         $this->addTranslation('crowdin/path/file.yml',  'spec/fixtures/messages.en.yml');
         $this->setLocale('fr');
         $content = '<xml></xml>';
-        $response->getBody(true)->willReturn($content);
-        $request->send()->willReturn($response);
+        $response->getBody()->willReturn($content);
         $http->post(
             'project/sylius/upload-translation?key=1234',
-            [],
             [
                 'files[crowdin/path/file.yml]' => '@spec/fixtures/messages.en.yml',
                 'import_duplicates'            => 0,
@@ -89,7 +85,7 @@ class UploadTranslationSpec extends ObjectBehavior
                 'auto_approve_imported'        => 0,
                 'language'                     => 'fr',
             ]
-        )->willReturn($request);
+        )->willReturn($response);
         $this->execute()->shouldBe($content);
     }
 }

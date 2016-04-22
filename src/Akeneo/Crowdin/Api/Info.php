@@ -20,9 +20,8 @@ class Info extends AbstractApi
             $this->client->getProjectIdentifier(),
             $this->client->getProjectApiKey()
         );
-        $request = $this->client->getHttpClient()->get($path);
-        $response = $request->send();
+        $response = $this->client->getHttpClient()->get($path);
 
-        return $response->getBody(true);
+        return $response->getBody();
     }
 }

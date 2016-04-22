@@ -3,9 +3,9 @@
 namespace spec\Akeneo\Crowdin\Api;
 
 use Akeneo\Crowdin\Client;
-use Guzzle\Http\Client as HttpClient;
-use Guzzle\Http\Message\Request;
-use Guzzle\Http\Message\Response;
+use GuzzleHttp\Client as HttpClient;
+use GuzzleHttp\Psr7\Request;
+use GuzzleHttp\Psr7\Response;
 use PhpSpec\ObjectBehavior;
 
 class DeleteDirectorySpec extends ObjectBehavior
@@ -26,10 +26,9 @@ class DeleteDirectorySpec extends ObjectBehavior
     public function it_should_not_delete_with_no_directory(HttpClient $http, Request $request, Response $response)
     {
         $content = '<xml></xml>';
-        $response->getBody(true)->willReturn($content);
-        $request->send()->willReturn($response);
+        $response->getBody()->willReturn($content);
 
-        $http->post('project/sylius/delete-directory?key=1234')->willReturn($request);
+        $http->post('project/sylius/delete-directory?key=1234')->willReturn($response);
         $this->shouldThrow('\InvalidArgumentException')->duringExecute();
     }
 
@@ -37,9 +36,8 @@ class DeleteDirectorySpec extends ObjectBehavior
     {
         $this->setDirectory('directory-to-delete');
         $content = '<?xml version="1.0" encoding="ISO-8859-1"?><success></success>';
-        $response->getBody(true)->willReturn($content);
-        $request->send()->willReturn($response);
-        $http->post('project/sylius/delete-directory?key=1234', [], ['name' => 'directory-to-delete'])->willReturn($request);
+        $response->getBody()->willReturn($content);
+        $http->post('project/sylius/delete-directory?key=1234', ['name' => 'directory-to-delete'])->willReturn($response);
 
         $this->execute()->shouldBe($content);
     }

@@ -3,9 +3,9 @@
 namespace spec\Akeneo\Crowdin\Api;
 
 use Akeneo\Crowdin\Client;
-use Guzzle\Http\Client as HttpClient;
-use Guzzle\Http\Message\Request;
-use Guzzle\Http\Message\Response;
+use GuzzleHttp\Client as HttpClient;
+use GuzzleHttp\Psr7\Request;
+use GuzzleHttp\Psr7\Response;
 use PhpSpec\ObjectBehavior;
 
 class AddFileSpec extends ObjectBehavior
@@ -37,10 +37,9 @@ class AddFileSpec extends ObjectBehavior
     public function it_should_not_add_with_no_file(HttpClient $http, Request $request, Response $response)
     {
         $content = '<xml></xml>';
-        $response->getBody(true)->willReturn($content);
-        $request->send()->willReturn($response);
+        $response->getBody()->willReturn($content);
 
-        $http->post('project/sylius/add-file?key=1234')->willReturn($request);
+        $http->post('project/sylius/add-file?key=1234')->willReturn($response);
         $this->shouldThrow('\InvalidArgumentException')->duringExecute();
     }
 
@@ -48,13 +47,11 @@ class AddFileSpec extends ObjectBehavior
     {
         $this->addTranslation(__DIR__ . '/../../../fixtures/messages.en.yml', 'path/to/crowdin.yml');
         $content = '<?xml version="1.0" encoding="ISO-8859-1"?><success></success>';
-        $response->getBody(true)->willReturn($content);
-        $request->send()->willReturn($response);
+        $response->getBody()->willReturn($content);
         $http->post(
             'project/sylius/add-file?key=1234',
-            [],
             ['files[path/to/crowdin.yml]' => '@' . __DIR__ . '/../../../fixtures/messages.en.yml']
-        )->willReturn($request);
+        )->willReturn($response);
 
         $this->execute()->shouldBe($content);
     }

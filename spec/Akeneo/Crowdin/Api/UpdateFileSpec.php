@@ -3,9 +3,9 @@
 namespace spec\Akeneo\Crowdin\Api;
 
 use Akeneo\Crowdin\Client;
-use Guzzle\Http\Client as HttpClient;
-use Guzzle\Http\Message\Request;
-use Guzzle\Http\Message\Response;
+use GuzzleHttp\Client as HttpClient;
+use GuzzleHttp\Psr7\Request;
+use GuzzleHttp\Psr7\Response;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
@@ -39,8 +39,7 @@ class UpdateFileSpec extends ObjectBehavior
     {
         $content = '<xml></xml>';
         $response->getBody(true)->willReturn($content);
-        $request->send()->willReturn($response);
-        $http->post('project/akeneo/update-file?key=1234')->willReturn($request);
+        $http->post('project/akeneo/update-file?key=1234')->willReturn($response);
         $this->shouldThrow('\InvalidArgumentException')->duringExecute();
     }
 
@@ -48,24 +47,20 @@ class UpdateFileSpec extends ObjectBehavior
     {
         $this->addTranslation(__DIR__ . '/../../../fixtures/messages.en.yml', 'crowdin/path/file.yml');
         $content = '<xml></xml>';
-        $response->getBody(true)->willReturn($content);
-        $request->send()->willReturn($response);
+        $response->getBody()->willReturn($content);
         $http->post(
             'project/akeneo/update-file?key=1234',
-            [],
             ["files[crowdin/path/file.yml]" => '@'.__DIR__ . '/../../../fixtures/messages.en.yml']
-        )->willReturn($request);
+        )->willReturn($response);
         $this->execute()->shouldBe($content);
     }
 
     public function it_sends_additionnal_parameters(HttpClient $http, Request $request, Response $response)
     {
-        $request->send()->willReturn($response);
-
-        $http->post(Argument::any(), Argument::any(), [
+        $http->post(Argument::any(), [
             "files[crowdin/path/file.yml]" => '@'.__DIR__ . '/../../../fixtures/messages.en.yml',
             'foo'                          => 'bar',
-        ])->shouldBeCalled()->willReturn($request);
+        ])->shouldBeCalled()->willReturn($response);
 
         $this->addTranslation(__DIR__ . '/../../../fixtures/messages.en.yml', 'crowdin/path/file.yml');
         $this->setParameters(['foo' => 'bar']);

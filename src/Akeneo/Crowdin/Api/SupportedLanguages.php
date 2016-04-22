@@ -16,9 +16,8 @@ class SupportedLanguages extends AbstractApi
     public function execute()
     {
         $http     = $this->client->getHttpClient();
-        $request  = $http->get('supported-languages');
-        $response = $request->send();
+        $response = $http->get('supported-languages');
 
-        return $response->getBody(true);
+        return $response->getBody();
     }
 }

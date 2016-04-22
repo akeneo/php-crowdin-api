@@ -3,10 +3,10 @@
 namespace spec\Akeneo\Crowdin\Api;
 
 use Akeneo\Crowdin\Client;
-use Guzzle\Http\Client as HttpClient;
-use Guzzle\Http\EntityBodyInterface;
-use Guzzle\Http\Message\Request;
-use Guzzle\Http\Message\Response;
+use GuzzleHttp\Client as HttpClient;
+use GuzzleHttp\PrepareBodyMiddleware;
+use GuzzleHttp\Psr7\Request;
+use GuzzleHttp\Psr7\Response;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
@@ -34,13 +34,12 @@ class ChangeDirectorySpec extends ObjectBehavior
         $http,
         Request $request,
         Response $response,
-        EntityBodyInterface $body
+        PrepareBodyMiddleware $body
     ) {
         $this->setName('myname');
         $path = 'project/sylius/change-directory?key=1234';
         $data = ['name' => 'myname'];
-        $http->post($path, [], $data)->willReturn($request);
-        $request->send()->willReturn($response);
+        $http->post($path, $data)->willReturn($response);
         $response->getBody(Argument::any())->willReturn($body);
 
         $this->execute()->shouldReturn($body);
@@ -50,7 +49,7 @@ class ChangeDirectorySpec extends ObjectBehavior
         $http,
         Request $request,
         Response $response,
-        EntityBodyInterface $body
+        PrepareBodyMiddleware $body
     ) {
         $this->setName('myName');
         $this->setBranch('myBranch');
@@ -65,9 +64,8 @@ class ChangeDirectorySpec extends ObjectBehavior
             'title'          => 'myTitle',
             'new_name'       => 'myNewName'
         ];
-        $http->post($path, [], $data)->willReturn($request);
-        $request->send()->willReturn($response);
-        $response->getBody(Argument::any())->willReturn($body);
+        $http->post($path, $data)->willReturn($response);
+        $response->getBody()->willReturn($body);
 
         $this->execute()->shouldReturn($body);
     }

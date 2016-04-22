@@ -3,9 +3,9 @@
 namespace spec\Akeneo\Crowdin\Api;
 
 use Akeneo\Crowdin\Client;
-use Guzzle\Http\Client as HttpClient;
-use Guzzle\Http\Message\Request;
-use Guzzle\Http\Message\Response;
+use GuzzleHttp\Client as HttpClient;
+use GuzzleHttp\Psr7\Request;
+use GuzzleHttp\Psr7\Response;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
@@ -46,10 +46,8 @@ class DownloadSpec extends ObjectBehavior
     {
         $this->setCopyDestination('/tmp');
         $this->setPackage('all.zip');
-        $http->get('project/akeneo/download/all.zip?key=1234')->willReturn($request);
-        $request->setResponseBody('/tmp/all.zip')->willReturn($request);
-        $request->send()->willReturn($response);
-        $response->getBody(true)->willReturn('bin');
+        $http->get('project/akeneo/download/all.zip?key=1234')->willReturn($response);
+        $response->getBody()->willReturn('bin');
         $this->execute()->shouldBe('bin');
     }
 
@@ -57,10 +55,8 @@ class DownloadSpec extends ObjectBehavior
     {
         $this->setCopyDestination('/tmp');
         $this->setPackage('fr.zip');
-        $http->get('project/akeneo/download/fr.zip?key=1234')->willReturn($request);
-        $request->setResponseBody('/tmp/fr.zip')->willReturn($request);
-        $request->send()->willReturn($response);
-        $response->getBody(true)->willReturn('bin');
+        $http->get('project/akeneo/download/fr.zip?key=1234')->willReturn($response);
+        $response->getBody()->willReturn('bin');
         $this->execute()->shouldBe('bin');
     }
 }

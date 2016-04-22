@@ -3,9 +3,9 @@
 namespace spec\Akeneo\Crowdin\Api;
 
 use Akeneo\Crowdin\Client;
-use Guzzle\Http\Client as HttpClient;
-use Guzzle\Http\Message\Request;
-use Guzzle\Http\Message\Response;
+use GuzzleHttp\Client as HttpClient;
+use GuzzleHttp\Psr7\Request;
+use GuzzleHttp\Psr7\Response;
 use PhpSpec\ObjectBehavior;
 
 class DeleteFileSpec extends ObjectBehavior
@@ -26,10 +26,9 @@ class DeleteFileSpec extends ObjectBehavior
     public function it_should_not_delete_with_no_file(HttpClient $http, Request $request, Response $response)
     {
         $content = '<xml></xml>';
-        $response->getBody(true)->willReturn($content);
-        $request->send()->willReturn($response);
+        $response->getBody()->willReturn($content);
 
-        $http->post('project/sylius/delete-file?key=1234')->willReturn($request);
+        $http->post('project/sylius/delete-file?key=1234')->willReturn($response);
         $this->shouldThrow('\InvalidArgumentException')->duringExecute();
     }
 
@@ -37,9 +36,8 @@ class DeleteFileSpec extends ObjectBehavior
     {
         $this->setFile('path/to/my/file');
         $content = '<?xml version="1.0" encoding="ISO-8859-1"?><success></success>';
-        $response->getBody(true)->willReturn($content);
-        $request->send()->willReturn($response);
-        $http->post('project/sylius/delete-file?key=1234', [], ['file' => 'path/to/my/file'])->willReturn($request);
+        $response->getBody()->willReturn($content);
+        $http->post('project/sylius/delete-file?key=1234', ['file' => 'path/to/my/file'])->willReturn($response);
 
         $this->execute()->shouldBe($content);
     }
