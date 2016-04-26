@@ -13,7 +13,7 @@ use GuzzleHttp\Client as HttpClient;
 class Client
 {
     /** @var string base url */
-    const BASE_URL = 'http://api.crowdin.net/api';
+    const BASE_URL = 'http://api.crowdin.net/api/';
 
     /** @var HttpClient */
     protected $httpClient;
