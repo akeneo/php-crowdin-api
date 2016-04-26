@@ -52,8 +52,8 @@ class UpdateFileSpec extends ObjectBehavior
             'project/akeneo/update-file?key=1234',
             array('multipart' => array(
                 array(
-                    'name' => "files[crowdin/path/file.yml]",
-                    'contents' => '@'.__DIR__ . '/../../../fixtures/messages.en.yml',
+                    'name'      => "files[crowdin/path/file.yml]",
+                    'contents'  => '@'.__DIR__ . '/../../../fixtures/messages.en.yml',
                 )
             ))
         )->willReturn($response);
@@ -67,8 +67,8 @@ class UpdateFileSpec extends ObjectBehavior
             array('multipart' => array(
                     'foo' => 'bar',
                     array(
-                        'name' => "files[crowdin/path/file.yml]",
-                        'contents' => '@'.__DIR__ . '/../../../fixtures/messages.en.yml',
+                        'name'      => "files[crowdin/path/file.yml]",
+                        'contents'  => '@'.__DIR__ . '/../../../fixtures/messages.en.yml',
                     )
                 )
             )

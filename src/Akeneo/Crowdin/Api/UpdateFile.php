@@ -36,26 +36,26 @@ class UpdateFile extends AbstractApi
         $data = $this->parameters;
         if (null !== $this->branch) {
             $data[] = [
-                'name' => 'branch',
-                'contents' => $this->branch
+                'name'      => 'branch',
+                'contents'  => $this->branch
             ];
         }
 
         foreach ($this->translations as $translation) {
             $data[] = [
-                'name' => 'files['.$translation->getCrowdinPath().']',
-                'contents' => '@'.$translation->getLocalPath()
+                'name'      => 'files['.$translation->getCrowdinPath().']',
+                'contents'  => '@'.$translation->getLocalPath()
             ];
             if ($translation->getTitle()) {
                 $data[] = [
-                    'name' => 'titles['.$translation->getCrowdinPath().']',
-                    'contents' => $translation->getTitle()
+                    'name'      => 'titles['.$translation->getCrowdinPath().']',
+                    'contents'  => $translation->getTitle()
                 ];
             }
             if ($translation->getExportPattern()) {
                 $data[] = [
-                    'name' => 'export_patterns['.$translation->getCrowdinPath().']',
-                    'contents' => $translation->getExportPattern()
+                    'name'      => 'export_patterns['.$translation->getCrowdinPath().']',
+                    'contents'  => $translation->getExportPattern()
                 ];
             }
         }
