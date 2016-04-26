@@ -50,17 +50,29 @@ class UpdateFileSpec extends ObjectBehavior
         $response->getBody()->willReturn($content);
         $http->post(
             'project/akeneo/update-file?key=1234',
-            ["files[crowdin/path/file.yml]" => '@'.__DIR__ . '/../../../fixtures/messages.en.yml']
+            array('multipart' => array(
+                array(
+                    'name' => "files[crowdin/path/file.yml]",
+                    'contents' => '@'.__DIR__ . '/../../../fixtures/messages.en.yml',
+                )
+            ))
         )->willReturn($response);
         $this->execute()->shouldBe($content);
     }
 
     public function it_sends_additionnal_parameters(HttpClient $http, Request $request, Response $response)
     {
-        $http->post(Argument::any(), [
-            "files[crowdin/path/file.yml]" => '@'.__DIR__ . '/../../../fixtures/messages.en.yml',
-            'foo'                          => 'bar',
-        ])->shouldBeCalled()->willReturn($response);
+        $http->post(
+            Argument::any(),
+            array('multipart' => array(
+                    'foo' => 'bar',
+                    array(
+                        'name' => "files[crowdin/path/file.yml]",
+                        'contents' => '@'.__DIR__ . '/../../../fixtures/messages.en.yml',
+                    )
+                )
+            )
+        )->shouldBeCalled()->willReturn($response);
 
         $this->addTranslation(__DIR__ . '/../../../fixtures/messages.en.yml', 'crowdin/path/file.yml');
         $this->setParameters(['foo' => 'bar']);
