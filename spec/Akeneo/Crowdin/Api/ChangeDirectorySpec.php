@@ -38,7 +38,7 @@ class ChangeDirectorySpec extends ObjectBehavior
     ) {
         $this->setName('myname');
         $path = 'project/sylius/change-directory?key=1234';
-        $data = ['name' => 'myname'];
+        $data = ['form_params' => ['name' => 'myname']];
         $http->post($path, $data)->willReturn($response);
         $response->getBody(Argument::any())->willReturn($body);
 
@@ -57,13 +57,13 @@ class ChangeDirectorySpec extends ObjectBehavior
         $this->setTitle('myTitle');
         $this->setNewName('myNewName');
         $path = 'project/sylius/change-directory?key=1234';
-        $data = [
+        $data = ['form_params' => [
             'name'           => 'myName',
             'branch'         => 'myBranch',
             'export_pattern' => 'myExportPattern',
             'title'          => 'myTitle',
             'new_name'       => 'myNewName'
-        ];
+        ]];
         $http->post($path, $data)->willReturn($response);
         $response->getBody()->willReturn($body);
 

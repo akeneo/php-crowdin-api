@@ -32,7 +32,8 @@ class DeleteDirectory extends AbstractApi
 
         $parameters = array_merge($this->parameters, ['name' => $this->directory]);
 
-        $response = $this->client->getHttpClient()->post($path, $parameters);
+        $data = ['form_params' => $parameters];
+        $response = $this->client->getHttpClient()->post($path, $data);
 
         return $response->getBody();
     }

@@ -58,6 +58,7 @@ class ChangeDirectory extends AbstractApi
             $data['branch'] = $this->branch;
         }
 
+        $data = ['form_params' => $data];
         $response = $this->client->getHttpClient()->post($path, $data);
 
         return $response->getBody();
