@@ -108,7 +108,7 @@ class Client
     public function getHttpClient()
     {
         if ($this->httpClient === null) {
-            $this->httpClient = new HttpClient(array('base_uri' => self::BASE_URL));
+            $this->httpClient = new HttpClient(['base_uri' => self::BASE_URL]);
         }
 
         return $this->httpClient;

@@ -50,12 +50,12 @@ class UpdateFileSpec extends ObjectBehavior
         $response->getBody()->willReturn($content);
         $http->post(
             'project/akeneo/update-file?key=1234',
-            array('multipart' => array(
-                array(
+            ['multipart' => [
+                [
                     'name'      => "files[crowdin/path/file.yml]",
                     'contents'  => '@'.__DIR__ . '/../../../fixtures/messages.en.yml',
-                )
-            ))
+                ]
+            ]]
         )->willReturn($response);
         $this->execute()->shouldBe($content);
     }
@@ -64,14 +64,14 @@ class UpdateFileSpec extends ObjectBehavior
     {
         $http->post(
             Argument::any(),
-            array('multipart' => array(
+            ['multipart' => [
                     'foo' => 'bar',
-                    array(
+                    [
                         'name'      => "files[crowdin/path/file.yml]",
                         'contents'  => '@'.__DIR__ . '/../../../fixtures/messages.en.yml',
-                    )
-                )
-            )
+                    ]
+                ]
+            ]
         )->shouldBeCalled()->willReturn($response);
 
         $this->addTranslation(__DIR__ . '/../../../fixtures/messages.en.yml', 'crowdin/path/file.yml');
