@@ -55,6 +55,7 @@ class AddFile extends AbstractApi
             }
         }
 
+        $data = ['multipart' => $data];
         $response = $this->client->getHttpClient()->post($path, $data);
 
         return $response->getBody();

@@ -44,7 +44,8 @@ class AddDirectory extends AbstractApi
             $parameters['branch'] = $this->branch;
         }
 
-        $response = $this->client->getHttpClient()->post($path, $parameters);
+        $data = ['form_params' => $parameters];
+        $response = $this->client->getHttpClient()->post($path, $data);
 
         return $response->getBody();
     }

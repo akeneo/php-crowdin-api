@@ -57,7 +57,7 @@ class UploadTranslation extends AbstractApi
             $data['files['.$crowdinPath.']'] = '@'.$localFile;
         }
 
-
+        $data = ['multipart' => $data];
         $response = $this->client->getHttpClient()->post($path, $data);
 
         return $response->getBody();
