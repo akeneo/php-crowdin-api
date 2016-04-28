@@ -44,7 +44,7 @@ class UpdateFile extends AbstractApi
         foreach ($this->translations as $translation) {
             $data[] = [
                 'name'      => 'files['.$translation->getCrowdinPath().']',
-                'contents'  => '@'.$translation->getLocalPath()
+                'contents'  => fopen($translation->getLocalPath(), 'r')
             ];
             if ($translation->getTitle()) {
                 $data[] = [

@@ -46,15 +46,28 @@ class UploadTranslation extends AbstractApi
             $this->client->getProjectApiKey()
         );
 
-        $data = array_merge($this->parameters, [
-            'import_duplicates'     => (int)$this->areDuplicatesImported,
-            'import_eq_suggestions' => (int)$this->areEqualSuggestionsImported,
-            'auto_approve_imported' => (int)$this->areImportsAutoApproved,
-            'language'              => $this->locale,
-        ]);
+        $data[] = [
+            'name'      => 'import_duplicates',
+            'contents'  => (int)$this->areDuplicatesImported
+        ];
+        $data[] = [
+            'name'      => 'import_eq_suggestions',
+            'contents'  => (int)$this->areEqualSuggestionsImported
+        ];
+        $data[] = [
+            'name'      => 'auto_approve_imported',
+            'contents'  => (int)$this->areImportsAutoApproved
+        ];
+        $data[] = [
+            'name'      => 'language',
+            'contents'  => $this->locale
+        ];
 
         foreach ($this->translations as $crowdinPath => $localFile) {
-            $data['files['.$crowdinPath.']'] = '@'.$localFile;
+            $data[] = [
+                'name'      => 'files['.$crowdinPath.']',
+                'content'   => fopen($localFile, 'r')
+            ];
         }
 
         $data = ['multipart' => $data];

@@ -46,12 +46,21 @@ class AddFile extends AbstractApi
         }
 
         foreach ($this->translations as $translation) {
-            $data['files['.$translation->getCrowdinPath().']'] = '@'.$translation->getLocalPath();
+            $data[] = [
+                'name'      => 'files['.$translation->getCrowdinPath().']',
+                'contents'  => fopen($translation->getLocalPath(), 'r')
+            ];
             if ($translation->getTitle()) {
-                $data['titles['.$translation->getCrowdinPath().']'] = $translation->getTitle();
+                $data[] = [
+                    'name'      => 'titles['.$translation->getCrowdinPath().']',
+                    'contents'  => $translation->getTitle()
+                ];
             }
             if ($translation->getExportPattern()) {
-                $data['export_patterns['.$translation->getCrowdinPath().']'] = $translation->getExportPattern();
+                $data[] = [
+                    'name'      => 'export_patterns['.$translation->getCrowdinPath().']',
+                    'contents'  => $translation->getExportPattern()
+                ];
             }
         }
 

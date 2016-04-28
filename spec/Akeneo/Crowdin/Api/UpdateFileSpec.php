@@ -53,7 +53,7 @@ class UpdateFileSpec extends ObjectBehavior
             ['multipart' => [
                 [
                     'name'      => "files[crowdin/path/file.yml]",
-                    'contents'  => '@'.__DIR__ . '/../../../fixtures/messages.en.yml',
+                    'contents'  => fopen(__DIR__ . '/../../../fixtures/messages.en.yml', 'r')
                 ]
             ]]
         )->willReturn($response);
@@ -68,7 +68,7 @@ class UpdateFileSpec extends ObjectBehavior
                     'foo' => 'bar',
                     [
                         'name'      => "files[crowdin/path/file.yml]",
-                        'contents'  => '@'.__DIR__ . '/../../../fixtures/messages.en.yml',
+                        'contents'  => fopen(__DIR__ . '/../../../fixtures/messages.en.yml', 'r')
                     ]
                 ]
             ]
