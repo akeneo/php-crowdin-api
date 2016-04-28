@@ -36,7 +36,7 @@ class AddDirectory extends AbstractApi
             $this->client->getProjectApiKey()
         );
 
-        $parameters = array_merge($this->parameters, ['name' => $this->directory]);
+        $parameters = ['name' => $this->directory];
         if ($this->isBranch) {
             $parameters['is_branch'] = '1';
         }

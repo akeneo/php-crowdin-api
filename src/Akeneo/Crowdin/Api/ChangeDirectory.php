@@ -43,7 +43,7 @@ class ChangeDirectory extends AbstractApi
             $this->client->getProjectApiKey()
         );
 
-        $data = array_merge($this->parameters, ['name' => $this->name]);
+        $data = ['name' => $this->name];
 
         if (null !== $this->newName) {
             $data['new_name'] = $this->newName;
