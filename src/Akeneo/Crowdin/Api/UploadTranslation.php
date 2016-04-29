@@ -5,6 +5,7 @@ namespace Akeneo\Crowdin\Api;
 use \InvalidArgumentException;
 use Akeneo\Crowdin\Client;
 use Akeneo\Crowdin\FileReader;
+use Akeneo\Crowdin\Translation;
 
 /**
  *  Upload existing translations to your Crowdin project.
@@ -17,7 +18,7 @@ class UploadTranslation extends AbstractApi
     /** @var FileReader */
     protected $fileReader;
 
-    /** @var array */
+    /** @var Translation[] */
     protected $translations;
 
     /** @var string */
@@ -78,10 +79,10 @@ class UploadTranslation extends AbstractApi
             'contents'  => $this->locale
         ];
 
-        foreach ($this->translations as $crowdinPath => $localFile) {
+        foreach ($this->translations as $translation) {
             $data[] = [
-                'name'       => 'files['.$crowdinPath.']',
-                'contents'   => $this->fileReader->readStream($localFile)
+                'name'       => 'files['.$translation->getCrowdinPath().']',
+                'contents'   => $this->fileReader->readTranslation($translation)
             ];
         }
 
@@ -92,25 +93,26 @@ class UploadTranslation extends AbstractApi
     }
 
     /**
-     * @param string $crowdinPath the Crowdin file path
-     * @param string $localPath   the local file path
+     * @param string $localPath
+     * @param string $crowdinPath
+     * @param string $exportPattern
+     * @param string $title
      *
-     * @throws InvalidArgumentException
-     *
-     * @return UploadTranslation
+     * @return $this
      */
-    public function addTranslation($crowdinPath, $localPath)
+    public function addTranslation($localPath, $crowdinPath, $exportPattern = null, $title = null)
     {
-        if (!file_exists($localPath)) {
-            throw new InvalidArgumentException(sprintf('File %s does not exist.', $localPath));
-        }
-        $this->translations[$crowdinPath] = $localPath;
+        $translation = new Translation($localPath, $crowdinPath);
+        $translation->setExportPattern($exportPattern);
+        $translation->setTitle($title);
+
+        $this->translations[] = $translation;
 
         return $this;
     }
 
     /**
-     * @return array
+     * @return Translation[]
      */
     public function getTranslations()
     {

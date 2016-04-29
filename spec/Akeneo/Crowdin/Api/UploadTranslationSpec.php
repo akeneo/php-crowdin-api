@@ -32,7 +32,7 @@ class UploadTranslationSpec extends ObjectBehavior
 
     public function it_has_translations()
     {
-        $this->addTranslation('crowdin/path/file.csv',  'spec/fixtures/messages.en.yml');
+        $this->addTranslation('spec/fixtures/messages.en.yml', 'crowdin/path/file.csv');
         $this->getTranslations()->shouldHaveCount(1);
     }
 
@@ -63,7 +63,7 @@ class UploadTranslationSpec extends ObjectBehavior
 
     public function it_should_not_allow_upload_with_no_locale(HttpClient $http, Request $request, Response $response)
     {
-        $this->addTranslation('crowdin/path/file.yml',  'spec/fixtures/messages.en.yml');
+        $this->addTranslation('spec/fixtures/messages.en.yml', 'crowdin/path/file.yml');
         $content = '<xml></xml>';
         $response->getBody()->willReturn($content);
         $http->post('project/sylius/upload-translation?key=1234')->willReturn($response);
@@ -73,13 +73,12 @@ class UploadTranslationSpec extends ObjectBehavior
 
     public function it_uploads_some_translations(FileReader $fileReader, HttpClient $http, Request $request, Response $response)
     {
-        $localPath = __DIR__ . '/../../../fixtures/messages.en.yml';
-        $this->addTranslation($localPath, 'spec/fixtures/messages.en.yml');
+        $this->addTranslation('spec/fixtures/messages.en.yml', 'crowdin/path/file.yml');
         $this->setLocale('fr');
         $content = '<xml></xml>';
         $response->getBody()->willReturn($content);
         $fakeResource = '[fake resource]';
-        $fileReader->readStream(Argument::any())->willReturn($fakeResource);
+        $fileReader->readTranslation(Argument::any())->willReturn($fakeResource);
         $http->post(
             'project/sylius/upload-translation?key=1234',
             ['multipart' => [
@@ -100,7 +99,7 @@ class UploadTranslationSpec extends ObjectBehavior
                     'contents'  => 'fr'
                 ],
                 [
-                    'name'      => 'files['.$localPath.']',
+                    'name'      => 'files[crowdin/path/file.yml]',
                     'contents'  => $fakeResource,
                 ],
             ]]
