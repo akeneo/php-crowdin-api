@@ -12,6 +12,10 @@
         },
         {
             "name": "Julien Janvier <j.janvier@gmail.com>"
+        },
+        {
+            "name": "Laurent Ghirardotti <laurent@ghirardotti.fr>",
+            "homepage": "http://ghirardotti.fr"
         }
     ],
     "require": {
