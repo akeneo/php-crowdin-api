@@ -63,7 +63,7 @@ class Client
                 $api = new Api\AddFile($this, $fileReader);
                 break;
             case 'update-file':
-                $api = new Api\UpdateFile($this);
+                $api = new Api\UpdateFile($this, $fileReader);
                 break;
             case 'delete-file':
                 $api = new Api\DeleteFile($this);
@@ -78,7 +78,7 @@ class Client
                 $api = new Api\DeleteDirectory($this);
                 break;
             case 'upload-translation':
-                $api = new Api\UploadTranslation($this);
+                $api = new Api\UploadTranslation($this, $fileReader);
                 break;
             default:
                 throw new InvalidArgumentException(sprintf('Undefined api method "%s"', $method));
