@@ -81,7 +81,7 @@ class UploadTranslation extends AbstractApi
         foreach ($this->translations as $crowdinPath => $localFile) {
             $data[] = [
                 'name'      => 'files['.$crowdinPath.']',
-                'content'   => $this->fileReader->readStream($localFile)
+                'contents'   => $this->fileReader->readStream($localFile)
             ];
         }
 
