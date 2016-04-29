@@ -66,21 +66,18 @@ class UpdateFileSpec extends ObjectBehavior
 
     public function it_sends_additionnal_parameters(FileReader $fileReader, HttpClient $http, Request $request, Response $response)
     {
-        $localPath = __DIR__ . '/../../../fixtures/messages.en.yml';
-        $this->addTranslation($localPath, 'path/to/crowdin.yml');
         $fakeResource = '[fake resource]';
         $fileReader->readTranslation(Argument::any())->willReturn($fakeResource);
 
         $http->post(
             Argument::any(),
             ['multipart' => [
-                    'foo' => 'bar',
-                    [
-                        'name'      => "files[path/to/crowdin.yml]",
-                        'contents'  => $fakeResource
-                    ]
+                'foo' => 'bar',
+                [
+                    'name'      => "files[path/to/crowdin.yml]",
+                    'contents'  => $fakeResource
                 ]
-            ]
+            ]]
         )->shouldBeCalled()->willReturn($response);
 
         $this->addTranslation(__DIR__ . '/../../../fixtures/messages.en.yml', 'path/to/crowdin.yml');
