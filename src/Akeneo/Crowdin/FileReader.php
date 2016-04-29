@@ -12,6 +12,8 @@ class FileReader
     /**
      * @param Translation $translation
      *
+     * @throw FileNotFoundException
+     *
      * @return resource
      */
     public function readTranslation(Translation $translation)
@@ -20,9 +22,11 @@ class FileReader
     }
 
     /**
+     * @throw FileNotFoundException
+     *
      * @return resource
      */
-    public function readStream($filename)
+    protected function readStream($filename)
     {
         if (!file_exists($filename)) {
             throw new FileNotFoundException(sprintf('The file "%s" does not exists.', $filename));
