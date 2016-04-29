@@ -2,9 +2,9 @@
 
 namespace Akeneo\Crowdin\Api;
 
+use \InvalidArgumentException;
 use Akeneo\Crowdin\Client;
 use Akeneo\Crowdin\FileReader;
-use \InvalidArgumentException;
 
 /**
  *  Upload existing translations to your Crowdin project.
@@ -80,7 +80,7 @@ class UploadTranslation extends AbstractApi
 
         foreach ($this->translations as $crowdinPath => $localFile) {
             $data[] = [
-                'name'      => 'files['.$crowdinPath.']',
+                'name'       => 'files['.$crowdinPath.']',
                 'contents'   => $this->fileReader->readStream($localFile)
             ];
         }

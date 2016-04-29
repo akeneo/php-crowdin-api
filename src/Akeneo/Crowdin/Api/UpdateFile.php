@@ -2,9 +2,9 @@
 
 namespace Akeneo\Crowdin\Api;
 
+use \InvalidArgumentException;
 use Akeneo\Crowdin\Client;
 use Akeneo\Crowdin\FileReader;
-use \InvalidArgumentException;
 use Akeneo\Crowdin\Translation;
 
 /**
