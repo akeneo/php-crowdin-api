@@ -45,6 +45,7 @@ class Client
      */
     public function api($method)
     {
+        $fileReader = new FileReader();
         switch ($method) {
             case 'info':
                 $api = new Api\Info($this);
@@ -59,7 +60,7 @@ class Client
                 $api = new Api\Download($this);
                 break;
             case 'add-file':
-                $api = new Api\AddFile($this);
+                $api = new Api\AddFile($this, $fileReader);
                 break;
             case 'update-file':
                 $api = new Api\UpdateFile($this);

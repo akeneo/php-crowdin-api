@@ -2,6 +2,8 @@
 
 namespace Akeneo\Crowdin\Api;
 
+use Akeneo\Crowdin\Client;
+use Akeneo\Crowdin\FileReader;
 use \InvalidArgumentException;
 use Akeneo\Crowdin\Translation;
 
@@ -13,6 +15,9 @@ use Akeneo\Crowdin\Translation;
  */
 class AddFile extends AbstractApi
 {
+    /** @var FileReader */
+    protected $fileReader;
+
     /** @var Translation[] */
     protected $translations;
 
@@ -21,6 +26,16 @@ class AddFile extends AbstractApi
 
     /** @var string */
     protected $branch;
+
+    /**
+     * @param Client     $client
+     * @param FileReader $fileReader
+     */
+    public function __construct(Client $client, FileReader $fileReader)
+    {
+        parent::__construct($client);
+        $this->fileReader = $fileReader;
+    }
 
     /**
      * {@inheritdoc}
@@ -39,16 +54,21 @@ class AddFile extends AbstractApi
 
         $data = $this->parameters;
         if (null !== $this->type) {
-            $data['type'] = $this->type;
+            $data[] = [
+                'name'      => 'type',
+                'contents'  => $this->type
+            ];
         }
         if (null !== $this->branch) {
-            $data['branch'] = $this->branch;
+            $data[] = [
+                'name'      => 'branch',
+                'contents'  => $this->branch
+            ];
         }
-
         foreach ($this->translations as $translation) {
             $data[] = [
                 'name'      => 'files['.$translation->getCrowdinPath().']',
-                'contents'  => fopen($translation->getLocalPath(), 'r')
+                'contents'  => $this->fileReader->readTranslation($translation)
             ];
             if ($translation->getTitle()) {
                 $data[] = [

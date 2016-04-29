@@ -2,6 +2,8 @@
 
 namespace Akeneo\Crowdin\Api;
 
+use Akeneo\Crowdin\Client;
+use Akeneo\Crowdin\FileReader;
 use \InvalidArgumentException;
 
 /**
@@ -12,6 +14,9 @@ use \InvalidArgumentException;
  */
 class UploadTranslation extends AbstractApi
 {
+    /** @var FileReader */
+    protected $fileReader;
+
     /** @var array */
     protected $translations;
 
@@ -26,6 +31,16 @@ class UploadTranslation extends AbstractApi
 
     /** @var bool */
     protected $areImportsAutoApproved = false;
+
+    /**
+     * @param Client     $client
+     * @param FileReader $fileReader
+     */
+    public function __construct(Client $client, FileReader $fileReader)
+    {
+        parent::__construct($client);
+        $this->fileReader = $fileReader;
+    }
 
     /**
      * {@inheritdoc}
@@ -66,7 +81,7 @@ class UploadTranslation extends AbstractApi
         foreach ($this->translations as $crowdinPath => $localFile) {
             $data[] = [
                 'name'      => 'files['.$crowdinPath.']',
-                'content'   => fopen($localFile, 'r')
+                'content'   => $this->fileReader->readStream($localFile)
             ];
         }
 

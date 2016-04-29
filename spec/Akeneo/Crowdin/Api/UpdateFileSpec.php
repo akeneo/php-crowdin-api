@@ -3,6 +3,7 @@
 namespace spec\Akeneo\Crowdin\Api;
 
 use Akeneo\Crowdin\Client;
+use Akeneo\Crowdin\FileReader;
 use GuzzleHttp\Client as HttpClient;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
@@ -11,12 +12,12 @@ use Prophecy\Argument;
 
 class UpdateFileSpec extends ObjectBehavior
 {
-    public function let(Client $client, HttpClient $http)
+    public function let(Client $client, HttpClient $http, FileReader $fileReader)
     {
         $client->getHttpClient()->willReturn($http);
         $client->getProjectIdentifier()->willReturn('akeneo');
         $client->getProjectApiKey()->willReturn('1234');
-        $this->beConstructedWith($client);
+        $this->beConstructedWith($client, $fileReader);
     }
 
     public function it_should_be_an_api()
@@ -43,38 +44,46 @@ class UpdateFileSpec extends ObjectBehavior
         $this->shouldThrow('\InvalidArgumentException')->duringExecute();
     }
 
-    public function it_updates_some_translation_files(HttpClient $http, Request $request, Response $response)
+    public function it_updates_some_translation_files($fileReader, HttpClient $http, Request $request, Response $response)
     {
-        $this->addTranslation(__DIR__ . '/../../../fixtures/messages.en.yml', 'crowdin/path/file.yml');
+        $localPath = __DIR__ . '/../../../fixtures/messages.en.yml';
+        $this->addTranslation($localPath, 'path/to/crowdin.yml');
         $content = '<xml></xml>';
         $response->getBody()->willReturn($content);
+        $fakeResource = '[fake resource]';
+        $fileReader->readTranslation(Argument::any())->willReturn($fakeResource);
         $http->post(
             'project/akeneo/update-file?key=1234',
             ['multipart' => [
                 [
-                    'name'      => "files[crowdin/path/file.yml]",
-                    'contents'  => fopen(__DIR__ . '/../../../fixtures/messages.en.yml', 'r')
+                    'name'      => "files[path/to/crowdin.yml]",
+                    'contents'  => $fakeResource
                 ]
             ]]
         )->willReturn($response);
         $this->execute()->shouldBe($content);
     }
 
-    public function it_sends_additionnal_parameters(HttpClient $http, Request $request, Response $response)
+    public function it_sends_additionnal_parameters(FileReader $fileReader, HttpClient $http, Request $request, Response $response)
     {
+        $localPath = __DIR__ . '/../../../fixtures/messages.en.yml';
+        $this->addTranslation($localPath, 'path/to/crowdin.yml');
+        $fakeResource = '[fake resource]';
+        $fileReader->readTranslation(Argument::any())->willReturn($fakeResource);
+
         $http->post(
             Argument::any(),
             ['multipart' => [
                     'foo' => 'bar',
                     [
-                        'name'      => "files[crowdin/path/file.yml]",
-                        'contents'  => fopen(__DIR__ . '/../../../fixtures/messages.en.yml', 'r')
+                        'name'      => "files[path/to/crowdin.yml]",
+                        'contents'  => $fakeResource
                     ]
                 ]
             ]
         )->shouldBeCalled()->willReturn($response);
 
-        $this->addTranslation(__DIR__ . '/../../../fixtures/messages.en.yml', 'crowdin/path/file.yml');
+        $this->addTranslation(__DIR__ . '/../../../fixtures/messages.en.yml', 'path/to/crowdin.yml');
         $this->setParameters(['foo' => 'bar']);
         $this->execute();
     }

@@ -3,6 +3,7 @@
 namespace spec\Akeneo\Crowdin\Api;
 
 use Akeneo\Crowdin\Client;
+use Akeneo\Crowdin\FileReader;
 use GuzzleHttp\Client as HttpClient;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
@@ -11,12 +12,12 @@ use Prophecy\Argument;
 
 class UploadTranslationSpec extends ObjectBehavior
 {
-    public function let(Client $client, HttpClient $http)
+    public function let(Client $client, HttpClient $http, FileReader $fileReader)
     {
         $client->getHttpClient()->willReturn($http);
         $client->getProjectIdentifier()->willReturn('sylius');
         $client->getProjectApiKey()->willReturn('1234');
-        $this->beConstructedWith($client);
+        $this->beConstructedWith($client, $fileReader);
     }
 
     public function it_should_be_an_api()
@@ -70,19 +71,18 @@ class UploadTranslationSpec extends ObjectBehavior
         $this->shouldThrow('\InvalidArgumentException')->duringExecute();
     }
 
-    public function it_uploads_some_translations(HttpClient $http, Request $request, Response $response)
+    public function it_uploads_some_translations(FileReader $fileReader, HttpClient $http, Request $request, Response $response)
     {
-        $this->addTranslation('crowdin/path/file.yml',  'spec/fixtures/messages.en.yml');
+        $localPath = __DIR__ . '/../../../fixtures/messages.en.yml';
+        $this->addTranslation($localPath, 'spec/fixtures/messages.en.yml');
         $this->setLocale('fr');
         $content = '<xml></xml>';
         $response->getBody()->willReturn($content);
+        $fakeResource = '[fake resource]';
+        $fileReader->readStream(Argument::any())->willReturn($fakeResource);
         $http->post(
             'project/sylius/upload-translation?key=1234',
             ['multipart' => [
-                [
-                    'name'      => 'files[crowdin/path/file.yml]',
-                    'contents'  => '@spec/fixtures/messages.en.yml',
-                ],
                 [
                     'name'      => 'import_duplicates',
                     'contents'  => 0
@@ -98,6 +98,10 @@ class UploadTranslationSpec extends ObjectBehavior
                 [
                     'name'      => 'language',
                     'contents'  => 'fr'
+                ],
+                [
+                    'name'      => 'files['.$localPath.']',
+                    'contents'  => $fakeResource,
                 ],
             ]]
         )->willReturn($response);
