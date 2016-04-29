@@ -3,20 +3,21 @@
 namespace spec\Akeneo\Crowdin\Api;
 
 use Akeneo\Crowdin\Client;
-use Guzzle\Http\Client as HttpClient;
-use Guzzle\Http\Message\Request;
-use Guzzle\Http\Message\Response;
+use Akeneo\Crowdin\FileReader;
+use GuzzleHttp\Client as HttpClient;
+use GuzzleHttp\Psr7\Request;
+use GuzzleHttp\Psr7\Response;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
 class UploadTranslationSpec extends ObjectBehavior
 {
-    public function let(Client $client, HttpClient $http)
+    public function let(Client $client, HttpClient $http, FileReader $fileReader)
     {
         $client->getHttpClient()->willReturn($http);
         $client->getProjectIdentifier()->willReturn('sylius');
         $client->getProjectApiKey()->willReturn('1234');
-        $this->beConstructedWith($client);
+        $this->beConstructedWith($client, $fileReader);
     }
 
     public function it_should_be_an_api()
@@ -54,9 +55,8 @@ class UploadTranslationSpec extends ObjectBehavior
     {
         $this->setLocale('fr');
         $content = '<xml></xml>';
-        $response->getBody(true)->willReturn($content);
-        $request->send()->willReturn($response);
-        $http->post('project/sylius/upload-translation?key=1234')->willReturn($request);
+        $response->getBody()->willReturn($content);
+        $http->post('project/sylius/upload-translation?key=1234')->willReturn($response);
 
         $this->shouldThrow('\InvalidArgumentException')->duringExecute();
     }
@@ -65,31 +65,46 @@ class UploadTranslationSpec extends ObjectBehavior
     {
         $this->addTranslation('crowdin/path/file.yml',  'spec/fixtures/messages.en.yml');
         $content = '<xml></xml>';
-        $response->getBody(true)->willReturn($content);
-        $request->send()->willReturn($response);
-        $http->post('project/sylius/upload-translation?key=1234')->willReturn($request);
+        $response->getBody()->willReturn($content);
+        $http->post('project/sylius/upload-translation?key=1234')->willReturn($response);
 
         $this->shouldThrow('\InvalidArgumentException')->duringExecute();
     }
 
-    public function it_uploads_some_translations(HttpClient $http, Request $request, Response $response)
+    public function it_uploads_some_translations(FileReader $fileReader, HttpClient $http, Request $request, Response $response)
     {
-        $this->addTranslation('crowdin/path/file.yml',  'spec/fixtures/messages.en.yml');
+        $localPath = __DIR__ . '/../../../fixtures/messages.en.yml';
+        $this->addTranslation($localPath, 'spec/fixtures/messages.en.yml');
         $this->setLocale('fr');
         $content = '<xml></xml>';
-        $response->getBody(true)->willReturn($content);
-        $request->send()->willReturn($response);
+        $response->getBody()->willReturn($content);
+        $fakeResource = '[fake resource]';
+        $fileReader->readStream(Argument::any())->willReturn($fakeResource);
         $http->post(
             'project/sylius/upload-translation?key=1234',
-            [],
-            [
-                'files[crowdin/path/file.yml]' => '@spec/fixtures/messages.en.yml',
-                'import_duplicates'            => 0,
-                'import_eq_suggestions'        => 0,
-                'auto_approve_imported'        => 0,
-                'language'                     => 'fr',
-            ]
-        )->willReturn($request);
+            ['multipart' => [
+                [
+                    'name'      => 'import_duplicates',
+                    'contents'  => 0
+                ],
+                [
+                    'name'      => 'import_eq_suggestions',
+                    'contents'  => 0
+                ],
+                [
+                    'name'      => 'auto_approve_imported',
+                    'contents'  => 0
+                ],
+                [
+                    'name'      => 'language',
+                    'contents'  => 'fr'
+                ],
+                [
+                    'name'      => 'files['.$localPath.']',
+                    'contents'  => $fakeResource,
+                ],
+            ]]
+        )->willReturn($response);
         $this->execute()->shouldBe($content);
     }
 }

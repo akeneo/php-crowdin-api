@@ -26,10 +26,9 @@ class Export extends AbstractApi
         if (null !== $this->branch) {
             $path = sprintf('%s&branch=%s', $path, $this->branch);
         }
-        $request  = $this->client->getHttpClient()->get($path);
-        $response = $request->send();
+        $response = $this->client->getHttpClient()->get($path);
 
-        return $response->getBody(true);
+        return $response->getBody();
     }
 
     /**

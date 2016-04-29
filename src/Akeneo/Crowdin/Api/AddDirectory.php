@@ -36,7 +36,7 @@ class AddDirectory extends AbstractApi
             $this->client->getProjectApiKey()
         );
 
-        $parameters = array_merge($this->parameters, ['name' => $this->directory]);
+        $parameters = ['name' => $this->directory];
         if ($this->isBranch) {
             $parameters['is_branch'] = '1';
         }
@@ -44,11 +44,10 @@ class AddDirectory extends AbstractApi
             $parameters['branch'] = $this->branch;
         }
 
-        $request  = $this->client->getHttpClient()->post($path, [], $parameters);
+        $data = ['form_params' => $parameters];
+        $response = $this->client->getHttpClient()->post($path, $data);
 
-        $response = $request->send();
-
-        return $response->getBody(true);
+        return $response->getBody();
     }
 
     /**

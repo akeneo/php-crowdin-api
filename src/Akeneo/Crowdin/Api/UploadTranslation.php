@@ -3,6 +3,8 @@
 namespace Akeneo\Crowdin\Api;
 
 use \InvalidArgumentException;
+use Akeneo\Crowdin\Client;
+use Akeneo\Crowdin\FileReader;
 
 /**
  *  Upload existing translations to your Crowdin project.
@@ -12,6 +14,9 @@ use \InvalidArgumentException;
  */
 class UploadTranslation extends AbstractApi
 {
+    /** @var FileReader */
+    protected $fileReader;
+
     /** @var array */
     protected $translations;
 
@@ -26,6 +31,16 @@ class UploadTranslation extends AbstractApi
 
     /** @var bool */
     protected $areImportsAutoApproved = false;
+
+    /**
+     * @param Client     $client
+     * @param FileReader $fileReader
+     */
+    public function __construct(Client $client, FileReader $fileReader)
+    {
+        parent::__construct($client);
+        $this->fileReader = $fileReader;
+    }
 
     /**
      * {@inheritdoc}
@@ -46,22 +61,34 @@ class UploadTranslation extends AbstractApi
             $this->client->getProjectApiKey()
         );
 
-        $data = array_merge($this->parameters, [
-            'import_duplicates'     => (int)$this->areDuplicatesImported,
-            'import_eq_suggestions' => (int)$this->areEqualSuggestionsImported,
-            'auto_approve_imported' => (int)$this->areImportsAutoApproved,
-            'language'              => $this->locale,
-        ]);
+        $data[] = [
+            'name'      => 'import_duplicates',
+            'contents'  => (int)$this->areDuplicatesImported
+        ];
+        $data[] = [
+            'name'      => 'import_eq_suggestions',
+            'contents'  => (int)$this->areEqualSuggestionsImported
+        ];
+        $data[] = [
+            'name'      => 'auto_approve_imported',
+            'contents'  => (int)$this->areImportsAutoApproved
+        ];
+        $data[] = [
+            'name'      => 'language',
+            'contents'  => $this->locale
+        ];
 
         foreach ($this->translations as $crowdinPath => $localFile) {
-            $data['files['.$crowdinPath.']'] = '@'.$localFile;
+            $data[] = [
+                'name'       => 'files['.$crowdinPath.']',
+                'contents'   => $this->fileReader->readStream($localFile)
+            ];
         }
 
+        $data = ['multipart' => $data];
+        $response = $this->client->getHttpClient()->post($path, $data);
 
-        $request = $this->client->getHttpClient()->post($path, [], $data);
-        $response = $request->send();
-
-        return $response->getBody(true);
+        return $response->getBody();
     }
 
     /**

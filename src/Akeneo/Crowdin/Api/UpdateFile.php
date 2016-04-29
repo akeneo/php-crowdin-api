@@ -3,6 +3,8 @@
 namespace Akeneo\Crowdin\Api;
 
 use \InvalidArgumentException;
+use Akeneo\Crowdin\Client;
+use Akeneo\Crowdin\FileReader;
 use Akeneo\Crowdin\Translation;
 
 /**
@@ -13,11 +15,24 @@ use Akeneo\Crowdin\Translation;
  */
 class UpdateFile extends AbstractApi
 {
+    /** @var FileReader */
+    protected $fileReader;
+
     /** @var Translation[] */
     protected $translations;
 
     /** @var string|null */
     protected $branch;
+
+    /**
+     * @param Client     $client
+     * @param FileReader $fileReader
+     */
+    public function __construct(Client $client, FileReader $fileReader)
+    {
+        parent::__construct($client);
+        $this->fileReader = $fileReader;
+    }
 
     /**
      * {@inheritdoc}
@@ -35,23 +50,35 @@ class UpdateFile extends AbstractApi
 
         $data = $this->parameters;
         if (null !== $this->branch) {
-            $data['branch'] = $this->branch;
+            $data[] = [
+                'name'      => 'branch',
+                'contents'  => $this->branch
+            ];
         }
 
         foreach ($this->translations as $translation) {
-            $data['files['.$translation->getCrowdinPath().']'] = '@'.$translation->getLocalPath();
+            $data[] = [
+                'name'      => 'files['.$translation->getCrowdinPath().']',
+                'contents'  => $this->fileReader->readTranslation($translation)
+            ];
             if ($translation->getTitle()) {
-                $data['titles['.$translation->getCrowdinPath().']'] = $translation->getTitle();
+                $data[] = [
+                    'name'      => 'titles['.$translation->getCrowdinPath().']',
+                    'contents'  => $translation->getTitle()
+                ];
             }
             if ($translation->getExportPattern()) {
-                $data['export_patterns['.$translation->getCrowdinPath().']'] = $translation->getExportPattern();
+                $data[] = [
+                    'name'      => 'export_patterns['.$translation->getCrowdinPath().']',
+                    'contents'  => $translation->getExportPattern()
+                ];
             }
         }
 
-        $request = $this->client->getHttpClient()->post($path, [], $data);
-        $response = $request->send();
+        $data = ['multipart' => $data];
+        $response = $this->client->getHttpClient()->post($path, $data);
 
-        return $response->getBody(true);
+        return $response->getBody();
     }
 
     /**

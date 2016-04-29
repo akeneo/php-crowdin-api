@@ -24,7 +24,7 @@ class ClientSpec extends ObjectBehavior
 
     public function it_has_a_http_client()
     {
-        $this->getHttpClient()->shouldBeAnInstanceOf('Guzzle\Http\Client');
+        $this->getHttpClient()->shouldBeAnInstanceOf('GuzzleHttp\Client');
     }
 
     public function it_allow_defined_api_method()

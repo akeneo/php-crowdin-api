@@ -43,7 +43,7 @@ class ChangeDirectory extends AbstractApi
             $this->client->getProjectApiKey()
         );
 
-        $data = array_merge($this->parameters, ['name' => $this->name]);
+        $data = ['name' => $this->name];
 
         if (null !== $this->newName) {
             $data['new_name'] = $this->newName;
@@ -58,10 +58,10 @@ class ChangeDirectory extends AbstractApi
             $data['branch'] = $this->branch;
         }
 
-        $request  = $this->client->getHttpClient()->post($path, [], $data);
-        $response = $request->send();
+        $data = ['form_params' => $data];
+        $response = $this->client->getHttpClient()->post($path, $data);
 
-        return $response->getBody(true);
+        return $response->getBody();
     }
 
     /**

@@ -34,7 +34,7 @@ Requirements
 ------------
 
 * PHP >= 5.5
-* Guzzle https://github.com/guzzle/guzzle
+* GuzzleHttp https://github.com/guzzle/guzzle
 
 Optional, for dev purpose:
 

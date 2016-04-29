@@ -3,7 +3,7 @@
 namespace Akeneo\Crowdin;
 
 use \InvalidArgumentException;
-use Guzzle\Http\Client as HttpClient;
+use GuzzleHttp\Client as HttpClient;
 
 /**
  * Simple Crowdin PHP client
@@ -13,7 +13,7 @@ use Guzzle\Http\Client as HttpClient;
 class Client
 {
     /** @var string base url */
-    const BASE_URL = 'http://api.crowdin.net/api';
+    const BASE_URL = 'http://api.crowdin.net/api/';
 
     /** @var HttpClient */
     protected $httpClient;
@@ -45,6 +45,7 @@ class Client
      */
     public function api($method)
     {
+        $fileReader = new FileReader();
         switch ($method) {
             case 'info':
                 $api = new Api\Info($this);
@@ -59,10 +60,10 @@ class Client
                 $api = new Api\Download($this);
                 break;
             case 'add-file':
-                $api = new Api\AddFile($this);
+                $api = new Api\AddFile($this, $fileReader);
                 break;
             case 'update-file':
-                $api = new Api\UpdateFile($this);
+                $api = new Api\UpdateFile($this, $fileReader);
                 break;
             case 'delete-file':
                 $api = new Api\DeleteFile($this);
@@ -77,7 +78,7 @@ class Client
                 $api = new Api\DeleteDirectory($this);
                 break;
             case 'upload-translation':
-                $api = new Api\UploadTranslation($this);
+                $api = new Api\UploadTranslation($this, $fileReader);
                 break;
             default:
                 throw new InvalidArgumentException(sprintf('Undefined api method "%s"', $method));
@@ -108,7 +109,7 @@ class Client
     public function getHttpClient()
     {
         if ($this->httpClient === null) {
-            $this->httpClient = new HttpClient(self::BASE_URL);
+            $this->httpClient = new HttpClient(['base_uri' => self::BASE_URL]);
         }
 
         return $this->httpClient;

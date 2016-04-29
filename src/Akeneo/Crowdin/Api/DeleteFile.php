@@ -30,12 +30,12 @@ class DeleteFile extends AbstractApi
             $this->client->getProjectApiKey()
         );
 
-        $parameters = array_merge($this->parameters, ['file' => $this->file]);
+        $parameters = ['file' => $this->file];
 
-        $request  = $this->client->getHttpClient()->post($path, [], $parameters);
-        $response = $request->send();
+        $data = ['form_params' => $parameters];
+        $response = $this->client->getHttpClient()->post($path, $data);
 
-        return $response->getBody(true);
+        return $response->getBody();
     }
 
     /**
