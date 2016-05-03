@@ -46,7 +46,7 @@ class DownloadSpec extends ObjectBehavior
     {
         $this->setCopyDestination('/tmp');
         $this->setPackage('all.zip');
-        $http->get('project/akeneo/download/all.zip?key=1234')->willReturn($response);
+        $http->get('project/akeneo/download/all.zip?key=1234', ["sink" => "/tmp/all.zip"])->willReturn($response);
         $response->getBody()->willReturn('bin');
         $this->execute()->shouldBe('bin');
     }
@@ -55,7 +55,7 @@ class DownloadSpec extends ObjectBehavior
     {
         $this->setCopyDestination('/tmp');
         $this->setPackage('fr.zip');
-        $http->get('project/akeneo/download/fr.zip?key=1234')->willReturn($response);
+        $http->get('project/akeneo/download/fr.zip?key=1234', ["sink" => "/tmp/fr.zip"])->willReturn($response);
         $response->getBody()->willReturn('bin');
         $this->execute()->shouldBe('bin');
     }
