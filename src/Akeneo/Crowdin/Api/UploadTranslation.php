@@ -110,6 +110,17 @@ class UploadTranslation extends AbstractApi
 
         return $this;
     }
+    
+    /**
+     * @param Translation[] $translations
+     * @return UploadTranslation
+     */
+    public function setTranslations(array $translations)
+    {
+        $this->translations = $translations;
+        
+        return $this;
+    }
 
     /**
      * @return Translation[]
