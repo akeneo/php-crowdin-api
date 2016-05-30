@@ -32,6 +32,9 @@ class UploadTranslation extends AbstractApi
 
     /** @var bool */
     protected $areImportsAutoApproved = false;
+    
+    /** @var string */
+    protected $branch;
 
     /**
      * @param Client     $client
@@ -78,6 +81,13 @@ class UploadTranslation extends AbstractApi
             'name'      => 'language',
             'contents'  => $this->locale
         ];
+        
+        if (null !== $this->branch) {
+            $data[] = [
+                'name'      => 'branch',
+                'contents'  => $this->branch
+            ];
+        }
 
         foreach ($this->translations as $translation) {
             $data[] = [
@@ -215,5 +225,25 @@ class UploadTranslation extends AbstractApi
     public function getLocale()
     {
         return $this->locale;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getBranch()
+    {
+        return $this->branch;
+    }
+
+    /**
+     * @param string $branch
+     *
+     * @return UploadTranslation
+     */
+    public function setBranch($branch)
+    {
+        $this->branch = $branch;
+
+        return $this;
     }
 }
