@@ -54,7 +54,7 @@ abstract class AbstractApi implements ApiInterface
      */
     public function addUrlParameter($key, $value)
     {
-        $this->urlParameters[] = sprintf('%s=%s', $key, $value);
+        $this->urlParameters[$key] = $value;
         
         return $this;
     }
@@ -65,7 +65,7 @@ abstract class AbstractApi implements ApiInterface
      */
     protected function getUrlQueryString()
     {
-        return implode('&', $this->urlParameters);
+        return http_build_query($this->urlParameters);
     }
 
     /**
