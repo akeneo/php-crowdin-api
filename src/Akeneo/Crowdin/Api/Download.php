@@ -24,11 +24,13 @@ class Download extends AbstractApi
      */
     public function execute()
     {
+        $this->addUrlParameter('key', $this->client->getProjectApiKey());
+        
         $path = sprintf(
-            "project/%s/download/%s?key=%s",
+            "project/%s/download/%s?%s",
             $this->client->getProjectIdentifier(),
             $this->package,
-            $this->client->getProjectApiKey()
+            $this->getUrlQueryString()
         );
         if (null !== $this->branch) {
             $path = sprintf('%s&branch=%s', $path, $this->branch);

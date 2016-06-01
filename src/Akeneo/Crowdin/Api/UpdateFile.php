@@ -42,10 +42,13 @@ class UpdateFile extends AbstractApi
         if (count($this->translations) === 0) {
             throw new InvalidArgumentException('There is no files to update');
         }
+        
+        $this->addUrlParameter('key', $this->client->getProjectApiKey());
+        
         $path = sprintf(
-            "project/%s/update-file?key=%s",
+            "project/%s/update-file?%s",
             $this->client->getProjectIdentifier(),
-            $this->client->getProjectApiKey()
+            $this->getUrlQueryString()
         );
 
         $data = $this->parameters;

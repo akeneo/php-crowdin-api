@@ -15,8 +15,14 @@ class SupportedLanguages extends AbstractApi
      */
     public function execute()
     {
+        $path = 'supported-languages';
+        
+        if (!empty($this->urlParameters)) {
+            $path .= sprintf('?%s', $this->getUrlQueryString());
+        }
+        
         $http     = $this->client->getHttpClient();
-        $response = $http->get('supported-languages');
+        $response = $http->get($path);
 
         return $response->getBody();
     }

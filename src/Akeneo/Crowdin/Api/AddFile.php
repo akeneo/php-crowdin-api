@@ -45,11 +45,13 @@ class AddFile extends AbstractApi
         if (0 === count($this->translations)) {
             throw new InvalidArgumentException('There is no files to add.');
         }
+        
+        $this->addUrlParameter('key', $this->client->getProjectApiKey());
 
         $path = sprintf(
-            "project/%s/add-file?key=%s",
+            "project/%s/add-file?%s",
             $this->client->getProjectIdentifier(),
-            $this->client->getProjectApiKey()
+            $this->getUrlQueryString()
         );
 
         $data = $this->parameters;

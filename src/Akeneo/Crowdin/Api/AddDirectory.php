@@ -29,11 +29,13 @@ class AddDirectory extends AbstractApi
         if (null == $this->directory) {
             throw new InvalidArgumentException('There is no directory to create.');
         }
+        
+        $this->addUrlParameter('key', $this->client->getProjectApiKey());
 
         $path = sprintf(
-            "project/%s/add-directory?key=%s",
+            "project/%s/add-directory?%s",
             $this->client->getProjectIdentifier(),
-            $this->client->getProjectApiKey()
+            $this->getUrlQueryString()
         );
 
         $parameters = ['name' => $this->directory];
