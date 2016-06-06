@@ -20,6 +20,13 @@ abstract class AbstractApi implements ApiInterface
      * @var array
      */
     protected $parameters = [];
+    
+    /**
+     * The url parameters
+     *
+     * @var array
+     */
+    protected $urlParameters =  [];
 
     /**
      * Instantiate an API
@@ -37,6 +44,28 @@ abstract class AbstractApi implements ApiInterface
     public function setParameters(array $parameters)
     {
         $this->parameters = $parameters;
+    }
+    
+    /**
+     * 
+     * @param string $key
+     * @param string $value
+     * @return AbstractApi
+     */
+    public function addUrlParameter($key, $value)
+    {
+        $this->urlParameters[$key] = $value;
+        
+        return $this;
+    }
+    
+    /**
+     * 
+     * @return string
+     */
+    protected function getUrlQueryString()
+    {
+        return http_build_query($this->urlParameters);
     }
 
     /**

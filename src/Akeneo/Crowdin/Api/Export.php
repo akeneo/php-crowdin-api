@@ -18,10 +18,12 @@ class Export extends AbstractApi
      */
     public function execute()
     {
+        $this->addUrlParameter('key', $this->client->getProjectApiKey());
+        
         $path = sprintf(
-            "project/%s/export?key=%s",
+            "project/%s/export?%s",
             $this->client->getProjectIdentifier(),
-            $this->client->getProjectApiKey()
+            $this->getUrlQueryString()
         );
         if (null !== $this->branch) {
             $path = sprintf('%s&branch=%s', $path, $this->branch);
