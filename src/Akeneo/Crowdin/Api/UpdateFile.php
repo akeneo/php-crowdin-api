@@ -11,7 +11,7 @@ use Akeneo\Crowdin\Translation;
  * Upload latest version of your localization file to Crowdin.
  *
  * @author Nicolas Dupont <nicolas@akeneo.com>
- * @see http://crowdin.net/page/api/update-file
+ * @see https://crowdin.com/page/api/update-file
  */
 class UpdateFile extends AbstractApi
 {

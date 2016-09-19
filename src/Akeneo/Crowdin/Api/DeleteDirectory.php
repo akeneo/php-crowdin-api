@@ -8,7 +8,7 @@ use \InvalidArgumentException;
  * Delete a directory from the Crowdin project. All nested files and directories will be deleted too.
  *
  * @author Julien Janvier <j.janvier@gmail.com>
- * @see http://crowdin.net/page/api/delete-directory
+ * @see https://crowdin.com/page/api/delete-directory
  */
 class DeleteDirectory extends AbstractApi
 {

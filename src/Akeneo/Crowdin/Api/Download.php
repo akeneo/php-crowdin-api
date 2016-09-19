@@ -6,7 +6,7 @@ namespace Akeneo\Crowdin\Api;
  * Download ZIP file with translations (all or chosen language)
  *
  * @author Nicolas Dupont <nicolas@akeneo.com>
- * @see http://crowdin.net/page/api/download
+ * @see https://crowdin.com/page/api/download
  */
 class Download extends AbstractApi
 {

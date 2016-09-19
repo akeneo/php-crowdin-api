@@ -6,7 +6,7 @@ namespace Akeneo\Crowdin\Api;
  * Get project details
  *
  * @author Nicolas Dupont <nicolas@akeneo.com>
- * @see http://crowdin.net/page/api/info
+ * @see https://crowdin.com/page/api/info
  */
 class Info extends AbstractApi
 {
