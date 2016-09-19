@@ -11,7 +11,7 @@ use Akeneo\Crowdin\Translation;
  * Adds a new file to a Crowdin project.
  *
  * @author Julien Janvier <j.janvier@gmail.com>
- * @see https://crowdin.net/page/api/add-file
+ * @see https://crowdin.com/page/api/add-file
  */
 class AddFile extends AbstractApi
 {

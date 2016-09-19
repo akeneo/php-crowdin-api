@@ -8,7 +8,7 @@ use \InvalidArgumentException;
  * Deletes a file from a Crowdin project. All the translations will be lost without ability to restore them.
  *
  * @author Julien Janvier <j.janvier@gmail.com>
- * @see http://crowdin.net/page/api/delete-file
+ * @see https://crowdin.com/page/api/delete-file
  */
 class DeleteFile extends AbstractApi
 {

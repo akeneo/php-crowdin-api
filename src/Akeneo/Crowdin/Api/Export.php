@@ -6,7 +6,7 @@ namespace Akeneo\Crowdin\Api;
  * Build ZIP archive with the latest translations. Can be invoked only once for 30 minutes.
  *
  * @author Nicolas Dupont <nicolas@akeneo.com>
- * @see http://crowdin.net/page/api/export
+ * @see https://crowdin.com/page/api/export
  */
 class Export extends AbstractApi
 {

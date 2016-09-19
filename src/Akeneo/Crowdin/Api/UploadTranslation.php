@@ -11,7 +11,7 @@ use Akeneo\Crowdin\Translation;
  *  Upload existing translations to your Crowdin project.
  *
  * @author Julien Janvier <j.janvier@gmail.com>
- * @see https://crowdin.net/page/api/upload-translation
+ * @see https://crowdin.com/page/api/upload-translation
  */
 class UploadTranslation extends AbstractApi
 {

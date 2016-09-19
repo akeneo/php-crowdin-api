@@ -6,7 +6,7 @@ namespace Akeneo\Crowdin\Api;
  * Project translation progress by language
  *
  * @author Nicolas Dupont <nicolas@akeneo.com>
- * @see http://crowdin.net/page/api/status
+ * @see https://crowdin.com/page/api/status
  */
 class Status extends AbstractApi
 {

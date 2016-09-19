@@ -6,7 +6,7 @@ namespace Akeneo\Crowdin\Api;
  * Get supported languages list
  *
  * @author Nicolas Dupont <nicolas@akeneo.com>
- * @see http://crowdin.net/page/api/supported-languages
+ * @see https://crowdin.com/page/api/supported-languages
  */
 class SupportedLanguages extends AbstractApi
 {

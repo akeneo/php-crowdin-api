@@ -8,7 +8,7 @@ use \InvalidArgumentException;
  * Add a directory to the Crowdin project.
  *
  * @author Julien Janvier <j.janvier@gmail.com>
- * @see http://crowdin.net/page/api/add-directory
+ * @see https://crowdin.com/page/api/add-directory
  */
 class AddDirectory extends AbstractApi
 {
