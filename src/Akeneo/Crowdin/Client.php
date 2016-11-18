@@ -80,6 +80,9 @@ class Client
             case 'upload-translation':
                 $api = new Api\UploadTranslation($this, $fileReader);
                 break;
+            case 'language-status':
+                $api = new Api\LanguageStatus($this);
+                break;
             default:
                 throw new InvalidArgumentException(sprintf('Undefined api method "%s"', $method));
         }
