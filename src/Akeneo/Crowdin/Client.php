@@ -71,6 +71,9 @@ class Client
             case 'export':
                 $api = new Api\Export($this);
                 break;
+            case 'export-file':
+                $api = new Api\ExportFile($this);
+                break;
             case 'add-directory':
                 $api = new Api\AddDirectory($this);
                 break;
