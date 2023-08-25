@@ -1,0 +1,16 @@
+version: '3'
+
+services:
+    php:
+        image: 'akeneo/crowdin-api:php-8.1'
+        build:
+            context: .
+        user: 'docker'
+        working_dir: '/srv/app'
+        environment:
+            PHP_IDE_CONFIG: 'serverName=crowdin_api'
+            XDEBUG_MODE: '${XDEBUG_MODE:-off}'
+            XDEBUG_CONFIG: 'remote_host=172.17.0.1'
+            GIT_SSH_COMMAND: 'ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no'
+        volumes:
+            - './:/srv/app'
