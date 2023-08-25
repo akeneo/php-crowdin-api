@@ -35,7 +35,8 @@ class Download extends AbstractApi
         if (null !== $this->branch) {
             $path = sprintf('%s&branch=%s', $path, $this->branch);
         }
-        $response = $this->client->getHttpClient()->get($path,
+        $response = $this->client->getHttpClient()->get(
+            $path,
             [
                 'sink' => $this->getCopyDestination() . '/' . $this->getPackage()
             ]
