@@ -44,21 +44,19 @@ class DownloadSpec extends ObjectBehavior
     {
         $this->setCopyDestination('/tmp');
         $this->setPackage('all.zip');
-        $http->request('GET', 'project/akeneo/download/all.zip?key=1234', ["sink" => "/tmp/all.zip"])->willReturn(
-            $response
-        );
-        $response->getContent()->willReturn('bin');
-        $this->execute()->shouldBe('bin');
+        $http->request('GET', 'project/akeneo/download/all.zip?key=1234')
+            ->willReturn($response);
+        $response->getContent()->willReturn('translations content');
+        $this->execute()->shouldBe('translations content');
     }
 
     public function it_downloads_french_translations(HttpClientInterface $http, ResponseInterface $response)
     {
         $this->setCopyDestination('/tmp');
         $this->setPackage('fr.zip');
-        $http->request('GET', 'project/akeneo/download/fr.zip?key=1234', ["sink" => "/tmp/fr.zip"])->willReturn(
-            $response
-        );
-        $response->getContent()->willReturn('bin');
-        $this->execute()->shouldBe('bin');
+        $http->request('GET', 'project/akeneo/download/fr.zip?key=1234')
+            ->willReturn($response);
+        $response->getContent()->willReturn('translations content');
+        $this->execute()->shouldBe('translations content');
     }
 }

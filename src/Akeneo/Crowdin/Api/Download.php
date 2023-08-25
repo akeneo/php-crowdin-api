@@ -30,15 +30,14 @@ class Download extends AbstractApi
         if (null !== $this->branch) {
             $path = sprintf('%s&branch=%s', $path, $this->branch);
         }
-        $response = $this->client->getHttpClient()->request(
-            'GET',
-            $path,
-            [
-                'sink' => $this->getCopyDestination() . '/' . $this->getPackage(),
-            ]
-        );
 
-        return $response->getContent();
+        $filePath = $this->getCopyDestination() . '/' . $this->getPackage();
+        $response = $this->client->getHttpClient()->request('GET', $path);
+
+        $fileContent = $response->getContent();
+        file_put_contents($filePath, $fileContent);
+
+        return $fileContent;
     }
 
     public function setPackage(string $package): static
