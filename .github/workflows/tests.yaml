@@ -26,8 +26,11 @@ jobs:
             - name: Install dependencies
               run: docker-compose run --rm php composer install
 
-            - name: Check code style
+            - name: Code style check
               run: docker-compose run --rm php vendor/bin/php-cs-fixer fix --dry-run -v --diff --config=.php_cs.php
+
+            - name: Static checks
+              run: docker-compose run --rm php vendor/bin/phpstan analyze src --level 5
 
             - name: Run specs
               run: docker-compose run --rm php vendor/bin/phpspec run
@@ -51,9 +54,5 @@ jobs:
             - name: Install dependencies
               run: composer update
 
-            - name: Check code style
-              run: vendor/bin/php-cs-fixer fix --dry-run -v --diff --config=.php_cs.php
-
             - name: Run specs
               run: vendor/bin/phpspec run
-
