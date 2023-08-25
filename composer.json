@@ -32,7 +32,8 @@
     },
     "require-dev": {
         "phpspec/phpspec": "^7.4.0",
-        "friendsofphp/php-cs-fixer": "^v3.23.0"
+        "friendsofphp/php-cs-fixer": "^v3.23.0",
+        "phpstan/phpstan": "^1.10"
     },
     "autoload": {
         "psr-4": {
