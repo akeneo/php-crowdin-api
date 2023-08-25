@@ -28,7 +28,6 @@
     ],
     "require": {
         "php": "^8.1",
-        "guzzlehttp/guzzle": "@stable",
         "symfony/http-client": "^6.3.2"
     },
     "require-dev": {
