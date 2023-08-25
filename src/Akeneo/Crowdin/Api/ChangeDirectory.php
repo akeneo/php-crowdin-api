@@ -14,10 +14,10 @@ use InvalidArgumentException;
 class ChangeDirectory extends AbstractApi
 {
     protected string $name;
-    protected ?string $newName;
-    protected ?string $title;
-    protected ?string $exportPattern;
-    protected ?string $branch;
+    protected ?string $newName = null;
+    protected ?string $title = null;
+    protected ?string $exportPattern = null;
+    protected ?string $branch = null;
 
     /**
      * {@inheritdoc}

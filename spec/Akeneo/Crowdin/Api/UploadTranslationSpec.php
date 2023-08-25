@@ -9,10 +9,12 @@ use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
+use Symfony\Contracts\HttpClient\HttpClientInterface;
+use Symfony\Contracts\HttpClient\ResponseInterface;
 
 class UploadTranslationSpec extends ObjectBehavior
 {
-    public function let(Client $client, HttpClient $http, FileReader $fileReader)
+    public function let(Client $client, HttpClientInterface $http, FileReader $fileReader)
     {
         $client->getHttpClient()->willReturn($http);
         $client->getProjectIdentifier()->willReturn('sylius');
@@ -27,7 +29,10 @@ class UploadTranslationSpec extends ObjectBehavior
 
     public function it_should_not_allow_not_existing_translation()
     {
-        $this->shouldThrow('\InvalidArgumentException')->duringAddTranslation('crowdin/path/file.yml', '/tmp/my-file.yml');
+        $this->shouldThrow('\InvalidArgumentException')->duringAddTranslation(
+            'crowdin/path/file.yml',
+            '/tmp/my-file.yml'
+        );
     }
 
     public function it_has_translations()
@@ -51,58 +56,66 @@ class UploadTranslationSpec extends ObjectBehavior
         $this->areImportsAutoApproved()->shouldBe(false);
     }
 
-    public function it_should_not_allow_upload_with_no_translation(HttpClient $http, Request $request, Response $response)
-    {
+    public function it_should_not_allow_upload_with_no_translation(
+        HttpClientInterface $http,
+        ResponseInterface $response
+    ) {
         $this->setLocale('fr');
         $content = '<xml></xml>';
-        $response->getBody()->willReturn($content);
-        $http->post('project/sylius/upload-translation?key=1234')->willReturn($response);
+        $response->getContent()->willReturn($content);
+        $http->request('POST', 'project/sylius/upload-translation?key=1234')->willReturn($response);
 
         $this->shouldThrow('\InvalidArgumentException')->duringExecute();
     }
 
-    public function it_should_not_allow_upload_with_no_locale(HttpClient $http, Request $request, Response $response)
+    public function it_should_not_allow_upload_with_no_locale(HttpClientInterface $http, ResponseInterface $response)
     {
         $this->addTranslation('spec/fixtures/messages.en.yml', 'crowdin/path/file.yml');
         $content = '<xml></xml>';
-        $response->getBody()->willReturn($content);
-        $http->post('project/sylius/upload-translation?key=1234')->willReturn($response);
+        $response->getContent()->willReturn($content);
+        $http->request('POST', 'project/sylius/upload-translation?key=1234')->willReturn($response);
 
-        $this->shouldThrow('\InvalidArgumentException')->duringExecute();
+        $this->shouldThrow()->duringExecute();
     }
 
-    public function it_uploads_some_translations(FileReader $fileReader, HttpClient $http, Request $request, Response $response)
-    {
+    public function it_uploads_some_translations(
+        FileReader $fileReader,
+        HttpClientInterface $http,
+        ResponseInterface $response
+    ) {
         $this->addTranslation('spec/fixtures/messages.en.yml', 'crowdin/path/file.yml');
         $this->setLocale('fr');
         $content = '<xml></xml>';
-        $response->getBody()->willReturn($content);
+        $response->getContent()->willReturn($content);
         $fakeResource = '[fake resource]';
         $fileReader->readTranslation(Argument::any())->willReturn($fakeResource);
-        $http->post(
+        $http->request(
+            'POST',
             'project/sylius/upload-translation?key=1234',
-            ['multipart' => [
-                [
-                    'name'      => 'import_duplicates',
-                    'contents'  => 0
+            [
+                'multipart' => [
+                    [
+                        'name' => 'import_duplicates',
+                        'contents' => 0,
+                    ],
+                    [
+                        'name' => 'import_eq_suggestions',
+                        'contents' => 0,
+                    ],
+                    [
+                        'name' => 'auto_approve_imported',
+                        'contents' => 0,
+                    ],
+                    [
+                        'name' => 'language',
+                        'contents' => 'fr',
+                    ],
+                    [
+                        'name' => 'files[crowdin/path/file.yml]',
+                        'contents' => $fakeResource,
+                    ],
                 ],
-                [
-                    'name'      => 'import_eq_suggestions',
-                    'contents'  => 0
-                ],
-                [
-                    'name'      => 'auto_approve_imported',
-                    'contents'  => 0
-                ],
-                [
-                    'name'      => 'language',
-                    'contents'  => 'fr'
-                ],
-                [
-                    'name'      => 'files[crowdin/path/file.yml]',
-                    'contents'  => $fakeResource,
-                ],
-            ]]
+            ]
         )->willReturn($response);
         $this->execute()->shouldBe($content);
     }

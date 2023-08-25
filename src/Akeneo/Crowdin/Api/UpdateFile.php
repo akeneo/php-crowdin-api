@@ -2,10 +2,10 @@
 
 namespace Akeneo\Crowdin\Api;
 
-use InvalidArgumentException;
 use Akeneo\Crowdin\Client;
 use Akeneo\Crowdin\FileReader;
 use Akeneo\Crowdin\Translation;
+use InvalidArgumentException;
 
 /**
  * Upload latest version of your localization file to Crowdin.
@@ -18,7 +18,7 @@ class UpdateFile extends AbstractApi
     protected FileReader $fileReader;
 
     /** @var Translation[] */
-    protected array $translations;
+    protected array $translations = [];
     protected ?string $branch = null;
 
     public function __construct(Client $client, FileReader $fileReader)

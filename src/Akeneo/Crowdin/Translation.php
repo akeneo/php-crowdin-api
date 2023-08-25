@@ -32,7 +32,7 @@ class Translation
         return $this->crowdinPath;
     }
 
-    public function setExportPattern(string $exportPattern): void
+    public function setExportPattern(?string $exportPattern): void
     {
         $this->exportPattern = $exportPattern;
     }
@@ -59,7 +59,7 @@ class Translation
         return $this->localPath;
     }
 
-    public function setTitle(string $title): void
+    public function setTitle(?string $title): void
     {
         $this->title = $title;
     }
