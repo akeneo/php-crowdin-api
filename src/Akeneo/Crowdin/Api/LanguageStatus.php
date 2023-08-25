@@ -31,7 +31,7 @@ class LanguageStatus extends AbstractApi
             $this->client->getProjectIdentifier(),
             $this->client->getProjectApiKey()
         );
-        $parameters = array_merge($this->parameters, ['form_params' => ['language' => $this->getLanguage()]]);
+        $parameters = array_merge($this->parameters, ['body' => ['language' => $this->getLanguage()]]);
         $response = $this->client->getHttpClient()->request('POST', $path, $parameters);
 
         return $response->getContent();

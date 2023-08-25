@@ -42,7 +42,7 @@ class DeleteFileSpec extends ObjectBehavior
         $http->request(
             'POST',
             'project/sylius/delete-file?key=1234',
-            ['form_params' => ['file' => 'path/to/my/file']]
+            ['body' => ['file' => 'path/to/my/file']]
         )->willReturn($response);
 
         $this->execute()->shouldBe($content);

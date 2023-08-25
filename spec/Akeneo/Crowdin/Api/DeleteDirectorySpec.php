@@ -39,7 +39,7 @@ class DeleteDirectorySpec extends ObjectBehavior
         $http->request(
             'POST',
             'project/sylius/delete-directory?key=1234',
-            ['form_params' => ['name' => 'directory-to-delete']]
+            ['body' => ['name' => 'directory-to-delete']]
         )->willReturn($response);
 
         $this->execute()->shouldBe($content);

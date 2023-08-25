@@ -33,7 +33,7 @@ class DeleteFile extends AbstractApi
 
         $parameters = ['file' => $this->file];
 
-        $data = ['form_params' => $parameters];
+        $data = ['body' => $parameters];
         $response = $this->client->getHttpClient()->request('POST', $path, $data);
 
         return $response->getContent();
