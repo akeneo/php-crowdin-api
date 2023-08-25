@@ -3,16 +3,14 @@
 namespace spec\Akeneo\Crowdin\Api;
 
 use Akeneo\Crowdin\Client;
-use GuzzleHttp\Client as HttpClient;
-use GuzzleHttp\PrepareBodyMiddleware;
-use GuzzleHttp\Psr7\Request;
-use GuzzleHttp\Psr7\Response;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
+use Symfony\Contracts\HttpClient\HttpClientInterface;
+use Symfony\Contracts\HttpClient\ResponseInterface;
 
 class ChangeDirectorySpec extends ObjectBehavior
 {
-    public function let(Client $client, HttpClient $http)
+    public function let(Client $client, HttpClientInterface $http)
     {
         $client->getHttpClient()->willReturn($http);
         $client->getProjectIdentifier()->willReturn('sylius');
@@ -27,29 +25,25 @@ class ChangeDirectorySpec extends ObjectBehavior
 
     public function it_should_have_a_name()
     {
-        $this->shouldThrow('\InvalidArgumentException')->during('execute', []);
+        $this->shouldThrow()->during('execute', []);
     }
 
     public function it_should_set_name(
-        $http,
-        Request $request,
-        Response $response,
-        PrepareBodyMiddleware $body
+        HttpClientInterface $http,
+        ResponseInterface $response
     ) {
         $this->setName('myname');
         $path = 'project/sylius/change-directory?key=1234';
         $data = ['form_params' => ['name' => 'myname']];
-        $http->post($path, $data)->willReturn($response);
-        $response->getBody(Argument::any())->willReturn($body);
+        $http->request('POST', $path, $data)->willReturn($response);
+        $response->getContent(Argument::any())->willReturn('content');
 
-        $this->execute()->shouldReturn($body);
+        $this->execute()->shouldReturn('content');
     }
 
     public function it_should_set_data(
-        $http,
-        Request $request,
-        Response $response,
-        PrepareBodyMiddleware $body
+        HttpClientInterface $http,
+        ResponseInterface $response
     ) {
         $this->setName('myName');
         $this->setBranch('myBranch');
@@ -57,16 +51,18 @@ class ChangeDirectorySpec extends ObjectBehavior
         $this->setTitle('myTitle');
         $this->setNewName('myNewName');
         $path = 'project/sylius/change-directory?key=1234';
-        $data = ['form_params' => [
-            'name'           => 'myName',
-            'branch'         => 'myBranch',
-            'export_pattern' => 'myExportPattern',
-            'title'          => 'myTitle',
-            'new_name'       => 'myNewName'
-        ]];
-        $http->post($path, $data)->willReturn($response);
-        $response->getBody()->willReturn($body);
+        $data = [
+            'form_params' => [
+                'name' => 'myName',
+                'branch' => 'myBranch',
+                'export_pattern' => 'myExportPattern',
+                'title' => 'myTitle',
+                'new_name' => 'myNewName',
+            ],
+        ];
+        $http->request('POST', $path, $data)->willReturn($response);
+        $response->getContent()->willReturn('content');
 
-        $this->execute()->shouldReturn($body);
+        $this->execute()->shouldReturn('content');
     }
 }

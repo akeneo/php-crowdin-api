@@ -3,15 +3,13 @@
 namespace spec\Akeneo\Crowdin\Api;
 
 use Akeneo\Crowdin\Client;
-use GuzzleHttp\Client as HttpClient;
-use GuzzleHttp\Psr7\Request;
-use GuzzleHttp\Psr7\Response;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
+use Symfony\Contracts\HttpClient\HttpClientInterface;
+use Symfony\Contracts\HttpClient\ResponseInterface;
 
 class DownloadSpec extends ObjectBehavior
 {
-    public function let(Client $client, HttpClient $http)
+    public function let(Client $client, HttpClientInterface $http)
     {
         $client->getHttpClient()->willReturn($http);
         $client->getProjectIdentifier()->willReturn('akeneo');
@@ -42,21 +40,25 @@ class DownloadSpec extends ObjectBehavior
         $this->getCopyDestination()->shouldReturn('/tmp/');
     }
 
-    public function it_downloads_all_translations(HttpClient $http, Request $request, Response $response)
+    public function it_downloads_all_translations(HttpClientInterface $http, ResponseInterface $response)
     {
         $this->setCopyDestination('/tmp');
         $this->setPackage('all.zip');
-        $http->get('project/akeneo/download/all.zip?key=1234', ["sink" => "/tmp/all.zip"])->willReturn($response);
-        $response->getBody()->willReturn('bin');
+        $http->request('GET', 'project/akeneo/download/all.zip?key=1234', ["sink" => "/tmp/all.zip"])->willReturn(
+            $response
+        );
+        $response->getContent()->willReturn('bin');
         $this->execute()->shouldBe('bin');
     }
 
-    public function it_downloads_french_translations(HttpClient $http, Request $request, Response $response)
+    public function it_downloads_french_translations(HttpClientInterface $http, ResponseInterface $response)
     {
         $this->setCopyDestination('/tmp');
         $this->setPackage('fr.zip');
-        $http->get('project/akeneo/download/fr.zip?key=1234', ["sink" => "/tmp/fr.zip"])->willReturn($response);
-        $response->getBody()->willReturn('bin');
+        $http->request('GET', 'project/akeneo/download/fr.zip?key=1234', ["sink" => "/tmp/fr.zip"])->willReturn(
+            $response
+        );
+        $response->getContent()->willReturn('bin');
         $this->execute()->shouldBe('bin');
     }
 }

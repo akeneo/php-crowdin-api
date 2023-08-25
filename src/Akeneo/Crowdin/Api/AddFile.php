@@ -16,9 +16,9 @@ use InvalidArgumentException;
 class AddFile extends AbstractApi
 {
     /** @var Translation[] */
-    protected array $translations;
-    protected ?string $type;
-    protected ?string $branch;
+    protected array $translations = [];
+    protected ?string $type = null;
+    protected ?string $branch = null;
 
     public function __construct(Client $client, protected FileReader $fileReader)
     {

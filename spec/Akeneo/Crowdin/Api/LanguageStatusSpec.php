@@ -3,14 +3,13 @@
 namespace spec\Akeneo\Crowdin\Api;
 
 use Akeneo\Crowdin\Client;
-use GuzzleHttp\Client as HttpClient;
-use GuzzleHttp\Psr7\Response;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
+use Symfony\Contracts\HttpClient\HttpClientInterface;
+use Symfony\Contracts\HttpClient\ResponseInterface;
 
 class LanguageStatusSpec extends ObjectBehavior
 {
-    public function let(Client $client, HttpClient $http)
+    public function let(Client $client, HttpClientInterface $http)
     {
         $client->getHttpClient()->willReturn($http);
         $client->getProjectIdentifier()->willReturn('akeneo');
@@ -24,12 +23,16 @@ class LanguageStatusSpec extends ObjectBehavior
     }
 
     public function it_gets_project_language_status(
-        HttpClient $http,
-        Response $response
+        HttpClientInterface $http,
+        ResponseInterface $response
     ) {
         $this->setLanguage('fr')->shouldBe($this);
-        $http->post('project/akeneo/language-status?key=1234', ['form_params' => ['language' => 'fr']])->willReturn($response);
-        $response->getBody(true)->willReturn('<xml></xml>');
+        $http->request(
+            'POST',
+            'project/akeneo/language-status?key=1234',
+            ['form_params' => ['language' => 'fr']]
+        )->willReturn($response);
+        $response->getContent()->willReturn('<xml></xml>');
         $this->execute()->shouldBe('<xml></xml>');
     }
 }

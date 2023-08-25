@@ -18,7 +18,7 @@ class UploadTranslation extends AbstractApi
     protected FileReader $fileReader;
 
     /** @var Translation[] */
-    protected array $translations;
+    protected array $translations = [];
 
     protected ?string $locale = null;
 
