@@ -6,26 +6,21 @@ namespace Akeneo\Crowdin\Api;
  * Download ZIP file with translations (all or chosen language)
  *
  * @author Nicolas Dupont <nicolas@akeneo.com>
- * @see https://crowdin.com/page/api/download
+ * @see    https://crowdin.com/page/api/download
  */
 class Download extends AbstractApi
 {
-    /** @var string */
-    protected $package = 'all.zip';
-
-    /** @var string */
-    protected $copyDestination = '/tmp';
-
-    /** @var string */
-    protected $branch;
+    protected string $package = 'all.zip';
+    protected string $copyDestination = '/tmp';
+    protected ?string $branch = null;
 
     /**
      * {@inheritdoc}
      */
-    public function execute()
+    public function execute(): string
     {
         $this->addUrlParameter('key', $this->client->getProjectApiKey());
-        
+
         $path = sprintf(
             "project/%s/download/%s?%s",
             $this->client->getProjectIdentifier(),
@@ -35,70 +30,47 @@ class Download extends AbstractApi
         if (null !== $this->branch) {
             $path = sprintf('%s&branch=%s', $path, $this->branch);
         }
-        $response = $this->client->getHttpClient()->get(
+        $response = $this->client->getHttpClient()->request(
+            'GET',
             $path,
             [
-                'sink' => $this->getCopyDestination() . '/' . $this->getPackage()
+                'sink' => $this->getCopyDestination() . '/' . $this->getPackage(),
             ]
         );
 
-        return $response->getBody();
+        return $response->getContent();
     }
 
-    /**
-     * @param string $package
-     *
-     * @return Download
-     */
-    public function setPackage($package)
+    public function setPackage(string $package): static
     {
         $this->package = $package;
 
         return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getPackage()
+    public function getPackage(): string
     {
         return $this->package;
     }
 
-    /**
-     * @param string $dest
-     *
-     * @return Download
-     */
-    public function setCopyDestination($dest)
+    public function setCopyDestination(string $dest): static
     {
         $this->copyDestination = $dest;
 
         return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getCopyDestination()
+    public function getCopyDestination(): string
     {
         return $this->copyDestination;
     }
 
-    /**
-     * @return string
-     */
-    public function getBranch()
+    public function getBranch(): ?string
     {
         return $this->branch;
     }
 
-    /**
-     * @param string $branch
-     *
-     * @return Download
-     */
-    public function setBranch($branch)
+    public function setBranch(string $branch): static
     {
         $this->branch = $branch;
 

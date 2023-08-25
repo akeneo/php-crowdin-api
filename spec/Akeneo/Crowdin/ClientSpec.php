@@ -2,8 +2,9 @@
 
 namespace spec\Akeneo\Crowdin;
 
+use Akeneo\Crowdin\Api\Download;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
+use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class ClientSpec extends ObjectBehavior
 {
@@ -24,16 +25,16 @@ class ClientSpec extends ObjectBehavior
 
     public function it_has_a_http_client()
     {
-        $this->getHttpClient()->shouldBeAnInstanceOf('GuzzleHttp\Client');
+        $this->getHttpClient()->shouldBeAnInstanceOf(HttpClientInterface::class);
     }
 
     public function it_allow_defined_api_method()
     {
-        $this->api('download')->shouldReturnAnInstanceOf('Akeneo\Crowdin\Api\Download');
+        $this->api('download')->shouldReturnAnInstanceOf(Download::class);
     }
 
     public function it_should_not_allow_undefined_api_method()
     {
-        $this->shouldThrow('\InvalidArgumentException')->duringApi('unknow');
+        $this->shouldThrow(\InvalidArgumentException::class)->duringApi('unknow');
     }
 }

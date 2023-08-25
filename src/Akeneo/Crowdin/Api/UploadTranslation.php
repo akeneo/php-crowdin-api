@@ -11,35 +11,22 @@ use Akeneo\Crowdin\Translation;
  *  Upload existing translations to your Crowdin project.
  *
  * @author Julien Janvier <j.janvier@gmail.com>
- * @see https://crowdin.com/page/api/upload-translation
+ * @see    https://crowdin.com/page/api/upload-translation
  */
 class UploadTranslation extends AbstractApi
 {
-    /** @var FileReader */
-    protected $fileReader;
+    protected FileReader $fileReader;
 
     /** @var Translation[] */
-    protected $translations;
+    protected array $translations;
 
-    /** @var string */
-    protected $locale;
+    protected ?string $locale = null;
 
-    /** @var bool */
-    protected $areDuplicatesImported = false;
+    protected bool $areDuplicatesImported = false;
+    protected bool $areEqualSuggestionsImported = false;
+    protected bool $areImportsAutoApproved = false;
+    protected ?string $branch = null;
 
-    /** @var bool */
-    protected $areEqualSuggestionsImported = false;
-
-    /** @var bool */
-    protected $areImportsAutoApproved = false;
-    
-    /** @var string */
-    protected $branch;
-
-    /**
-     * @param Client     $client
-     * @param FileReader $fileReader
-     */
     public function __construct(Client $client, FileReader $fileReader)
     {
         parent::__construct($client);
@@ -49,7 +36,7 @@ class UploadTranslation extends AbstractApi
     /**
      * {@inheritdoc}
      */
-    public function execute()
+    public function execute(): string
     {
         if (0 === count($this->translations)) {
             throw new InvalidArgumentException('There are no translations to upload.');
@@ -60,7 +47,7 @@ class UploadTranslation extends AbstractApi
         }
 
         $this->addUrlParameter('key', $this->client->getProjectApiKey());
-        
+
         $path = sprintf(
             "project/%s/upload-translation?%s",
             $this->client->getProjectIdentifier(),
@@ -68,52 +55,48 @@ class UploadTranslation extends AbstractApi
         );
 
         $data[] = [
-            'name'      => 'import_duplicates',
-            'contents'  => (int)$this->areDuplicatesImported
+            'name' => 'import_duplicates',
+            'contents' => (int)$this->areDuplicatesImported,
         ];
         $data[] = [
-            'name'      => 'import_eq_suggestions',
-            'contents'  => (int)$this->areEqualSuggestionsImported
+            'name' => 'import_eq_suggestions',
+            'contents' => (int)$this->areEqualSuggestionsImported,
         ];
         $data[] = [
-            'name'      => 'auto_approve_imported',
-            'contents'  => (int)$this->areImportsAutoApproved
+            'name' => 'auto_approve_imported',
+            'contents' => (int)$this->areImportsAutoApproved,
         ];
         $data[] = [
-            'name'      => 'language',
-            'contents'  => $this->locale
+            'name' => 'language',
+            'contents' => $this->locale,
         ];
-        
+
         if (null !== $this->branch) {
             $data[] = [
-                'name'      => 'branch',
-                'contents'  => $this->branch
+                'name' => 'branch',
+                'contents' => $this->branch,
             ];
         }
 
         foreach ($this->translations as $translation) {
             $data[] = [
-                'name'       => 'files['.$translation->getCrowdinPath().']',
-                'contents'   => $this->fileReader->readTranslation($translation)
+                'name' => 'files[' . $translation->getCrowdinPath() . ']',
+                'contents' => $this->fileReader->readTranslation($translation),
             ];
         }
 
         $data = ['multipart' => $data];
-        $response = $this->client->getHttpClient()->post($path, $data);
+        $response = $this->client->getHttpClient()->request('POST', $path, $data);
 
-        return $response->getBody();
+        return $response->getContent();
     }
 
-    /**
-     * @param string $localPath
-     * @param string $crowdinPath
-     * @param string $exportPattern
-     * @param string $title
-     *
-     * @return $this
-     */
-    public function addTranslation($localPath, $crowdinPath, $exportPattern = null, $title = null)
-    {
+    public function addTranslation(
+        string $localPath,
+        string $crowdinPath,
+        string $exportPattern = null,
+        string $title = null
+    ): static {
         $translation = new Translation($localPath, $crowdinPath);
         $translation->setExportPattern($exportPattern);
         $translation->setTitle($title);
@@ -122,138 +105,91 @@ class UploadTranslation extends AbstractApi
 
         return $this;
     }
-    
+
     /**
      * @param Translation[] $translations
-     * @return UploadTranslation
      */
-    public function setTranslations(array $translations)
+    public function setTranslations(array $translations): static
     {
         $this->translations = $translations;
-        
+
         return $this;
     }
 
     /**
      * @return Translation[]
      */
-    public function getTranslations()
+    public function getTranslations(): array
     {
         return $this->translations;
     }
 
     /**
-     * @param bool $importsAutoApproved
-     *
      * @throws InvalidArgumentException
      *
-     * @return UploadTranslation
      */
-    public function setImportsAutoApproved($importsAutoApproved)
+    public function setImportsAutoApproved(bool $importsAutoApproved): static
     {
-        if (!is_bool($importsAutoApproved)) {
-            throw new InvalidArgumentException('A boolean is required.');
-        }
-
         $this->areImportsAutoApproved = $importsAutoApproved;
 
         return $this;
     }
 
-    /**
-     * @return bool
-     */
-    public function areImportsAutoApproved()
+    public function areImportsAutoApproved(): bool
     {
         return $this->areImportsAutoApproved;
     }
 
     /**
-     * @param bool $duplicatesImported
-     *
      * @throws InvalidArgumentException
      *
-     * @return UploadTranslation
      */
-    public function setDuplicatesImported($duplicatesImported)
+    public function setDuplicatesImported(bool $duplicatesImported): static
     {
-        if (!is_bool($duplicatesImported)) {
-            throw new InvalidArgumentException('A boolean is required.');
-        }
-
         $this->areDuplicatesImported = $duplicatesImported;
 
         return $this;
     }
 
-    /**
-     * @return bool
-     */
-    public function areDuplicatesImported()
+    public function areDuplicatesImported(): bool
     {
         return $this->areDuplicatesImported;
     }
 
     /**
-     * @param bool $equalSuggestionsImported
-     *
      * @throws InvalidArgumentException
      *
-     * @return UploadTranslation
      */
-    public function setEqualSuggestionsImported($equalSuggestionsImported)
+    public function setEqualSuggestionsImported(bool $equalSuggestionsImported): static
     {
-        if (!is_bool($equalSuggestionsImported)) {
-            throw new InvalidArgumentException('A boolean is required.');
-        }
-
         $this->areEqualSuggestionsImported = $equalSuggestionsImported;
 
         return $this;
     }
 
-    /**
-     * @return bool
-     */
-    public function areEqualSuggestionsImported()
+    public function areEqualSuggestionsImported(): bool
     {
         return $this->areEqualSuggestionsImported;
     }
 
-    /**
-     * @param string $locale
-     *
-     * @return UploadTranslation
-     */
-    public function setLocale($locale)
+    public function setLocale(string $locale): static
     {
         $this->locale = $locale;
 
         return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getLocale()
+    public function getLocale(): ?string
     {
         return $this->locale;
     }
 
-    /**
-     * @return string|null
-     */
-    public function getBranch()
+    public function getBranch(): ?string
     {
         return $this->branch;
     }
 
-    /**
-     * @param string $branch
-     *
-     * @return UploadTranslation
-     */
-    public function setBranch($branch)
+    public function setBranch(string $branch): static
     {
         $this->branch = $branch;
 

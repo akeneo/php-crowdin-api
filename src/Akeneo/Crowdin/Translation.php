@@ -2,7 +2,7 @@
 
 namespace Akeneo\Crowdin;
 
-use \InvalidArgumentException;
+use InvalidArgumentException;
 
 /**
  * Simple Crowdin translation.
@@ -11,62 +11,41 @@ use \InvalidArgumentException;
  */
 class Translation
 {
-    /** @var string */
-    protected $localPath;
+    protected string $localPath;
+    protected string $crowdinPath;
+    protected ?string $title = null;
+    protected ?string $exportPattern = null;
 
-    /** @var string */
-    protected $crowdinPath;
-
-    /** @var string */
-    protected $title;
-
-    /** @var string */
-    protected $exportPattern;
-
-    public function __construct($localPath, $crowdinPath)
+    public function __construct(string $localPath, string $crowdinPath)
     {
         $this->setLocalPath($localPath);
         $this->setCrowdinPath($crowdinPath);
     }
 
-    /**
-     * @param string $crowdinPath
-     */
-    public function setCrowdinPath($crowdinPath)
+    public function setCrowdinPath(string $crowdinPath): void
     {
         $this->crowdinPath = $crowdinPath;
     }
 
-    /**
-     * @return string
-     */
-    public function getCrowdinPath()
+    public function getCrowdinPath(): string
     {
         return $this->crowdinPath;
     }
 
-    /**
-     * @param string $exportPattern
-     */
-    public function setExportPattern($exportPattern)
+    public function setExportPattern(string $exportPattern): void
     {
         $this->exportPattern = $exportPattern;
     }
 
-    /**
-     * @return string
-     */
-    public function getExportPattern()
+    public function getExportPattern(): ?string
     {
         return $this->exportPattern;
     }
 
     /**
-     * @param string $localPath
-     *
      * @throws InvalidArgumentException
      */
-    public function setLocalPath($localPath)
+    public function setLocalPath(string $localPath): void
     {
         if (!file_exists($localPath)) {
             throw new InvalidArgumentException(sprintf('File %s does not exist', $localPath));
@@ -75,26 +54,17 @@ class Translation
         $this->localPath = $localPath;
     }
 
-    /**
-     * @return string
-     */
-    public function getLocalPath()
+    public function getLocalPath(): string
     {
         return $this->localPath;
     }
 
-    /**
-     * @param string $title
-     */
-    public function setTitle($title)
+    public function setTitle(string $title): void
     {
         $this->title = $title;
     }
 
-    /**
-     * @return string
-     */
-    public function getTitle()
+    public function getTitle(): ?string
     {
         return $this->title;
     }

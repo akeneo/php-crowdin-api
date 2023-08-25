@@ -2,24 +2,19 @@
 
 namespace Akeneo\Crowdin\Api;
 
-use \InvalidArgumentException;
+use InvalidArgumentException;
 
 /**
  * Add a directory to the Crowdin project.
  *
  * @author Julien Janvier <j.janvier@gmail.com>
- * @see https://crowdin.com/page/api/add-directory
+ * @see    https://crowdin.com/page/api/add-directory
  */
 class AddDirectory extends AbstractApi
 {
-    /** @var string */
-    protected $directory;
-
-    /** @var bool */
-    protected $isBranch = false;
-
-    /** @var string */
-    protected $branch;
+    protected string $directory;
+    protected bool $isBranch = false;
+    protected ?string $branch = null;
 
     /**
      * {@inheritdoc}
@@ -29,7 +24,7 @@ class AddDirectory extends AbstractApi
         if (null == $this->directory) {
             throw new InvalidArgumentException('There is no directory to create.');
         }
-        
+
         $this->addUrlParameter('key', $this->client->getProjectApiKey());
 
         $path = sprintf(
@@ -47,55 +42,37 @@ class AddDirectory extends AbstractApi
         }
 
         $data = ['form_params' => $parameters];
-        $response = $this->client->getHttpClient()->post($path, $data);
+        $response = $this->client->getHttpClient()->request('POST', $path, $data);
 
-        return $response->getBody();
+        return $response->getContent();
     }
 
-    /**
-     * @param mixed $directory
-     */
-    public function setDirectory($directory)
+    public function setDirectory(mixed $directory): void
     {
         $this->directory = $directory;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getDirectory()
+    public function getDirectory(): string
     {
         return $this->directory;
     }
 
-    /**
-     * @param bool $isBranch
-     */
-    public function setIsBranch($isBranch)
+    public function setIsBranch(bool $isBranch): void
     {
         $this->isBranch = $isBranch;
     }
 
-    /**
-     * @return bool
-     */
-    public function getIsBranch()
+    public function getIsBranch(): bool
     {
         return $this->isBranch;
     }
 
-    /**
-     * @param string $branch
-     */
-    public function setBranch($branch)
+    public function setBranch(string $branch): void
     {
         $this->branch = $branch;
     }
 
-    /**
-     * @return string|null
-     */
-    public function getBranch()
+    public function getBranch(): ?string
     {
         return $this->branch;
     }
