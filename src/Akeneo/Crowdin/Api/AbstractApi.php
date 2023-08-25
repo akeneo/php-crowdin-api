@@ -47,7 +47,7 @@ abstract class AbstractApi implements ApiInterface
     }
     
     /**
-     * 
+     *
      * @param string $key
      * @param string $value
      * @return AbstractApi
@@ -60,7 +60,7 @@ abstract class AbstractApi implements ApiInterface
     }
     
     /**
-     * 
+     *
      * @return string
      */
     protected function getUrlQueryString()
