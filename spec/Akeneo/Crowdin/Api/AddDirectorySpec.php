@@ -42,7 +42,7 @@ class AddDirectorySpec extends ObjectBehavior
         $http->request(
             'POST',
             'project/sylius/add-directory?key=1234',
-            ['form_params' => ['name' => 'directory-to-create']]
+            ['body' => ['name' => 'directory-to-create']]
         )->willReturn($response);
 
         $this->execute()->shouldBe($content);
