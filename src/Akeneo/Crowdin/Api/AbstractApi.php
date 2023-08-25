@@ -5,71 +5,33 @@ namespace Akeneo\Crowdin\Api;
 use Akeneo\Crowdin\Client;
 
 /**
- * Abstract API
- *
  * @author Nicolas Dupont <nicolas@akeneo.com>
  */
 abstract class AbstractApi implements ApiInterface
 {
-    /** @var Client */
-    protected $client;
+    protected array $parameters = [];
+    protected array $urlParameters =  [];
 
-    /**
-     * The method parameters
-     *
-     * @var array
-     */
-    protected $parameters = [];
-    
-    /**
-     * The url parameters
-     *
-     * @var array
-     */
-    protected $urlParameters =  [];
-
-    /**
-     * Instantiate an API
-     *
-     * @param Client $client
-     */
-    public function __construct(Client $client)
+    public function __construct(protected Client $client)
     {
-        $this->client = $client;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function setParameters(array $parameters)
+    public function setParameters(array $parameters): void
     {
         $this->parameters = $parameters;
     }
-    
-    /**
-     *
-     * @param string $key
-     * @param string $value
-     * @return AbstractApi
-     */
-    public function addUrlParameter($key, $value)
+
+    public function addUrlParameter(string $key, string $value): static
     {
         $this->urlParameters[$key] = $value;
-        
+
         return $this;
     }
-    
-    /**
-     *
-     * @return string
-     */
-    protected function getUrlQueryString()
+
+    protected function getUrlQueryString(): string
     {
         return http_build_query($this->urlParameters);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     abstract public function execute();
 }

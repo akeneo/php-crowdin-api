@@ -6,24 +6,24 @@ namespace Akeneo\Crowdin\Api;
  * Get project details
  *
  * @author Nicolas Dupont <nicolas@akeneo.com>
- * @see https://crowdin.com/page/api/info
+ * @see    https://crowdin.com/page/api/info
  */
 class Info extends AbstractApi
 {
     /**
      * {@inheritdoc}
      */
-    public function execute()
+    public function execute(): string
     {
         $this->addUrlParameter('key', $this->client->getProjectApiKey());
-        
+
         $path = sprintf(
             "project/%s/info?%s",
             $this->client->getProjectIdentifier(),
             $this->getUrlQueryString()
         );
-        $response = $this->client->getHttpClient()->get($path);
+        $response = $this->client->getHttpClient()->request('GET', $path);
 
-        return $response->getBody();
+        return $response->getContent();
     }
 }

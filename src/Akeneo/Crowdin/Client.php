@@ -2,8 +2,9 @@
 
 namespace Akeneo\Crowdin;
 
-use \InvalidArgumentException;
-use GuzzleHttp\Client as HttpClient;
+use InvalidArgumentException;
+use Symfony\Component\HttpClient\HttpClient;
+use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 /**
  * Simple Crowdin PHP client
@@ -15,104 +16,50 @@ class Client
     /** @var string base url */
     const BASE_URL = 'https://api.crowdin.com/api/';
 
-    /** @var HttpClient */
-    protected $httpClient;
+    protected ?HttpClientInterface $httpClient = null;
 
-    /** @var string the project identifier */
-    protected $projectIdentifier;
-
-    /** @var string the project api key */
-    protected $projectApiKey;
-
-    /**
-     * Instantiate a new Crowdin Client
-     *
-     * @param string $identifier the project identifier
-     * @param string $apiKey     the project api key
-     */
-    public function __construct($identifier, $apiKey)
+    public function __construct(protected string $projectIdentifier, protected string $projectApiKey)
     {
-        $this->projectIdentifier = $identifier;
-        $this->projectApiKey     = $apiKey;
     }
 
     /**
-     * @param string $method the api method
-     *
      * @throws InvalidArgumentException
-     *
-     * @return mixed
      */
-    public function api($method)
+    public function api(string $method): object
     {
         $fileReader = new FileReader();
-        switch ($method) {
-            case 'info':
-                $api = new Api\Info($this);
-                break;
-            case 'supported-languages':
-                $api = new Api\SupportedLanguages($this);
-                break;
-            case 'status':
-                $api = new Api\Status($this);
-                break;
-            case 'download':
-                $api = new Api\Download($this);
-                break;
-            case 'add-file':
-                $api = new Api\AddFile($this, $fileReader);
-                break;
-            case 'update-file':
-                $api = new Api\UpdateFile($this, $fileReader);
-                break;
-            case 'delete-file':
-                $api = new Api\DeleteFile($this);
-                break;
-            case 'export':
-                $api = new Api\Export($this);
-                break;
-            case 'add-directory':
-                $api = new Api\AddDirectory($this);
-                break;
-            case 'delete-directory':
-                $api = new Api\DeleteDirectory($this);
-                break;
-            case 'upload-translation':
-                $api = new Api\UploadTranslation($this, $fileReader);
-                break;
-            case 'language-status':
-                $api = new Api\LanguageStatus($this);
-                break;
-            default:
-                throw new InvalidArgumentException(sprintf('Undefined api method "%s"', $method));
-        }
 
-        return $api;
+        return match ($method) {
+            'info' => new Api\Info($this),
+            'supported-languages' => new Api\SupportedLanguages($this),
+            'status' => new Api\Status($this),
+            'download' => new Api\Download($this),
+            'add-file' => new Api\AddFile($this, $fileReader),
+            'update-file' => new Api\UpdateFile($this, $fileReader),
+            'delete-file' => new Api\DeleteFile($this),
+            'export' => new Api\Export($this),
+            'add-directory' => new Api\AddDirectory($this),
+            'delete-directory' => new Api\DeleteDirectory($this),
+            'upload-translation' => new Api\UploadTranslation($this, $fileReader),
+            'language-status' => new Api\LanguageStatus($this),
+            default => throw new InvalidArgumentException(sprintf('Undefined api method "%s"', $method)),
+        };
     }
 
-    /**
-     * @return string
-     */
-    public function getProjectIdentifier()
+    public function getProjectIdentifier(): string
     {
         return $this->projectIdentifier;
     }
 
-    /**
-     * @return string
-     */
-    public function getProjectApiKey()
+    public function getProjectApiKey(): string
     {
         return $this->projectApiKey;
     }
 
-    /**
-     * @return HttpClient
-     */
-    public function getHttpClient()
+    public function getHttpClient(): HttpClientInterface
     {
-        if ($this->httpClient === null) {
-            $this->httpClient = new HttpClient(['base_uri' => self::BASE_URL]);
+        if (null === $this->httpClient) {
+            $this->httpClient = HttpClient::createForBaseUri(self::BASE_URL);
         }
 
         return $this->httpClient;

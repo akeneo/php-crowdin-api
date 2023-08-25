@@ -2,7 +2,7 @@
 
 namespace Akeneo\Crowdin\Api;
 
-use \InvalidArgumentException;
+use InvalidArgumentException;
 
 /**
  * Deletes a file from a Crowdin project. All the translations will be lost without ability to restore them.
@@ -12,20 +12,19 @@ use \InvalidArgumentException;
  */
 class DeleteFile extends AbstractApi
 {
-    /** @var string */
-    protected $file;
+    protected string $file;
 
     /**
      * {@inheritdoc}
      */
-    public function execute()
+    public function execute(): string
     {
         if (null == $this->file) {
             throw new InvalidArgumentException('There is no file to delete.');
         }
 
         $this->addUrlParameter('key', $this->client->getProjectApiKey());
-        
+
         $path = sprintf(
             "project/%s/delete-file?%s",
             $this->client->getProjectIdentifier(),
@@ -35,27 +34,19 @@ class DeleteFile extends AbstractApi
         $parameters = ['file' => $this->file];
 
         $data = ['form_params' => $parameters];
-        $response = $this->client->getHttpClient()->post($path, $data);
+        $response = $this->client->getHttpClient()->request('POST', $path, $data);
 
-        return $response->getBody();
+        return $response->getContent();
     }
 
-    /**
-     * @param mixed $file
-     *
-     * @return DeleteFile
-     */
-    public function setFile($file)
+    public function setFile(string $file): static
     {
         $this->file = $file;
 
         return $this;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getFile()
+    public function getFile(): string
     {
         return $this->file;
     }

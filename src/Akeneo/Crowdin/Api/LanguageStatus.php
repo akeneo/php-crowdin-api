@@ -6,36 +6,24 @@ namespace Akeneo\Crowdin\Api;
  * Project translation progress by language
  *
  * @author Pierre Allard <pierre.allard@akeneo.com>
- * @see http://crowdin.net/page/api/language-status
+ * @see    http://crowdin.net/page/api/language-status
  */
 class LanguageStatus extends AbstractApi
 {
-    /** @var string */
-    protected $language;
+    protected string $language;
 
-    /**
-     * @param string $language
-     *
-     * @return LanguageStatus
-     */
-    public function setLanguage($language)
+    public function setLanguage(string $language): static
     {
         $this->language = $language;
 
         return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getLanguage()
+    public function getLanguage(): string
     {
         return $this->language;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function execute()
     {
         $path = sprintf(
@@ -44,8 +32,8 @@ class LanguageStatus extends AbstractApi
             $this->client->getProjectApiKey()
         );
         $parameters = array_merge($this->parameters, ['form_params' => ['language' => $this->getLanguage()]]);
-        $response   = $this->client->getHttpClient()->post($path, $parameters);
+        $response = $this->client->getHttpClient()->request('POST', $path, $parameters);
 
-        return $response->getBody(true);
+        return $response->getContent();
     }
 }
