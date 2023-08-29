@@ -58,7 +58,7 @@ class UploadTranslationSpec extends ObjectBehavior
 
     public function it_should_not_allow_upload_with_no_translation(
         HttpClientInterface $http,
-        ResponseInterface $response
+        ResponseInterface   $response
     ) {
         $this->setLocale('fr');
         $content = '<xml></xml>';
@@ -79,9 +79,9 @@ class UploadTranslationSpec extends ObjectBehavior
     }
 
     public function it_uploads_some_translations(
-        FileReader $fileReader,
+        FileReader          $fileReader,
         HttpClientInterface $http,
-        ResponseInterface $response
+        ResponseInterface   $response
     ) {
         $this->addTranslation('spec/fixtures/messages.en.yml', 'crowdin/path/file.yml');
         $this->setLocale('fr');
@@ -93,27 +93,15 @@ class UploadTranslationSpec extends ObjectBehavior
             'POST',
             'project/sylius/upload-translation?key=1234',
             [
-                'multipart' => [
-                    [
-                        'name' => 'import_duplicates',
-                        'contents' => 0,
-                    ],
-                    [
-                        'name' => 'import_eq_suggestions',
-                        'contents' => 0,
-                    ],
-                    [
-                        'name' => 'auto_approve_imported',
-                        'contents' => 0,
-                    ],
-                    [
-                        'name' => 'language',
-                        'contents' => 'fr',
-                    ],
-                    [
-                        'name' => 'files[crowdin/path/file.yml]',
-                        'contents' => $fakeResource,
-                    ],
+                'headers' => [
+                    'Content-Type' => 'multipart/form-data'
+                ],
+                'body' => [
+                    'import_duplicates' => 0,
+                    'import_eq_suggestions' => 0,
+                    'auto_approve_imported' => 0,
+                    'language' => 'fr',
+                    'files[crowdin/path/file.yml]' => $fakeResource,
                 ],
             ]
         )->willReturn($response);
