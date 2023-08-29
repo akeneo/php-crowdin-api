@@ -54,38 +54,25 @@ class UploadTranslation extends AbstractApi
             $this->getUrlQueryString()
         );
 
-        $data[] = [
-            'name' => 'import_duplicates',
-            'contents' => (int)$this->areDuplicatesImported,
-        ];
-        $data[] = [
-            'name' => 'import_eq_suggestions',
-            'contents' => (int)$this->areEqualSuggestionsImported,
-        ];
-        $data[] = [
-            'name' => 'auto_approve_imported',
-            'contents' => (int)$this->areImportsAutoApproved,
-        ];
-        $data[] = [
-            'name' => 'language',
-            'contents' => $this->locale,
-        ];
+        $data['import_duplicates'] = (int)$this->areDuplicatesImported;
+        $data['import_eq_suggestions'] = (int)$this->areEqualSuggestionsImported;
+        $data['auto_approve_imported'] = (int)$this->areImportsAutoApproved;
+        $data['language'] = $this->locale;
 
         if (null !== $this->branch) {
-            $data[] = [
-                'name' => 'branch',
-                'contents' => $this->branch,
-            ];
+            $data['branch'] = $this->branch;
         }
 
         foreach ($this->translations as $translation) {
-            $data[] = [
-                'name' => 'files[' . $translation->getCrowdinPath() . ']',
-                'contents' => $this->fileReader->readTranslation($translation),
-            ];
+            $data[sprintf('files[%s]', $translation->getCrowdinPath())] = $this->fileReader->readTranslation($translation);
         }
 
-        $data = ['multipart' => $data];
+        $data = [
+            'headers' => [
+                'Content-Type' => 'multipart/form-data'
+            ],
+            'body' => $data
+        ];
         $response = $this->client->getHttpClient()->request('POST', $path, $data);
 
         return $response->getContent();

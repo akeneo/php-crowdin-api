@@ -2,6 +2,7 @@
 
 namespace spec\Akeneo\Crowdin\Api;
 
+use Akeneo\Crowdin\Api\AbstractApi;
 use Akeneo\Crowdin\Client;
 use Akeneo\Crowdin\FileReader;
 use GuzzleHttp\Client as HttpClient;
@@ -24,12 +25,12 @@ class AddFileSpec extends ObjectBehavior
 
     public function it_should_be_an_api()
     {
-        $this->shouldBeAnInstanceOf('Akeneo\Crowdin\Api\AbstractApi');
+        $this->shouldBeAnInstanceOf(AbstractApi::class);
     }
 
     public function it_should_not_allow_not_existing_file()
     {
-        $this->shouldThrow('\InvalidArgumentException')->duringAddTranslation(
+        $this->shouldThrow(\InvalidArgumentException::class)->duringAddTranslation(
             'crowdin/path/file.yml',
             '/tmp/my-file.yml'
         );
@@ -62,14 +63,14 @@ class AddFileSpec extends ObjectBehavior
             'POST',
             'project/sylius/add-file?key=1234',
             [
-                'multipart' => [
-                    [
-                        'name' => 'files[path/to/crowdin.yml]',
-                        'contents' => $fakeResource,
-                    ],
+                'headers' => [
+                    'Content-Type' => 'multipart/form-data'
+                ],
+                'body' => [
+                    'files[path/to/crowdin.yml]' => $fakeResource,
                 ],
             ]
-        )->willReturn($response);
+        )->shouldBeCalled()->willReturn($response);
 
         $this->execute()->shouldBe($content);
     }

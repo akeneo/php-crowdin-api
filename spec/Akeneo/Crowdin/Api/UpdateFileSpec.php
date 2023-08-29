@@ -64,11 +64,11 @@ class UpdateFileSpec extends ObjectBehavior
             'POST',
             'project/akeneo/update-file?key=1234',
             [
-                'multipart' => [
-                    [
-                        'name' => "files[path/to/crowdin.yml]",
-                        'contents' => $fakeResource,
-                    ],
+                'headers' => [
+                    'Content-Type' => 'multipart/form-data'
+                ],
+                'body' => [
+                    'files[path/to/crowdin.yml]' => $fakeResource,
                 ],
             ]
         )->willReturn($response);
@@ -87,12 +87,12 @@ class UpdateFileSpec extends ObjectBehavior
             'POST',
             Argument::any(),
             [
-                'multipart' => [
+                'headers' => [
+                    'Content-Type' => 'multipart/form-data'
+                ],
+                'body' => [
                     'foo' => 'bar',
-                    [
-                        'name' => "files[path/to/crowdin.yml]",
-                        'contents' => $fakeResource,
-                    ],
+                    'files[path/to/crowdin.yml]' => $fakeResource,
                 ],
             ]
         )->shouldBeCalled()->willReturn($response);
