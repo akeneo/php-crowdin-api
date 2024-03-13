@@ -23,17 +23,17 @@ class DeleteDirectory extends AbstractApi
             throw new InvalidArgumentException('There is no directory to delete.');
         }
 
-        $this->addUrlParameter('key', $this->client->getProjectApiKey());
-
         $path = sprintf(
-            "project/%s/delete-directory?%s",
-            $this->client->getProjectIdentifier(),
-            $this->getUrlQueryString()
+            "project/%s/delete-directory",
+            $this->client->getProjectIdentifier()
         );
 
         $parameters = ['name' => $this->directory];
 
-        $data = ['body' => $parameters];
+        $data = [
+            'headers' => ['Authorization' => 'Bearer ' . $this->client->getProjectApiKey()],
+            'body' => $parameters
+        ];
         $response = $this->client->getHttpClient()->request('POST', $path, $data);
 
         return $response->getContent();

@@ -45,7 +45,11 @@ class UpdateFileSpec extends ObjectBehavior
     {
         $content = '<xml></xml>';
         $response->getContent(true)->willReturn($content);
-        $http->request('POST', 'project/akeneo/update-file?key=1234')->willReturn($response);
+        $http->request(
+            'POST',
+            'project/akeneo/update-file',
+            ['headers' => ['Authorization' => 'Bearer 1234']]
+        )->willReturn($response);
         $this->shouldThrow()->duringExecute();
     }
 
@@ -60,11 +64,13 @@ class UpdateFileSpec extends ObjectBehavior
         $response->getContent()->willReturn($content);
         $fakeResource = '[fake resource]';
         $fileReader->readTranslation(Argument::any())->willReturn($fakeResource);
+
         $http->request(
             'POST',
-            'project/akeneo/update-file?key=1234',
+            'project/akeneo/update-file',
             [
                 'headers' => [
+                    'Authorization' => 'Bearer 1234',
                     'Content-Type' => 'multipart/form-data'
                 ],
                 'body' => [
@@ -88,6 +94,7 @@ class UpdateFileSpec extends ObjectBehavior
             Argument::any(),
             [
                 'headers' => [
+                    'Authorization' => 'Bearer 1234',
                     'Content-Type' => 'multipart/form-data'
                 ],
                 'body' => [

@@ -33,12 +33,9 @@ class UpdateFile extends AbstractApi
             throw new InvalidArgumentException('There is no files to update');
         }
 
-        $this->addUrlParameter('key', $this->client->getProjectApiKey());
-
         $path = sprintf(
-            "project/%s/update-file?%s",
-            $this->client->getProjectIdentifier(),
-            $this->getUrlQueryString()
+            "project/%s/update-file",
+            $this->client->getProjectIdentifier()
         );
 
         $data = $this->parameters;
@@ -58,6 +55,7 @@ class UpdateFile extends AbstractApi
 
         $data = [
             'headers' => [
+                'Authorization' => 'Bearer ' . $this->client->getProjectApiKey(),
                 'Content-Type' => 'multipart/form-data'
             ],
             'body' => $data

@@ -25,12 +25,9 @@ class AddDirectory extends AbstractApi
             throw new InvalidArgumentException('There is no directory to create.');
         }
 
-        $this->addUrlParameter('key', $this->client->getProjectApiKey());
-
         $path = sprintf(
-            "project/%s/add-directory?%s",
-            $this->client->getProjectIdentifier(),
-            $this->getUrlQueryString()
+            "project/%s/add-directory",
+            $this->client->getProjectIdentifier()
         );
 
         $parameters = ['name' => $this->directory];
@@ -41,7 +38,12 @@ class AddDirectory extends AbstractApi
             $parameters['branch'] = $this->branch;
         }
 
-        $data = ['body' => $parameters];
+        $data = [
+            'headers' => [
+                'Authorization' => 'Bearer ' . $this->client->getProjectApiKey()
+            ],
+            'body' => $parameters
+        ];
         $response = $this->client->getHttpClient()->request('POST', $path, $data);
 
         return $response->getContent();

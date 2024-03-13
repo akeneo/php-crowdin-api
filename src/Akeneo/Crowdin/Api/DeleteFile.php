@@ -23,17 +23,17 @@ class DeleteFile extends AbstractApi
             throw new InvalidArgumentException('There is no file to delete.');
         }
 
-        $this->addUrlParameter('key', $this->client->getProjectApiKey());
-
         $path = sprintf(
-            "project/%s/delete-file?%s",
-            $this->client->getProjectIdentifier(),
-            $this->getUrlQueryString()
+            "project/%s/delete-file",
+            $this->client->getProjectIdentifier()
         );
 
         $parameters = ['file' => $this->file];
 
-        $data = ['body' => $parameters];
+        $data = [
+            'headers' => ['Authorization' => 'Bearer ' . $this->client->getProjectApiKey()],
+            'body' => $parameters
+        ];
         $response = $this->client->getHttpClient()->request('POST', $path, $data);
 
         return $response->getContent();

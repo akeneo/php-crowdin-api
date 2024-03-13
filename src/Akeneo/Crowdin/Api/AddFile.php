@@ -34,12 +34,9 @@ class AddFile extends AbstractApi
             throw new InvalidArgumentException('There is no files to add.');
         }
 
-        $this->addUrlParameter('key', $this->client->getProjectApiKey());
-
         $path = sprintf(
-            "project/%s/add-file?%s",
-            $this->client->getProjectIdentifier(),
-            $this->getUrlQueryString()
+            "project/%s/add-file",
+            $this->client->getProjectIdentifier()
         );
 
         $data = $this->parameters;
@@ -61,7 +58,8 @@ class AddFile extends AbstractApi
 
         $data = [
             'headers' => [
-                'Content-Type' => 'multipart/form-data'
+                'Content-Type' => 'multipart/form-data',
+                'Authorization' => 'Bearer 1234'
             ],
             'body' => $data
         ];

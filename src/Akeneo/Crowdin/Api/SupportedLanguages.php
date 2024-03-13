@@ -22,7 +22,11 @@ class SupportedLanguages extends AbstractApi
         }
 
         $http = $this->client->getHttpClient();
-        $response = $http->request('GET', $path);
+        $response = $http->request(
+            'GET',
+            $path,
+            ['headers' => ['Authorization' => 'Bearer ' . $this->client->getProjectApiKey()]]
+        );
 
         return $response->getContent();
     }

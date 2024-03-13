@@ -46,12 +46,9 @@ class UploadTranslation extends AbstractApi
             throw new InvalidArgumentException('Locale is not set.');
         }
 
-        $this->addUrlParameter('key', $this->client->getProjectApiKey());
-
         $path = sprintf(
-            "project/%s/upload-translation?%s",
-            $this->client->getProjectIdentifier(),
-            $this->getUrlQueryString()
+            "project/%s/upload-translation",
+            $this->client->getProjectIdentifier()
         );
 
         $data['import_duplicates'] = (int)$this->areDuplicatesImported;
@@ -69,6 +66,7 @@ class UploadTranslation extends AbstractApi
 
         $data = [
             'headers' => [
+                'Authorization' => 'Bearer ' . $this->client->getProjectApiKey(),
                 'Content-Type' => 'multipart/form-data'
             ],
             'body' => $data

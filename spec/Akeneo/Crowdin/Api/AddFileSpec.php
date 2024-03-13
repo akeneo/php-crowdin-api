@@ -47,7 +47,11 @@ class AddFileSpec extends ObjectBehavior
         $content = '<xml></xml>';
         $response->getContent()->willReturn($content);
 
-        $http->request('POST', 'project/sylius/add-file?key=1234')->willReturn($response);
+        $http->request(
+            'POST',
+            'project/sylius/add-file',
+            ['headers' => ['Authorization' => 'Bearer 1234']]
+        )->willReturn($response);
         $this->shouldThrow('\InvalidArgumentException')->duringExecute();
     }
 
@@ -61,10 +65,11 @@ class AddFileSpec extends ObjectBehavior
         $fileReader->readTranslation(Argument::any())->willReturn($fakeResource);
         $http->request(
             'POST',
-            'project/sylius/add-file?key=1234',
+            'project/sylius/add-file',
             [
                 'headers' => [
-                    'Content-Type' => 'multipart/form-data'
+                    'Content-Type' => 'multipart/form-data',
+                    'Authorization' => 'Bearer 1234'
                 ],
                 'body' => [
                     'files[path/to/crowdin.yml]' => $fakeResource,
