@@ -15,14 +15,15 @@ class Info extends AbstractApi
      */
     public function execute(): string
     {
-        $this->addUrlParameter('key', $this->client->getProjectApiKey());
-
         $path = sprintf(
-            "project/%s/info?%s",
-            $this->client->getProjectIdentifier(),
-            $this->getUrlQueryString()
+            "project/%s/info",
+            $this->client->getProjectIdentifier()
         );
-        $response = $this->client->getHttpClient()->request('GET', $path);
+        $response = $this->client->getHttpClient()->request(
+            'GET',
+            $path,
+            ['headers' => ['authorization' => 'Bearer ' . $this->client->getProjectApiKey()]]
+        );
 
         return $response->getContent();
     }

@@ -29,8 +29,11 @@ class LanguageStatusSpec extends ObjectBehavior
         $this->setLanguage('fr')->shouldBe($this);
         $http->request(
             'POST',
-            'project/akeneo/language-status?key=1234',
-            ['body' => ['language' => 'fr']]
+            'project/akeneo/language-status',
+            [
+                'headers' => ['authorization' => 'Bearer 1234'],
+                'body' => ['language' => 'fr']
+            ]
         )->willReturn($response);
         $response->getContent()->willReturn('<xml></xml>');
         $this->execute()->shouldBe('<xml></xml>');

@@ -63,7 +63,11 @@ class UploadTranslationSpec extends ObjectBehavior
         $this->setLocale('fr');
         $content = '<xml></xml>';
         $response->getContent()->willReturn($content);
-        $http->request('POST', 'project/sylius/upload-translation?key=1234')->willReturn($response);
+        $http->request(
+            'POST',
+            'project/sylius/upload-translation',
+            ['headers' => ['authorization' => 'Bearer 1234']]
+        )->willReturn($response);
 
         $this->shouldThrow('\InvalidArgumentException')->duringExecute();
     }
@@ -73,7 +77,11 @@ class UploadTranslationSpec extends ObjectBehavior
         $this->addTranslation('spec/fixtures/messages.en.yml', 'crowdin/path/file.yml');
         $content = '<xml></xml>';
         $response->getContent()->willReturn($content);
-        $http->request('POST', 'project/sylius/upload-translation?key=1234')->willReturn($response);
+        $http->request(
+            'POST',
+            'project/sylius/upload-translation',
+            ['headers' => ['authorization' => 'Bearer 1234']]
+        )->willReturn($response);
 
         $this->shouldThrow()->duringExecute();
     }
@@ -91,9 +99,10 @@ class UploadTranslationSpec extends ObjectBehavior
         $fileReader->readTranslation(Argument::any())->willReturn($fakeResource);
         $http->request(
             'POST',
-            'project/sylius/upload-translation?key=1234',
+            'project/sylius/upload-translation',
             [
                 'headers' => [
+                    'authorization' => 'Bearer 1234',
                     'Content-Type' => 'multipart/form-data'
                 ],
                 'body' => [

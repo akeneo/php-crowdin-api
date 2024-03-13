@@ -19,20 +19,17 @@ class Download extends AbstractApi
      */
     public function execute(): string
     {
-        $this->addUrlParameter('key', $this->client->getProjectApiKey());
-
         $path = sprintf(
-            "project/%s/download/%s?%s",
+            "project/%s/download/%s",
             $this->client->getProjectIdentifier(),
-            $this->package,
-            $this->getUrlQueryString()
+            $this->package
         );
         if (null !== $this->branch) {
             $path = sprintf('%s&branch=%s', $path, $this->branch);
         }
 
         $filePath = $this->getCopyDestination() . '/' . $this->getPackage();
-        $response = $this->client->getHttpClient()->request('GET', $path);
+        $response = $this->client->getHttpClient()->request('GET', $path, ['headers' => ['authorization' => 'Bearer 1234']]);
 
         $fileContent = $response->getContent();
         file_put_contents($filePath, $fileContent);

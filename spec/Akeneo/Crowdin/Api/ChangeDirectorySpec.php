@@ -33,8 +33,11 @@ class ChangeDirectorySpec extends ObjectBehavior
         ResponseInterface $response
     ) {
         $this->setName('myname');
-        $path = 'project/sylius/change-directory?key=1234';
-        $data = ['body' => ['name' => 'myname']];
+        $path = 'project/sylius/change-directory';
+        $data = [
+            'headers' => ['authorization' => 'Bearer 1234'],
+            'body' => ['name' => 'myname']
+        ];
         $http->request('POST', $path, $data)->willReturn($response);
         $response->getContent(Argument::any())->willReturn('content');
 
@@ -50,8 +53,9 @@ class ChangeDirectorySpec extends ObjectBehavior
         $this->setExportPattern('myExportPattern');
         $this->setTitle('myTitle');
         $this->setNewName('myNewName');
-        $path = 'project/sylius/change-directory?key=1234';
+        $path = 'project/sylius/change-directory';
         $data = [
+            'headers' => ['authorization' => 'Bearer 1234'],
             'body' => [
                 'name' => 'myName',
                 'branch' => 'myBranch',

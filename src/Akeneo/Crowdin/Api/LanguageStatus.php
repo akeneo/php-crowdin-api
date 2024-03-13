@@ -27,11 +27,16 @@ class LanguageStatus extends AbstractApi
     public function execute()
     {
         $path = sprintf(
-            "project/%s/language-status?key=%s",
-            $this->client->getProjectIdentifier(),
-            $this->client->getProjectApiKey()
+            "project/%s/language-status",
+            $this->client->getProjectIdentifier()
         );
-        $parameters = array_merge($this->parameters, ['body' => ['language' => $this->getLanguage()]]);
+        $parameters = array_merge(
+            $this->parameters,
+            [
+                'headers' => ['authorization' => 'Bearer ' . $this->client->getProjectApiKey()],
+                'body' => ['language' => $this->getLanguage()]
+            ]
+        );
         $response = $this->client->getHttpClient()->request('POST', $path, $parameters);
 
         return $response->getContent();

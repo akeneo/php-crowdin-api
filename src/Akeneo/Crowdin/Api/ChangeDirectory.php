@@ -28,12 +28,9 @@ class ChangeDirectory extends AbstractApi
             throw new InvalidArgumentException('Argument name is required.');
         }
 
-        $this->addUrlParameter('key', $this->client->getProjectApiKey());
-
         $path = sprintf(
-            "project/%s/change-directory?%s",
-            $this->client->getProjectIdentifier(),
-            $this->getUrlQueryString()
+            "project/%s/change-directory",
+            $this->client->getProjectIdentifier()
         );
 
         $data = ['name' => $this->name];
@@ -51,7 +48,10 @@ class ChangeDirectory extends AbstractApi
             $data['branch'] = $this->branch;
         }
 
-        $data = ['body' => $data];
+        $data = [
+            'headers' => ['authorization' => 'Bearer ' . $this->client->getProjectApiKey()],
+            'body' => $data
+        ];
         $response = $this->client->getHttpClient()->request('POST', $path, $data);
 
         return $response->getContent();

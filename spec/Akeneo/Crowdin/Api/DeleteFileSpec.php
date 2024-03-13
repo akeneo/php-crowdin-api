@@ -30,7 +30,7 @@ class DeleteFileSpec extends ObjectBehavior
         $content = '<xml></xml>';
         $response->getContent()->willReturn($content);
 
-        $http->request('POST', 'project/sylius/delete-file?key=1234')->willReturn($response);
+        $http->request('POST', 'project/sylius/delete-file', ['headers' => ['authorization' => 'Bearer 1234']])->willReturn($response);
         $this->shouldThrow()->duringExecute();
     }
 
@@ -41,8 +41,11 @@ class DeleteFileSpec extends ObjectBehavior
         $response->getContent()->willReturn($content);
         $http->request(
             'POST',
-            'project/sylius/delete-file?key=1234',
-            ['body' => ['file' => 'path/to/my/file']]
+            'project/sylius/delete-file',
+            [
+                'headers' => ['authorization' => 'Bearer 1234'],
+                'body' => ['file' => 'path/to/my/file']
+            ]
         )->willReturn($response);
 
         $this->execute()->shouldBe($content);

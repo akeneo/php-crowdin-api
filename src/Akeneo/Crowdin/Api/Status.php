@@ -15,14 +15,15 @@ class Status extends AbstractApi
      */
     public function execute()
     {
-        $this->addUrlParameter('key', $this->client->getProjectApiKey());
-
         $path = sprintf(
-            "project/%s/status?%s",
-            $this->client->getProjectIdentifier(),
-            $this->getUrlQueryString()
+            "project/%s/status",
+            $this->client->getProjectIdentifier()
         );
-        $response = $this->client->getHttpClient()->request('GET', $path);
+        $response = $this->client->getHttpClient()->request(
+            'GET',
+            $path,
+            ['headers' => ['authorization' => 'Bearer ' . $this->client->getProjectApiKey()]]
+        );
 
         return $response->getContent();
     }

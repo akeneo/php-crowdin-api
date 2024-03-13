@@ -41,8 +41,11 @@ class AddDirectorySpec extends ObjectBehavior
         $response->getContent()->willReturn($content);
         $http->request(
             'POST',
-            'project/sylius/add-directory?key=1234',
-            ['body' => ['name' => 'directory-to-create']]
+            'project/sylius/add-directory',
+            [
+                'headers' => ['authorization' => 'Bearer 1234'],
+                'body' => ['name' => 'directory-to-create']
+            ]
         )->willReturn($response);
 
         $this->execute()->shouldBe($content);

@@ -44,7 +44,7 @@ class DownloadSpec extends ObjectBehavior
     {
         $this->setCopyDestination('/tmp');
         $this->setPackage('all.zip');
-        $http->request('GET', 'project/akeneo/download/all.zip?key=1234')
+        $http->request('GET', 'project/akeneo/download/all.zip', ['headers' => ['authorization' => 'Bearer 1234']])
             ->willReturn($response);
         $response->getContent()->willReturn('translations content');
         $this->execute()->shouldBe('translations content');
@@ -54,7 +54,7 @@ class DownloadSpec extends ObjectBehavior
     {
         $this->setCopyDestination('/tmp');
         $this->setPackage('fr.zip');
-        $http->request('GET', 'project/akeneo/download/fr.zip?key=1234')
+        $http->request('GET', 'project/akeneo/download/fr.zip', ['headers' => ['authorization' => 'Bearer 1234']])
             ->willReturn($response);
         $response->getContent()->willReturn('translations content');
         $this->execute()->shouldBe('translations content');
