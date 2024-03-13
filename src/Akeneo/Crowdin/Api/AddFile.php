@@ -59,7 +59,7 @@ class AddFile extends AbstractApi
         $data = [
             'headers' => [
                 'Content-Type' => 'multipart/form-data',
-                'authorization' => 'Bearer 1234'
+                'Authorization' => 'Bearer 1234'
             ],
             'body' => $data
         ];

@@ -35,7 +35,7 @@ class ChangeDirectorySpec extends ObjectBehavior
         $this->setName('myname');
         $path = 'project/sylius/change-directory';
         $data = [
-            'headers' => ['authorization' => 'Bearer 1234'],
+            'headers' => ['Authorization' => 'Bearer 1234'],
             'body' => ['name' => 'myname']
         ];
         $http->request('POST', $path, $data)->willReturn($response);
@@ -55,7 +55,7 @@ class ChangeDirectorySpec extends ObjectBehavior
         $this->setNewName('myNewName');
         $path = 'project/sylius/change-directory';
         $data = [
-            'headers' => ['authorization' => 'Bearer 1234'],
+            'headers' => ['Authorization' => 'Bearer 1234'],
             'body' => [
                 'name' => 'myName',
                 'branch' => 'myBranch',

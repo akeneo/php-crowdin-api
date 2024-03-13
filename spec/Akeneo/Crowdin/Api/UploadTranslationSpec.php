@@ -66,7 +66,7 @@ class UploadTranslationSpec extends ObjectBehavior
         $http->request(
             'POST',
             'project/sylius/upload-translation',
-            ['headers' => ['authorization' => 'Bearer 1234']]
+            ['headers' => ['Authorization' => 'Bearer 1234']]
         )->willReturn($response);
 
         $this->shouldThrow('\InvalidArgumentException')->duringExecute();
@@ -80,7 +80,7 @@ class UploadTranslationSpec extends ObjectBehavior
         $http->request(
             'POST',
             'project/sylius/upload-translation',
-            ['headers' => ['authorization' => 'Bearer 1234']]
+            ['headers' => ['Authorization' => 'Bearer 1234']]
         )->willReturn($response);
 
         $this->shouldThrow()->duringExecute();
@@ -102,7 +102,7 @@ class UploadTranslationSpec extends ObjectBehavior
             'project/sylius/upload-translation',
             [
                 'headers' => [
-                    'authorization' => 'Bearer 1234',
+                    'Authorization' => 'Bearer 1234',
                     'Content-Type' => 'multipart/form-data'
                 ],
                 'body' => [

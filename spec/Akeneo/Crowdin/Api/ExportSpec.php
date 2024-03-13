@@ -26,7 +26,7 @@ class ExportSpec extends ObjectBehavior
     {
         $content = '<?xml version="1.0" encoding="ISO-8859-1"?><success status="built"></success>';
         $response->getContent()->willReturn($content);
-        $http->request('GET', 'project/akeneo/export', ['headers' => ['authorization' => 'Bearer 1234']])->willReturn($response);
+        $http->request('GET', 'project/akeneo/export', ['headers' => ['Authorization' => 'Bearer 1234']])->willReturn($response);
         $this->execute()->shouldBe($content);
     }
 
@@ -34,7 +34,7 @@ class ExportSpec extends ObjectBehavior
     {
         $content = '<?xml version="1.0" encoding="ISO-8859-1"?><success status="skipped"></success>';
         $response->getContent()->willReturn($content);
-        $http->request('GET', 'project/akeneo/export', ['headers' => ['authorization' => 'Bearer 1234']])->willReturn($response);
+        $http->request('GET', 'project/akeneo/export', ['headers' => ['Authorization' => 'Bearer 1234']])->willReturn($response);
         $this->execute()->shouldBe($content);
     }
 }

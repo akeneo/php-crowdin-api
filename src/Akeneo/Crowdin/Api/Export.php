@@ -27,7 +27,7 @@ class Export extends AbstractApi
         $response = $this->client->getHttpClient()->request(
             'GET',
             $path,
-            ['headers' => ['authorization' => 'Bearer ' . $this->client->getProjectApiKey()]]
+            ['headers' => ['Authorization' => 'Bearer ' . $this->client->getProjectApiKey()]]
         );
 
         return $response->getContent();

@@ -40,7 +40,7 @@ class AddDirectory extends AbstractApi
 
         $data = [
             'headers' => [
-                'authorization' => 'Bearer ' . $this->client->getProjectApiKey()
+                'Authorization' => 'Bearer ' . $this->client->getProjectApiKey()
             ],
             'body' => $parameters
         ];

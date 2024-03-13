@@ -43,7 +43,7 @@ class AddDirectorySpec extends ObjectBehavior
             'POST',
             'project/sylius/add-directory',
             [
-                'headers' => ['authorization' => 'Bearer 1234'],
+                'headers' => ['Authorization' => 'Bearer 1234'],
                 'body' => ['name' => 'directory-to-create']
             ]
         )->willReturn($response);

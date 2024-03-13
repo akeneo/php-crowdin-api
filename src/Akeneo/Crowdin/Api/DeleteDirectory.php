@@ -31,7 +31,7 @@ class DeleteDirectory extends AbstractApi
         $parameters = ['name' => $this->directory];
 
         $data = [
-            'headers' => ['authorization' => 'Bearer ' . $this->client->getProjectApiKey()],
+            'headers' => ['Authorization' => 'Bearer ' . $this->client->getProjectApiKey()],
             'body' => $parameters
         ];
         $response = $this->client->getHttpClient()->request('POST', $path, $data);

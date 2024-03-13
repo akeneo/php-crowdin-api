@@ -33,7 +33,7 @@ class LanguageStatus extends AbstractApi
         $parameters = array_merge(
             $this->parameters,
             [
-                'headers' => ['authorization' => 'Bearer ' . $this->client->getProjectApiKey()],
+                'headers' => ['Authorization' => 'Bearer ' . $this->client->getProjectApiKey()],
                 'body' => ['language' => $this->getLanguage()]
             ]
         );

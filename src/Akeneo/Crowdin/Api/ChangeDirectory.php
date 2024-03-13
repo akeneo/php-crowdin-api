@@ -49,7 +49,7 @@ class ChangeDirectory extends AbstractApi
         }
 
         $data = [
-            'headers' => ['authorization' => 'Bearer ' . $this->client->getProjectApiKey()],
+            'headers' => ['Authorization' => 'Bearer ' . $this->client->getProjectApiKey()],
             'body' => $data
         ];
         $response = $this->client->getHttpClient()->request('POST', $path, $data);

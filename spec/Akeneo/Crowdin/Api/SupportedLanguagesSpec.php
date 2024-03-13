@@ -17,7 +17,7 @@ class SupportedLanguagesSpec extends ObjectBehavior
     {
         $client->getHttpClient()->willReturn($http);
         $client->getProjectApiKey()->willReturn('1234');
-        $http->request('GET', 'supported-languages', ['headers' => ['authorization' => 'Bearer 1234']])->willReturn($response);
+        $http->request('GET', 'supported-languages', ['headers' => ['Authorization' => 'Bearer 1234']])->willReturn($response);
         $response->getContent()->willReturn('<xml></xml>');
         $this->beConstructedWith($client);
     }

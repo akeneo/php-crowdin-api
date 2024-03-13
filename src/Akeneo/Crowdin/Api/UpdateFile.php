@@ -55,7 +55,7 @@ class UpdateFile extends AbstractApi
 
         $data = [
             'headers' => [
-                'authorization' => 'Bearer ' . $this->client->getProjectApiKey(),
+                'Authorization' => 'Bearer ' . $this->client->getProjectApiKey(),
                 'Content-Type' => 'multipart/form-data'
             ],
             'body' => $data

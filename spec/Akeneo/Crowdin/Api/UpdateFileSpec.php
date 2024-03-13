@@ -48,7 +48,7 @@ class UpdateFileSpec extends ObjectBehavior
         $http->request(
             'POST',
             'project/akeneo/update-file',
-            ['headers' => ['authorization' => 'Bearer 1234']]
+            ['headers' => ['Authorization' => 'Bearer 1234']]
         )->willReturn($response);
         $this->shouldThrow()->duringExecute();
     }
@@ -70,7 +70,7 @@ class UpdateFileSpec extends ObjectBehavior
             'project/akeneo/update-file',
             [
                 'headers' => [
-                    'authorization' => 'Bearer 1234',
+                    'Authorization' => 'Bearer 1234',
                     'Content-Type' => 'multipart/form-data'
                 ],
                 'body' => [
@@ -94,7 +94,7 @@ class UpdateFileSpec extends ObjectBehavior
             Argument::any(),
             [
                 'headers' => [
-                    'authorization' => 'Bearer 1234',
+                    'Authorization' => 'Bearer 1234',
                     'Content-Type' => 'multipart/form-data'
                 ],
                 'body' => [

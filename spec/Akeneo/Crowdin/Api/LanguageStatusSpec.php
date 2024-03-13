@@ -31,7 +31,7 @@ class LanguageStatusSpec extends ObjectBehavior
             'POST',
             'project/akeneo/language-status',
             [
-                'headers' => ['authorization' => 'Bearer 1234'],
+                'headers' => ['Authorization' => 'Bearer 1234'],
                 'body' => ['language' => 'fr']
             ]
         )->willReturn($response);

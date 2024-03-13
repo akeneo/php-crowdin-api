@@ -15,7 +15,7 @@ class InfoSpec extends ObjectBehavior
         $client->getHttpClient()->willReturn($http);
         $client->getProjectIdentifier()->willReturn('akeneo');
         $client->getProjectApiKey()->willReturn('1234');
-        $http->request('GET', 'project/akeneo/info', ['headers' => ['authorization' => 'Bearer 1234']])->willReturn($response);
+        $http->request('GET', 'project/akeneo/info', ['headers' => ['Authorization' => 'Bearer 1234']])->willReturn($response);
         $response->getContent()->willReturn('<xml></xml>');
         $this->beConstructedWith($client);
     }

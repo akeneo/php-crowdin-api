@@ -27,7 +27,7 @@ class DeleteDirectorySpec extends ObjectBehavior
         $content = '<xml></xml>';
         $response->getContent()->willReturn($content);
 
-        $http->request('POST', 'project/sylius/delete-directory', ['headers' => ['authorization' => 'Bearer 1234']])->willReturn($response);
+        $http->request('POST', 'project/sylius/delete-directory', ['headers' => ['Authorization' => 'Bearer 1234']])->willReturn($response);
         $this->shouldThrow()->duringExecute();
     }
 
@@ -40,7 +40,7 @@ class DeleteDirectorySpec extends ObjectBehavior
             'POST',
             'project/sylius/delete-directory',
             [
-                'headers' => ['authorization' => 'Bearer 1234'],
+                'headers' => ['Authorization' => 'Bearer 1234'],
                 'body' => ['name' => 'directory-to-delete']
             ]
         )->willReturn($response);

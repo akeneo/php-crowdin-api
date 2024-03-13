@@ -50,7 +50,7 @@ class AddFileSpec extends ObjectBehavior
         $http->request(
             'POST',
             'project/sylius/add-file',
-            ['headers' => ['authorization' => 'Bearer 1234']]
+            ['headers' => ['Authorization' => 'Bearer 1234']]
         )->willReturn($response);
         $this->shouldThrow('\InvalidArgumentException')->duringExecute();
     }
@@ -69,7 +69,7 @@ class AddFileSpec extends ObjectBehavior
             [
                 'headers' => [
                     'Content-Type' => 'multipart/form-data',
-                    'authorization' => 'Bearer 1234'
+                    'Authorization' => 'Bearer 1234'
                 ],
                 'body' => [
                     'files[path/to/crowdin.yml]' => $fakeResource,
