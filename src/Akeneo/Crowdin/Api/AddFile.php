@@ -59,7 +59,7 @@ class AddFile extends AbstractApi
         $data = [
             'headers' => [
                 'Content-Type' => 'multipart/form-data',
-                'Authorization' => 'Bearer 1234'
+                'Authorization' => 'Bearer ' . $this->client->getProjectApiKey(),
             ],
             'body' => $data
         ];
