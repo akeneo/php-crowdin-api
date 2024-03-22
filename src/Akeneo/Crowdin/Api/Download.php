@@ -29,7 +29,7 @@ class Download extends AbstractApi
         }
 
         $filePath = $this->getCopyDestination() . '/' . $this->getPackage();
-        $response = $this->client->getHttpClient()->request('GET', $path, ['headers' => ['Authorization' => 'Bearer 1234']]);
+        $response = $this->client->getHttpClient()->request('GET', $path, ['headers' => ['Authorization' => 'Bearer '.$this->client->getProjectApiKey()]]);
 
         $fileContent = $response->getContent();
         file_put_contents($filePath, $fileContent);
