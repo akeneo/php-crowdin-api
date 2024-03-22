@@ -22,7 +22,7 @@ class Export extends AbstractApi
             $this->client->getProjectIdentifier()
         );
         if (null !== $this->branch) {
-            $path = sprintf('%s&branch=%s', $path, $this->branch);
+            $path = sprintf('%s?branch=%s', $path, $this->branch);
         }
         $response = $this->client->getHttpClient()->request(
             'GET',

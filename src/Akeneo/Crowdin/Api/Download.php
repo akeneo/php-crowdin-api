@@ -25,7 +25,7 @@ class Download extends AbstractApi
             $this->package
         );
         if (null !== $this->branch) {
-            $path = sprintf('%s&branch=%s', $path, $this->branch);
+            $path = sprintf('%s?branch=%s', $path, $this->branch);
         }
 
         $filePath = $this->getCopyDestination() . '/' . $this->getPackage();
